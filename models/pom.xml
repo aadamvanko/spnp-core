@@ -4,15 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cz.muni.fi.spnp</groupId>
-    <artifactId>core</artifactId>
-    <version>0.0.1</version>
+    <parent>
+        <groupId>cz.muni.fi.spnp</groupId>
+        <artifactId>core</artifactId>
+        <version>0.0.1</version>
+    </parent>
 
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>engine</module>
-        <module>models</module>
-    </modules>
-
+    <artifactId>core.models</artifactId>
+    <packaging>jar</packaging>
 </project>
