@@ -1,36 +1,54 @@
 package cz.muni.fi.spnp.core.models;
 
-public class Arc extends BaseModel {
+import java.util.function.Supplier;
 
-    private int weight;
-    private ArcType type;
-    private ArcDirection direction;
+public class Arc {
 
-    public Arc(int id, ArcType type, ArcDirection direction) {
-        this(id, type, direction, 0);
+    private int id;
+    private int multiplicity;
+    private Supplier<Integer> calculateMultiplicityFunction;
+
+    public Arc(int id) {
+        this.id = id;
     }
 
-    public Arc(int id, ArcType type, ArcDirection direction, int weight) {
-        super(id);
+    public Arc(int id, int multiplicity) {
+        this(id);
 
-        this.weight = weight;
-        this.direction = direction;
-        this.type = type;
+        if (multiplicity <= 0)
+            throw new IllegalArgumentException("Arc multiplicity must be greater than zero.");
+        this.multiplicity = multiplicity;
     }
 
-    public int getWeight() {
-        return weight;
+    public Arc(int id, Supplier<Integer> calculateMultiplicityFunction) {
+        this(id);
+
+        if (calculateMultiplicityFunction == null)
+            throw new IllegalArgumentException("Calculate multiplicity function must be defined.");
+
+        this.calculateMultiplicityFunction = calculateMultiplicityFunction;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public int getId() {
+        return id;
     }
 
-    public ArcType getType() {
-        return type;
+    public int getMultiplicity() {
+        return multiplicity;
     }
 
-    public ArcDirection getDirection() {
-        return direction;
+    public void setMultiplicity(int multiplicity) {
+        this.multiplicity = multiplicity;
+    }
+
+    public Supplier<Integer> getCalculateMultiplicityFunction() {
+        return calculateMultiplicityFunction;
+    }
+
+    public void setCalculateMultiplicityFunction(Supplier<Integer> calculateMultiplicityFunction) {
+        if (calculateMultiplicityFunction == null)
+            throw new IllegalArgumentException("Calculate multiplicity function is null.");
+
+        this.calculateMultiplicityFunction = calculateMultiplicityFunction;
     }
 }

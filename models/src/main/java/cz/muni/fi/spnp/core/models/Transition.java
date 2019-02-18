@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Transition extends BaseModel {
+public class Transition {
 
-    private TransitionType type;
+    private int id;
     private boolean enabled;
 
     private List<Arc> inputArcs;
     private List<Arc> outputArcs;
 
-    public Transition(int id, TransitionType type) {
-        super(id);
-
-        this.type = type;
+    public Transition(int id) {
+        this.id = id;
 
         this.inputArcs = new ArrayList<>();
         this.outputArcs = new ArrayList<>();
     }
 
-    public TransitionType getType() {
-        return type;
+    public int getId() {
+        return id;
     }
 
     public boolean isEnabled() {
