@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.models;
 
+import com.google.common.base.Objects;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -79,5 +81,22 @@ public class Place {
 
     public Set<Arc> getOutputArcs() {
         return Collections.unmodifiableSet(outputArcs);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Place place = (Place) o;
+
+        return id == place.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

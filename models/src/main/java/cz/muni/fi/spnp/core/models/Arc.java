@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.models;
 
+import com.google.common.base.Objects;
+
 import java.util.function.Supplier;
 
 public class Arc {
@@ -7,6 +9,7 @@ public class Arc {
     private int id;
     private int multiplicity;
     private Supplier<Integer> calculateMultiplicityFunction;
+    private boolean isFluid;
 
     public Arc(int id) {
         this.id = id;
@@ -50,5 +53,30 @@ public class Arc {
             throw new IllegalArgumentException("Calculate multiplicity function is null.");
 
         this.calculateMultiplicityFunction = calculateMultiplicityFunction;
+    }
+
+    public boolean isFluid() {
+        return isFluid;
+    }
+
+    public void setFluid(boolean isFluid) {
+        this.isFluid = isFluid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Arc arc = (Arc) o;
+
+        return id == arc.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
