@@ -1,12 +1,12 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.transitions;
 
 import java.util.function.Supplier;
 
-public class FunctionTransitionProbability implements TransitionProbability {
+public class FunctionalTransitionProbability implements TransitionProbability {
 
     private Supplier<Double> function;
 
-    public FunctionTransitionProbability(Supplier<Double> function) {
+    public FunctionalTransitionProbability(Supplier<Double> function) {
         if (function == null)
             throw new IllegalArgumentException("Function must be defined.");
 

@@ -1,25 +1,34 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.transitions;
 
 import com.google.common.base.Objects;
+import cz.muni.fi.spnp.core.models.arcs.Arc;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class Transition {
 
     private int id;
     private String name;
+    private double priority;
+    private Supplier<Double> guardFunction;
 
     protected List<Arc> inputArcs;
     protected List<Arc> outputArcs;
 
-    public Transition(int id, String name) {
+    public Transition(int id,
+                      String name,
+                      double priority,
+                      Supplier<Double> guardFunction) {
         if (name == null)
             throw new IllegalArgumentException("Name is not defined.");
 
         this.id = id;
         this.name = name;
+        this.priority = priority;
+        this.guardFunction = guardFunction;
 
         this.inputArcs = new ArrayList<>();
         this.outputArcs = new ArrayList<>();
@@ -38,6 +47,22 @@ public abstract class Transition {
             throw new IllegalArgumentException("Name is null.");
 
         this.name = name;
+    }
+
+    public double getPriority() {
+        return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
+    }
+
+    public Supplier<Double> getGuardFunction() {
+        return guardFunction;
+    }
+
+    public void setGuardFunction(Supplier<Double> guardFunction) {
+        this.guardFunction = guardFunction;
     }
 
     public void addInputArc(Arc arc) {

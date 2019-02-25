@@ -1,8 +1,12 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.transitions;
 
 public class ConstantTransitionProbability implements TransitionProbability {
 
     private double value;
+
+    public ConstantTransitionProbability() {
+        this(0.0);
+    }
 
     public ConstantTransitionProbability(double value) {
         this.value = value;

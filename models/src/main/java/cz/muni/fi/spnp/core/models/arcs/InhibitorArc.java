@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.arcs;
 
 public class InhibitorArc extends Arc {
 

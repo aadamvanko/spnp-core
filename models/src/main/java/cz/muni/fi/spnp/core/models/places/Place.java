@@ -1,6 +1,7 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.places;
 
 import com.google.common.base.Objects;
+import cz.muni.fi.spnp.core.models.arcs.Arc;
 
 import java.util.Collections;
 import java.util.HashSet;

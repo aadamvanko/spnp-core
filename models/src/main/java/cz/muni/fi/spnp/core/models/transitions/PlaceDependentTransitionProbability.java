@@ -1,4 +1,6 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.transitions;
+
+import cz.muni.fi.spnp.core.models.places.Place;
 
 public class PlaceDependentTransitionProbability implements TransitionProbability {
 

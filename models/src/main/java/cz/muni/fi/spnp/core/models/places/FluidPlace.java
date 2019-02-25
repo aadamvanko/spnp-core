@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.places;
 
 import java.util.Collections;
 import java.util.HashSet;

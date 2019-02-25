@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.models.arcs;
 
 import com.google.common.base.Objects;
 
