@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.models.transitions;
+package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 public enum TransitionDistributionType {
     Constant,

@@ -1,5 +1,8 @@
 package cz.muni.fi.spnp.core.models.transitions;
 
+import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
+import cz.muni.fi.spnp.core.models.transitions.probabilities.TransitionProbability;
+
 import java.util.function.Supplier;
 
 public class ImmediateTransition extends Transition {

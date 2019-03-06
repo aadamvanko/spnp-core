@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.models.transitions;
+package cz.muni.fi.spnp.core.models.transitions.probabilities;
 
 import java.util.function.Supplier;
 
