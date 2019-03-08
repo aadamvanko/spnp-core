@@ -1,38 +1,19 @@
 package cz.muni.fi.spnp.core.models.functions;
 
-public class TransitionFunction {
+public class Function<TReturnType> {
 
     private String name;
-    private Class returnType;
+    private Class<TReturnType> returnType;
     private String body;
-
-    /**
-     * Creates function definition with no body and no return value.
-     *
-     * @param name  function name
-     */
-    public TransitionFunction(String name) {
-        this(name, Void.class, "");
-    }
-
-    /**
-     * Creates function definition with defined body and no return value.
-     *
-     * @param name  function name
-     * @param body  function body
-     */
-    public TransitionFunction(String name, String body) {
-        this(name, Void.class, body);
-    }
 
     /**
      * Creates function definition with specified body and return value.
      *
      * @param name          function name
-     * @param returnType    type of function's return value
      * @param body          function body definition
+     * @param returnType    type of function's return value
      */
-    public TransitionFunction(String name, Class returnType, String body) {
+    public Function(String name, String body, Class<TReturnType> returnType) {
         if (name == null)
             throw new IllegalArgumentException("Function name is not specified.");
         if (returnType == null)
@@ -49,7 +30,7 @@ public class TransitionFunction {
         return name;
     }
 
-    public Class getReturnType() {
+    public Class<TReturnType> getReturnType() {
         return returnType;
     }
 
