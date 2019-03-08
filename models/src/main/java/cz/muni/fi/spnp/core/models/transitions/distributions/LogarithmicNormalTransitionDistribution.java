@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public class LogarithmicNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +21,7 @@ public class LogarithmicNormalTransitionDistribution extends TwoValuesTransition
      * @param firstFunction     reference to a function which calculates first value of logarithmic normal distribution
      * @param secondFunction    reference to a function which calculates second value of logarithmic normal distribution
      */
-    public LogarithmicNormalTransitionDistribution(Supplier<Double> firstFunction, Supplier<Double> secondFunction) {
+    public LogarithmicNormalTransitionDistribution(Function<Double> firstFunction, Function<Double> secondFunction) {
         super(firstFunction, secondFunction);
     }
 

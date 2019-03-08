@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public class WeibullTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +21,7 @@ public class WeibullTransitionDistribution extends TwoValuesTransitionDistributi
      * @param alphaValueFunction    reference to a function which calculates alpha value of Weibull distribution
      * @param lambdaValueFunction   reference to a function which calculates lambda value of Weibull distribution
      */
-    public WeibullTransitionDistribution(Supplier<Double> alphaValueFunction, Supplier<Double> lambdaValueFunction) {
+    public WeibullTransitionDistribution(Function<Double> alphaValueFunction, Function<Double> lambdaValueFunction) {
         super(alphaValueFunction, lambdaValueFunction);
     }
 
@@ -59,22 +58,22 @@ public class WeibullTransitionDistribution extends TwoValuesTransitionDistributi
         this.setSecondValue(lambdaValue);
     }
 
-    public Supplier<Double> getAlphaValueFunction() {
+    public Function<Double> getAlphaValueFunction() {
         return this.getFirstFunction();
     }
 
-    public void setAlphaValueFunction(Supplier<Double> alphaValueFunction) {
+    public void setAlphaValueFunction(Function<Double> alphaValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Alpha value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(alphaValueFunction);
     }
 
-    public Supplier<Double> getLambdaValueFunction() {
+    public Function<Double> getLambdaValueFunction() {
         return this.getSecondFunction();
     }
 
-    public void setLambdaValueFunction(Supplier<Double> lambdaValueFunction) {
+    public void setLambdaValueFunction(Function<Double> lambdaValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Lambda value function can be set ONLY on Functional Transition Distribution type.");
 

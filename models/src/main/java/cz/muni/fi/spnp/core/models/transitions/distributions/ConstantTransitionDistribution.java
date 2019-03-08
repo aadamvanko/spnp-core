@@ -1,9 +1,8 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.utils.Constants;
-
-import java.util.function.Supplier;
 
 public class ConstantTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
 
@@ -21,7 +20,7 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
      *
      * @param function  reference to a function which calculates value for distribution
      */
-    public ConstantTransitionDistribution(Supplier<Double> function) {
+    public ConstantTransitionDistribution(Function<Double> function) {
         super(function);
     }
 
@@ -46,12 +45,12 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
     }
 
     @Override
-    public Supplier<Double> getFunction() {
+    public Function<Double> getFunction() {
         return super.getFunction();
     }
 
     @Override
-    public void setFunction(Supplier<Double> function) {
+    public void setFunction(Function<Double> function) {
         super.setFunction(function);
     }
 

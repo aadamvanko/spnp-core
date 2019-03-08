@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondValue, TThirdValue, TFourthValue>
         extends TransitionDistributionBase {
@@ -11,10 +10,10 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
     protected TSecondValue secondValue;
     protected TThirdValue thirdValue;
     protected TFourthValue fourthValue;
-    protected Supplier<TFirstValue> firstFunction;
-    protected Supplier<TSecondValue> secondFunction;
-    protected Supplier<TThirdValue> thirdFunction;
-    protected Supplier<TFourthValue> fourthFunction;
+    protected Function<TFirstValue> firstFunction;
+    protected Function<TSecondValue> secondFunction;
+    protected Function<TThirdValue> thirdFunction;
+    protected Function<TFourthValue> fourthFunction;
 
     public FourValuesTransitionDistributionBase(TFirstValue firstValue,
                                                 TSecondValue secondValue,
@@ -23,10 +22,10 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
         super(TransitionDistributionType.Constant, null);
     }
 
-    public FourValuesTransitionDistributionBase(Supplier<TFirstValue> firstFunction,
-                                                Supplier<TSecondValue> secondFunction,
-                                                Supplier<TThirdValue> thirdFunction,
-                                                Supplier<TFourthValue> fourthFunction) {
+    public FourValuesTransitionDistributionBase(Function<TFirstValue> firstFunction,
+                                                Function<TSecondValue> secondFunction,
+                                                Function<TThirdValue> thirdFunction,
+                                                Function<TFourthValue> fourthFunction) {
         super(TransitionDistributionType.Functional, null);
 
         if (firstFunction == null)
@@ -101,44 +100,44 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
         this.fourthValue = fourthValue;
     }
 
-    public Supplier<TFirstValue> getFirstFunction() {
+    public Function<TFirstValue> getFirstFunction() {
         return firstFunction;
     }
 
-    public void setFirstFunction(Supplier<TFirstValue> firstFunction) {
+    public void setFirstFunction(Function<TFirstValue> firstFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.firstFunction = firstFunction;
     }
 
-    public Supplier<TSecondValue> getSecondFunction() {
+    public Function<TSecondValue> getSecondFunction() {
         return secondFunction;
     }
 
-    public void setSecondFunction(Supplier<TSecondValue> secondFunction) {
+    public void setSecondFunction(Function<TSecondValue> secondFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.secondFunction = secondFunction;
     }
 
-    public Supplier<TThirdValue> getThirdFunction() {
+    public Function<TThirdValue> getThirdFunction() {
         return thirdFunction;
     }
 
-    public void setThirdFunction(Supplier<TThirdValue> thirdFunction) {
+    public void setThirdFunction(Function<TThirdValue> thirdFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.thirdFunction = thirdFunction;
     }
 
-    public Supplier<TFourthValue> getFourthFunction() {
+    public Function<TFourthValue> getFourthFunction() {
         return fourthFunction;
     }
 
-    public void setFourthFunction(Supplier<TFourthValue> fourthFunction) {
+    public void setFourthFunction(Function<TFourthValue> fourthFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 

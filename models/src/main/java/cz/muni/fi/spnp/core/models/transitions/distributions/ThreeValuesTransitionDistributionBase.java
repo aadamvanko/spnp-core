@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecondValue, TThirdValue>
         extends TransitionDistributionBase {
@@ -10,9 +9,9 @@ public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecond
     protected TFirstValue firstValue;
     protected TSecondValue secondValue;
     protected TThirdValue thirdValue;
-    protected Supplier<TFirstValue> firstFunction;
-    protected Supplier<TSecondValue> secondFunction;
-    protected Supplier<TThirdValue> thirdFunction;
+    protected Function<TFirstValue> firstFunction;
+    protected Function<TSecondValue> secondFunction;
+    protected Function<TThirdValue> thirdFunction;
 
     public ThreeValuesTransitionDistributionBase(TFirstValue firstValue,
                                                  TSecondValue secondValue,
@@ -24,9 +23,9 @@ public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecond
         this.thirdValue = thirdValue;
     }
 
-    public ThreeValuesTransitionDistributionBase(Supplier<TFirstValue> firstFunction,
-                                                 Supplier<TSecondValue> secondFunction,
-                                                 Supplier<TThirdValue> thirdFunction) {
+    public ThreeValuesTransitionDistributionBase(Function<TFirstValue> firstFunction,
+                                                 Function<TSecondValue> secondFunction,
+                                                 Function<TThirdValue> thirdFunction) {
         super(TransitionDistributionType.Functional, null);
 
         if (firstFunction == null)
@@ -85,33 +84,33 @@ public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecond
         this.thirdValue = thirdValue;
     }
 
-    public Supplier<TFirstValue> getFirstFunction() {
+    public Function<TFirstValue> getFirstFunction() {
         return firstFunction;
     }
 
-    public void setFirstFunction(Supplier<TFirstValue> firstFunction) {
+    public void setFirstFunction(Function<TFirstValue> firstFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.firstFunction = firstFunction;
     }
 
-    public Supplier<TSecondValue> getSecondFunction() {
+    public Function<TSecondValue> getSecondFunction() {
         return secondFunction;
     }
 
-    public void setSecondFunction(Supplier<TSecondValue> secondFunction) {
+    public void setSecondFunction(Function<TSecondValue> secondFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.secondFunction = secondFunction;
     }
 
-    public Supplier<TThirdValue> getThirdFunction() {
+    public Function<TThirdValue> getThirdFunction() {
         return thirdFunction;
     }
 
-    public void setThirdFunction(Supplier<TThirdValue> thirdFunction) {
+    public void setThirdFunction(Function<TThirdValue> thirdFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 

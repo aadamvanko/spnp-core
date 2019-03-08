@@ -1,5 +1,6 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
 
 import java.util.function.Supplier;
@@ -7,7 +8,7 @@ import java.util.function.Supplier;
 public abstract class SingleValueTransitionDistributionBase<TValue> extends TransitionDistributionBase {
 
     private TValue value;
-    private Supplier<TValue> function;
+    private Function<TValue> function;
 
     public SingleValueTransitionDistributionBase(TValue value) {
         super(TransitionDistributionType.Constant, null);
@@ -15,7 +16,7 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
         this.value = value;
     }
 
-    public SingleValueTransitionDistributionBase(Supplier<TValue> function) {
+    public SingleValueTransitionDistributionBase(Function<TValue> function) {
         super(TransitionDistributionType.Functional, null);
 
         if (function == null)
@@ -41,11 +42,11 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
         this.value = value;
     }
 
-    protected Supplier<TValue> getFunction() {
+    protected Function<TValue> getFunction() {
         return function;
     }
 
-    protected void setFunction(Supplier<TValue> function) {
+    protected void setFunction(Function<TValue> function) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 

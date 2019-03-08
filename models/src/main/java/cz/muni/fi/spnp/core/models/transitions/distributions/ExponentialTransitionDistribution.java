@@ -1,9 +1,8 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.utils.Constants;
-
-import java.util.function.Supplier;
 
 public class ExponentialTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
 
@@ -21,7 +20,7 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
      *
      * @param rateFunction  reference to a function which calculates rate for distribution
      */
-    public ExponentialTransitionDistribution(Supplier<Double> rateFunction) {
+    public ExponentialTransitionDistribution(Function<Double> rateFunction) {
         super(rateFunction);
     }
 
@@ -40,14 +39,20 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
     }
 
     public void setRate(double rate) {
+        if (getDistributionType() == TransitionDistributionType.Functional)
+            throw new IllegalStateException("Rate value cannot be set on Functional Transition Distribution type.");
+
         this.setValue(rate);
     }
 
-    public Supplier<Double> getRateFunction() {
+    public Function<Double> getRateFunction() {
         return this.getFunction();
     }
 
-    public void setRateFunction(Supplier<Double> rateFunction) {
+    public void setRateFunction(Function<Double> rateFunction) {
+        if (getDistributionType() != TransitionDistributionType.Functional)
+            throw new IllegalStateException("Rate function can be set ONLY on Functional Transition Distribution type.");
+
         this.setFunction(rateFunction);
     }
 

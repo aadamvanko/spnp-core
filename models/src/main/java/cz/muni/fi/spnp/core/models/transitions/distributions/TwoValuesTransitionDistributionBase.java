@@ -1,15 +1,14 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondValue> extends TransitionDistributionBase {
 
     protected TFirstValue firstValue;
     protected TSecondValue secondValue;
-    protected Supplier<TFirstValue> firstFunction;
-    protected Supplier<TSecondValue> secondFunction;
+    protected Function<TFirstValue> firstFunction;
+    protected Function<TSecondValue> secondFunction;
 
     public TwoValuesTransitionDistributionBase(TFirstValue firstValue, TSecondValue secondValue) {
         super(TransitionDistributionType.Constant, null);
@@ -18,7 +17,7 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.secondValue = secondValue;
     }
 
-    public TwoValuesTransitionDistributionBase(Supplier<TFirstValue> firstFunction, Supplier<TSecondValue> secondFunction) {
+    public TwoValuesTransitionDistributionBase(Function<TFirstValue> firstFunction, Function<TSecondValue> secondFunction) {
         super(TransitionDistributionType.Functional, null);
 
         if (firstFunction == null)
@@ -59,22 +58,22 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.secondValue = secondValue;
     }
 
-    protected Supplier<TFirstValue> getFirstFunction() {
+    protected Function<TFirstValue> getFirstFunction() {
         return firstFunction;
     }
 
-    protected void setFirstFunction(Supplier<TFirstValue> firstFunction) {
+    protected void setFirstFunction(Function<TFirstValue> firstFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.firstFunction = firstFunction;
     }
 
-    protected Supplier<TSecondValue> getSecondFunction() {
+    protected Function<TSecondValue> getSecondFunction() {
         return secondFunction;
     }
 
-    protected void setSecondFunction(Supplier<TSecondValue> secondFunction) {
+    protected void setSecondFunction(Function<TSecondValue> secondFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 

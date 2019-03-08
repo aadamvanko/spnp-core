@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +21,7 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
      * @param expectationFunction   reference to a function which calculates expectation value of truncated normal distribution
      * @param varianceFunction      reference to a function which calculates variance value of truncated normal distribution
      */
-    public TruncatedNormalTransitionDistribution(Supplier<Double> expectationFunction, Supplier<Double> varianceFunction) {
+    public TruncatedNormalTransitionDistribution(Function<Double> expectationFunction, Function<Double> varianceFunction) {
         super(expectationFunction, varianceFunction);
     }
 
@@ -57,5 +56,27 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
             throw new IllegalStateException("Variance value cannot be set on Functional Transition Distribution type.");
 
         this.setSecondValue(variance);
+    }
+
+    public Function<Double> getExpectationFunction() {
+        return this.getFirstFunction();
+    }
+
+    public void setExpectationFunction(Function<Double> expectationFunction) {
+        if (getDistributionType() != TransitionDistributionType.Functional)
+            throw new IllegalStateException("Expectation function can be set ONLY on Functional Transition Distribution type.");
+
+        this.setFirstFunction(expectationFunction);
+    }
+
+    public Function<Double> getVarianceFunction() {
+        return this.getSecondFunction();
+    }
+
+    public void setVarianceFunction(Function<Double> varianceFunction) {
+        if (getDistributionType() != TransitionDistributionType.Functional)
+            throw new IllegalStateException("Variance function can be set ONLY on Functional Transition Distribution type.");
+
+        this.setSecondFunction(varianceFunction);
     }
 }

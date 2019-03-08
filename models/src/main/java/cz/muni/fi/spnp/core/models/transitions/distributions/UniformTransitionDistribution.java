@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
 
 public class UniformTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +21,7 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
      * @param lowerBoundFunction    reference to a function which calculates lower bound value of uniform distribution
      * @param upperBoundFunction    reference to a function which calculates lower bound value of uniform distribution
      */
-    public UniformTransitionDistribution(Supplier<Double> lowerBoundFunction, Supplier<Double> upperBoundFunction) {
+    public UniformTransitionDistribution(Function<Double> lowerBoundFunction, Function<Double> upperBoundFunction) {
         super(lowerBoundFunction, upperBoundFunction);
     }
 
@@ -59,22 +58,22 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
         this.setSecondValue(upperBound);
     }
 
-    public Supplier<Double> getLowerBoundFunction() {
+    public Function<Double> getLowerBoundFunction() {
         return this.getFirstFunction();
     }
 
-    public void setLowerBoundFunction(Supplier<Double> lowerBoundFunction) {
+    public void setLowerBoundFunction(Function<Double> lowerBoundFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Lower bound function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(lowerBoundFunction);
     }
 
-    public Supplier<Double> getUpperBoundFunction() {
+    public Function<Double> getUpperBoundFunction() {
         return this.getSecondFunction();
     }
 
-    public void setUpperBoundFunction(Supplier<Double> upperBoundFunction) {
+    public void setUpperBoundFunction(Function<Double> upperBoundFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Upper bound function can be set ONLY on Functional Transition Distribution type.");
 
