@@ -19,7 +19,7 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
      * Creates new {@link UniformTransitionDistribution} object with {@link TransitionDistributionType#Functional} distribution type.
      *
      * @param lowerBoundFunction    reference to a function which calculates lower bound value of uniform distribution
-     * @param upperBoundFunction    reference to a function which calculates lower bound value of uniform distribution
+     * @param upperBoundFunction    reference to a function which calculates upper bound value of uniform distribution
      */
     public UniformTransitionDistribution(Function<Double> lowerBoundFunction, Function<Double> upperBoundFunction) {
         super(lowerBoundFunction, upperBoundFunction);
