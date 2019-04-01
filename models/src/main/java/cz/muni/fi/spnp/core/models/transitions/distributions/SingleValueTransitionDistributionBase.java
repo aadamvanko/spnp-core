@@ -52,4 +52,9 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
 
         this.function = function;
     }
+
+    @Override
+    protected String getFunctionsStringRepresentation() {
+        return this.getFunction().getFullDefinition();
+    }
 }

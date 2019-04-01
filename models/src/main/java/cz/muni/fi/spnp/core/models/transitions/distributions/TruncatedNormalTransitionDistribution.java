@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -78,5 +79,39 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
             throw new IllegalStateException("Variance function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(varianceFunction);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void normval(\"%s\", %f, %f);",
+                        transition.getName(), this.getExpectation(), this.getVariance());
+
+            case Functional:
+                return String.format("void normfun(\"%s\", %s, %s);",
+                        transition.getName(),
+                        this.getExpectationFunction().getName(),
+                        this.getVarianceFunction().getName());
+
+            case PlaceDependent:
+                return String.format("void normdep(\"%s\", %f, %f, \"%s\");",
+                        transition.getName(),
+                        this.getExpectation(),
+                        this.getVariance(),
+                        this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Truncate normal transition distribution has unknown type.");
+        }
     }
 }

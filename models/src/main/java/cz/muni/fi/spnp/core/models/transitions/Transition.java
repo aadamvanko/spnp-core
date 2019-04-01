@@ -2,18 +2,18 @@ package cz.muni.fi.spnp.core.models.transitions;
 
 import com.google.common.base.Objects;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
+import cz.muni.fi.spnp.core.models.functions.Function;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 public abstract class Transition {
 
     private int id;
     private String name;
     private double priority;
-    private Supplier<Double> guardFunction;
+    private Function<Integer> guardFunction;
 
     protected List<Arc> inputArcs;
     protected List<Arc> outputArcs;
@@ -21,7 +21,7 @@ public abstract class Transition {
     public Transition(int id,
                       String name,
                       double priority,
-                      Supplier<Double> guardFunction) {
+                      Function<Integer> guardFunction) {
         if (name == null)
             throw new IllegalArgumentException("Name is not defined.");
 
@@ -57,11 +57,11 @@ public abstract class Transition {
         this.priority = priority;
     }
 
-    public Supplier<Double> getGuardFunction() {
+    public Function<Integer> getGuardFunction() {
         return guardFunction;
     }
 
-    public void setGuardFunction(Supplier<Double> guardFunction) {
+    public void setGuardFunction(Function<Integer> guardFunction) {
         this.guardFunction = guardFunction;
     }
 

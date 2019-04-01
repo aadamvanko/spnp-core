@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondValue> extends TransitionDistributionBase {
 
@@ -78,5 +79,12 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.secondFunction = secondFunction;
+    }
+
+    @Override
+    protected String getFunctionsStringRepresentation() {
+        return this.getFirstFunction().getFullDefinition()
+                + System.lineSeparator()
+                + this.getSecondFunction().getFullDefinition();
     }
 }

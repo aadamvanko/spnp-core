@@ -37,4 +37,31 @@ public class Function<TReturnType> {
     public String getBody() {
         return body;
     }
+
+    public String getFullDefinition() {
+        return String.format("%s %s() {%s%s%s}%s",
+                this.getReturnTypeString(),
+                this.getName(),
+                System.lineSeparator(),
+                this.getBody(),
+                System.lineSeparator(),
+                System.lineSeparator());
+    }
+
+
+    private String getReturnTypeString() {
+        if (returnType == double.class) {
+            return "double";
+        } else if (returnType == int.class) {
+            return "int";
+        } else if (returnType == Void.class) {
+            return "void";
+        } else if (returnType == String.class) {
+            return "string";
+        } else if (returnType == Character.class) {
+            return "char";
+        } else {
+            throw new IllegalStateException("Unsupported function return type.");
+        }
+    }
 }

@@ -20,6 +20,11 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
                                                 TThirdValue thirdValue,
                                                 TFourthValue fourthValue) {
         super(TransitionDistributionType.Constant, null);
+
+        this.firstValue = firstValue;
+        this.secondValue = secondValue;
+        this.thirdValue = thirdValue;
+        this.fourthValue = fourthValue;
     }
 
     public FourValuesTransitionDistributionBase(Function<TFirstValue> firstFunction,
@@ -142,5 +147,16 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
 
         this.fourthFunction = fourthFunction;
+    }
+
+    @Override
+    protected String getFunctionsStringRepresentation() {
+        return this.getFirstFunction().getFullDefinition()
+                + System.lineSeparator()
+                + this.getSecondFunction().getFullDefinition()
+                + System.lineSeparator()
+                + this.getThirdFunction().getFullDefinition()
+                + System.lineSeparator()
+                + this.getFourthFunction().getFullDefinition();
     }
 }

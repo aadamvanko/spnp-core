@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class WeibullTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -78,5 +79,39 @@ public class WeibullTransitionDistribution extends TwoValuesTransitionDistributi
             throw new IllegalStateException("Lambda value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(lambdaValueFunction);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void weibval(\"%s\", %f, %f);",
+                        transition.getName(), this.getAlphaValue(), this.getLambdaValue());
+
+            case Functional:
+                return String.format("void weibfun(\"%s\", %s, %s);",
+                        transition.getName(),
+                        this.getAlphaValueFunction().getName(),
+                        this.getLambdaValueFunction().getName());
+
+            case PlaceDependent:
+                return String.format("void weibdep(\"%s\", %f, %f, \"%s\");",
+                        transition.getName(),
+                        this.getAlphaValue(),
+                        this.getLambdaValue(),
+                        this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Weibull transition distribution has unknown type.");
+        }
     }
 }

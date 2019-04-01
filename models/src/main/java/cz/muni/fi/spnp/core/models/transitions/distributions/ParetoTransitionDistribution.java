@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class ParetoTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -76,5 +77,34 @@ public class ParetoTransitionDistribution extends TwoValuesTransitionDistributio
             throw new IllegalStateException("Alpha function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(alphaFunction);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void parval(\"%s\", %f, %f);",
+                        transition.getName(), this.getScale(), this.getAlpha());
+
+            case Functional:
+                return String.format("void parfun(\"%s\", %s, %s);",
+                        transition.getName(), this.getScaleFunction().getName(), this.getAlphaFunction().getName());
+
+            case PlaceDependent:
+                return String.format("void pardep(\"%s\", %f, %f, \"%s\");",
+                        transition.getName(), this.getScale(), this.getAlpha(), this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Pareto transition distribution has unknown type.");
+        }
     }
 }

@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
 
@@ -110,5 +111,39 @@ public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitio
             throw new IllegalStateException("T value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setThirdFunction(tValueFunction);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void negbval(\"%s\", %f, %f, %f);",
+                        transition.getName(), this.getNumberValue(), this.getProbabilityValue(), this.getTValue());
+
+            case Functional:
+                return String.format("void negbfun(\"%s\", %s, %s, %s);",
+                        transition.getName(),
+                        this.getNumberValueFunction().getName(),
+                        this.getProbabilityValueFunction().getName(),
+                        this.getTValueFunction().getName());
+
+            case PlaceDependent:
+                return String.format("void negbdep(\"%s\", %f, %f, %f, \"%s\");",
+                        transition.getName(),
+                        this.getNumberValue(), this.getProbabilityValue(), this.getTValue(),
+                        this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Negative binomial transition distribution has unknown type.");
+        }
     }
 }

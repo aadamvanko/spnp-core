@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class UniformTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -78,5 +79,36 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
             throw new IllegalStateException("Upper bound function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(upperBoundFunction);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void unifval(\"%s\", %f, %f);",
+                        transition.getName(), this.getLowerBound(), this.getUpperBound());
+
+            case Functional:
+                return String.format("void uniffun(\"%s\", %s, %s);",
+                        transition.getName(),
+                        this.getLowerBoundFunction().getName(),
+                        this.getUpperBoundFunction().getName());
+
+            case PlaceDependent:
+                return String.format("void unifdep(\"%s\", %f, %f, \"%s\");",
+                        transition.getName(), this.getLowerBound(), this.getUpperBound(), this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Uniform transition distribution has unknown type.");
+        }
     }
 }

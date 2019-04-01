@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class BinomialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
 
@@ -110,5 +111,36 @@ public class BinomialTransitionDistribution extends ThreeValuesTransitionDistrib
             throw new IllegalStateException("T value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setThirdFunction(tValueFunction);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void binoval(\"%s\", %f, %f, %f);",
+                        transition.getName(), this.getNumberValue(), this.getProbabilityValue(), this.getTValue());
+
+            case Functional:
+                return String.format("void binofun(\"%s\", %s, %s, %s);",
+                        transition.getName(), this.getNumberValueFunction(),
+                        this.getProbabilityValueFunction(), this.getTValueFunction());
+
+            case PlaceDependent:
+                return String.format("void binodep(\"%s\", %f, %f, %f, \"%s\");",
+                        transition.getName(), this.getNumberValue(), this.getProbabilityValue(),
+                        this.getTValue(), this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Binomial transition distribution has unknown type.");
+        }
     }
 }

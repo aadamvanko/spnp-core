@@ -1,9 +1,8 @@
 package cz.muni.fi.spnp.core.models.transitions;
 
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.TransitionProbability;
-
-import java.util.function.Supplier;
 
 public class ImmediateTransition extends Transition {
 
@@ -17,7 +16,7 @@ public class ImmediateTransition extends Transition {
     public ImmediateTransition(int id,
                                String name,
                                double priority,
-                               Supplier<Double> guardFunction,
+                               Function<Integer> guardFunction,
                                TransitionProbability transitionProbability) {
         super(id, name, priority, guardFunction);
 

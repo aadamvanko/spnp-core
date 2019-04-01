@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class LogarithmicNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -34,5 +35,39 @@ public class LogarithmicNormalTransitionDistribution extends TwoValuesTransition
      */
     public LogarithmicNormalTransitionDistribution(Double firstValue, Double secondValue, Place dependentPlace) {
         super(firstValue, secondValue, dependentPlace);
+    }
+
+    /**
+     * Gets the {@link String} representation of the timed transition distribution definition.
+     *
+     * @param transition {@link TimedTransition} on which the distribution is applied.
+     * @return representation of the timed transition distribution definition
+     */
+    @Override
+    public String getDefinition(TimedTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        switch (this.getDistributionType()) {
+            case Constant:
+                return String.format("void lognval(\"%s\", %f, %f);",
+                        transition.getName(), this.getFirstValue(), this.getSecondValue());
+
+            case Functional:
+                return String.format("void lognfun(\"%s\", %s, %s);",
+                        transition.getName(),
+                        this.getFirstFunction().getName(),
+                        this.getSecondFunction().getName());
+
+            case PlaceDependent:
+                return String.format("void logndep(\"%s\", %f, %f, \"%s\");",
+                        transition.getName(),
+                        this.getFirstValue(),
+                        this.getSecondValue(),
+                        this.getDependentPlace().getName());
+
+            default:
+                throw new IllegalStateException("Logarithmic normal transition distribution has unknown type.");
+        }
     }
 }
