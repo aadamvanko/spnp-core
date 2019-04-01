@@ -1,6 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.probabilities;
 
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 
 public class PlaceDependentTransitionProbability implements TransitionProbability {
 
@@ -29,5 +30,20 @@ public class PlaceDependentTransitionProbability implements TransitionProbabilit
 
     public void setDependentPlace(Place dependentPlace) {
         this.dependentPlace = dependentPlace;
+    }
+
+    /**
+     * Gets the {@link String} representation of the immediate transition probability.
+     *
+     * @param transition {@link ImmediateTransition} on which the probability is applied.
+     * @return representation of the immediate transition probability
+     */
+    @Override
+    public String getDefinition(ImmediateTransition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition is not specified.");
+
+        return String.format("void probdep(\"%s\", %f, \"%s\");",
+                transition.getName(), this.getValue(), this.getDependentPlace().getName());
     }
 }
