@@ -1,13 +1,13 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class TransitionDistributionBase implements TransitionDistribution {
 
     private TransitionDistributionType distributionType;
-    private Place dependentPlace;
+    private StandardPlace dependentPlace;
 
-    public TransitionDistributionBase(TransitionDistributionType distributionType, Place dependentPlace) {
+    public TransitionDistributionBase(TransitionDistributionType distributionType, StandardPlace dependentPlace) {
         this.distributionType = distributionType;
 
         if (distributionType == TransitionDistributionType.PlaceDependent && dependentPlace == null)
@@ -27,12 +27,12 @@ public abstract class TransitionDistributionBase implements TransitionDistributi
     }
 
     /**
-     * Gets the {@link Place} object in case this is {@link TransitionDistributionType#PlaceDependent} distribution type.
+     * Gets the {@link StandardPlace} object in case this is {@link TransitionDistributionType#PlaceDependent} distribution type.
      *
-     * @return dependent {@link Place} object
+     * @return dependent {@link StandardPlace} object
      */
     @Override
-    public Place getDependentPlace() {
+    public StandardPlace getDependentPlace() {
         return this.dependentPlace;
     }
 

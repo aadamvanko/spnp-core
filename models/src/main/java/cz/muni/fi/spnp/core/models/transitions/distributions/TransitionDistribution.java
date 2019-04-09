@@ -1,6 +1,6 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public interface TransitionDistribution {
@@ -29,9 +29,9 @@ public interface TransitionDistribution {
     TransitionDistributionType getDistributionType();
 
     /**
-     * Gets the {@link Place} object in case this is {@link TransitionDistributionType#PlaceDependent} distribution type.
+     * Gets the {@link StandardPlace} object in case this is {@link TransitionDistributionType#PlaceDependent} distribution type.
      *
-     * @return dependent {@link Place} object
+     * @return dependent {@link StandardPlace} object
      */
-    Place getDependentPlace();
+    StandardPlace getDependentPlace();
 }

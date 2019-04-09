@@ -1,9 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
-
-import java.util.function.Supplier;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class SingleValueTransitionDistributionBase<TValue> extends TransitionDistributionBase {
 
@@ -25,7 +23,7 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
         this.function = function;
     }
 
-    public SingleValueTransitionDistributionBase(TValue value, Place dependentPlace) {
+    public SingleValueTransitionDistributionBase(TValue value, StandardPlace dependentPlace) {
         super(TransitionDistributionType.PlaceDependent, dependentPlace);
 
         this.value = value;

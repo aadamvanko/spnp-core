@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondValue> extends TransitionDistributionBase {
 
@@ -30,7 +29,7 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.secondFunction = secondFunction;
     }
 
-    public TwoValuesTransitionDistributionBase(TFirstValue firstValue, TSecondValue secondValue, Place dependentPlace) {
+    public TwoValuesTransitionDistributionBase(TFirstValue firstValue, TSecondValue secondValue, StandardPlace dependentPlace) {
         super(TransitionDistributionType.PlaceDependent, dependentPlace);
 
         this.firstValue = firstValue;

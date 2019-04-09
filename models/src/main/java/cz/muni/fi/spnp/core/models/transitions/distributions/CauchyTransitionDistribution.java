@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class CauchyTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class CauchyTransitionDistribution extends TwoValuesTransitionDistributio
      *
      * @param alphaValue        alpha value of Cauchy distribution
      * @param betaValue         beta value of Cauchy distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public CauchyTransitionDistribution(Double alphaValue, Double betaValue, Place dependentPlace) {
+    public CauchyTransitionDistribution(Double alphaValue, Double betaValue, StandardPlace dependentPlace) {
         super(alphaValue, betaValue, dependentPlace);
     }
 

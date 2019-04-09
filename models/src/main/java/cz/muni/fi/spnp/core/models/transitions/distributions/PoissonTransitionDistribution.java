@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class PoissonTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class PoissonTransitionDistribution extends TwoValuesTransitionDistributi
      *
      * @param lambdaValue       lambda value of Poisson distribution
      * @param tValue            T value of Poisson distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public PoissonTransitionDistribution(Double lambdaValue, Double tValue, Place dependentPlace) {
+    public PoissonTransitionDistribution(Double lambdaValue, Double tValue, StandardPlace dependentPlace) {
         super(lambdaValue, tValue, dependentPlace);
     }
 

@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class LogarithmicNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class LogarithmicNormalTransitionDistribution extends TwoValuesTransition
      *
      * @param firstValue        first value of logarithmic normal distribution
      * @param secondValue       second value of logarithmic normal distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public LogarithmicNormalTransitionDistribution(Double firstValue, Double secondValue, Place dependentPlace) {
+    public LogarithmicNormalTransitionDistribution(Double firstValue, Double secondValue, StandardPlace dependentPlace) {
         super(firstValue, secondValue, dependentPlace);
     }
 

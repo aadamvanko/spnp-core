@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
      *
      * @param expectation       expectation value of truncated normal distribution
      * @param variance          variance value of truncated normal distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public TruncatedNormalTransitionDistribution(Double expectation, Double variance, Place dependentPlace) {
+    public TruncatedNormalTransitionDistribution(Double expectation, Double variance, StandardPlace dependentPlace) {
         super(expectation, variance, dependentPlace);
     }
 

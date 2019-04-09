@@ -12,7 +12,7 @@ public abstract class Transition {
 
     private int id;
     private String name;
-    private double priority;
+    private int priority;
     private Function<Integer> guardFunction;
 
     protected List<Arc> inputArcs;
@@ -20,7 +20,7 @@ public abstract class Transition {
 
     public Transition(int id,
                       String name,
-                      double priority,
+                      int priority,
                       Function<Integer> guardFunction) {
         if (name == null)
             throw new IllegalArgumentException("Name is not defined.");
@@ -33,6 +33,13 @@ public abstract class Transition {
         this.inputArcs = new ArrayList<>();
         this.outputArcs = new ArrayList<>();
     }
+
+    /**
+     * Gets the {@link String} representation of the transition and its parameters.
+     *
+     * @return  representation of the transition and its parameters
+     */
+    public abstract String getDefinition();
 
     public int getId() {
         return id;
@@ -49,11 +56,14 @@ public abstract class Transition {
         this.name = name;
     }
 
-    public double getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(double priority) {
+    public void setPriority(int priority) {
+        if (priority < 0)
+            throw new IllegalArgumentException("Priority value cannot be negative.");
+
         this.priority = priority;
     }
 

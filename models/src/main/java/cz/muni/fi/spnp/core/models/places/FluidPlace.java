@@ -27,6 +27,36 @@ public class FluidPlace extends Place {
         this.breakValues = Objects.requireNonNullElseGet(breakValues, HashSet::new);
     }
 
+    /**
+     * Gets the {@link String} representation of the place and its parameters.
+     *
+     * @return representation of the place and its parameters
+     */
+    @Override
+    public String getDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        definition.append(String.format("fplace(\"%s\");", this.getName()));
+        definition.append(System.lineSeparator());
+
+        if (this.getInitialValue() > 0) {
+            definition.append(String.format("finit(\"%s\", %f);", this.getName(), this.getInitialValue()));
+            definition.append(System.lineSeparator());
+        }
+        if (this.getBoundValue() > 0.0) {
+            definition.append(String.format("fbound(\"%s\", %f);", this.getName(), this.getBoundValue()));
+            definition.append(System.lineSeparator());
+        }
+        if (!this.getBreakValues().isEmpty()) {
+            for (var breakValue : this.getBreakValues()) {
+                definition.append(String.format("fbreak(\"%s\", %f);", this.getName(), breakValue));
+                definition.append(System.lineSeparator());
+            }
+        }
+
+        return definition.toString();
+    }
+
     public double getInitialValue() {
         return initialValue;
     }

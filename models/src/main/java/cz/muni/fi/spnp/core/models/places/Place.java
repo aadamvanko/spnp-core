@@ -7,30 +7,31 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Place {
+public abstract class Place {
 
     private int id;
     private String name;
-    private int numberOfTokens;
 
     protected Set<Arc> inputArcs;
     protected Set<Arc> outputArcs;
 
-    public Place(int id, String name) {
-        this(id, name, 0);
-    }
-
-    public Place(int id, String name, int numberOfTokens) {
+    protected Place(int id, String name) {
         if (name == null)
             throw new IllegalArgumentException("Name must be set.");
 
         this.id = id;
         this.name = name;
-        this.numberOfTokens = numberOfTokens;
 
         this.inputArcs = new HashSet<>();
         this.outputArcs = new HashSet<>();
     }
+
+    /**
+     * Gets the {@link String} representation of the place and its parameters.
+     *
+     * @return  representation of the place and its parameters
+     */
+    abstract String getDefinition();
 
     public int getId() {
         return id;
@@ -38,14 +39,6 @@ public class Place {
 
     public String getName() {
         return name;
-    }
-
-    public int getNumberOfTokens() {
-        return numberOfTokens;
-    }
-
-    public void setNumberOfTokens(int numberOfTokens) {
-        this.numberOfTokens = numberOfTokens;
     }
 
     public void addInputArc(Arc arc) {

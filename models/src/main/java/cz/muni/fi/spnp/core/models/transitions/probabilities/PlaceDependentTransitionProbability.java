@@ -1,14 +1,14 @@
 package cz.muni.fi.spnp.core.models.transitions.probabilities;
 
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 
 public class PlaceDependentTransitionProbability implements TransitionProbability {
 
     private double value;
-    private Place dependentPlace;
+    private StandardPlace dependentPlace;
 
-    public PlaceDependentTransitionProbability(double value, Place dependentPlace) {
+    public PlaceDependentTransitionProbability(double value, StandardPlace dependentPlace) {
         if (dependentPlace == null)
             throw new IllegalArgumentException("Dependent place must be defined.");
 
@@ -24,11 +24,11 @@ public class PlaceDependentTransitionProbability implements TransitionProbabilit
         this.value = value;
     }
 
-    public Place getDependentPlace() {
+    public StandardPlace getDependentPlace() {
         return dependentPlace;
     }
 
-    public void setDependentPlace(Place dependentPlace) {
+    public void setDependentPlace(StandardPlace dependentPlace) {
         this.dependentPlace = dependentPlace;
     }
 

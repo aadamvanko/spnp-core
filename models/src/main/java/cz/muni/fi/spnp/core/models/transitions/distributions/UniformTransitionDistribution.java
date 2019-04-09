@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class UniformTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
      *
      * @param lowerBound        lower bound value of uniform distribution
      * @param upperBound        upper bound value of uniform distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public UniformTransitionDistribution(double lowerBound, double upperBound, Place dependentPlace) {
+    public UniformTransitionDistribution(double lowerBound, double upperBound, StandardPlace dependentPlace) {
         super(lowerBound, upperBound, dependentPlace);
     }
 

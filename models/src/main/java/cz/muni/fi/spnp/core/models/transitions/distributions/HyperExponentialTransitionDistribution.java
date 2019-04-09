@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class HyperExponentialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
@@ -38,12 +38,12 @@ public class HyperExponentialTransitionDistribution extends ThreeValuesTransitio
      * @param firstLambdaRate   first lambda rate value of hyper-exponential distribution
      * @param secondLambdaRate  second lambda rate value of hyper-exponential distribution
      * @param probabilityValue  probability value of hyper-exponential distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
     public HyperExponentialTransitionDistribution(Double firstLambdaRate,
                                                   Double secondLambdaRate,
                                                   Double probabilityValue,
-                                                  Place dependentPlace) {
+                                                  StandardPlace dependentPlace) {
         super(firstLambdaRate, secondLambdaRate, probabilityValue, dependentPlace);
     }
 

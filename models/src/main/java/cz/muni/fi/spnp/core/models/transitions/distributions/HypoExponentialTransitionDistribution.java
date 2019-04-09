@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class HypoExponentialTransitionDistribution extends FourValuesTransitionDistributionBase<Integer, Double, Double, Double> {
@@ -43,13 +43,13 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
      * @param firstRateValue    first rate value of hypo-exponential distribution
      * @param secondRateValue   second rate value of hypo-exponential distribution
      * @param thirdRateValue    third rate value of hypo-exponential distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
     public HypoExponentialTransitionDistribution(int numberOfStages,
                                                  double firstRateValue,
                                                  double secondRateValue,
                                                  double thirdRateValue,
-                                                 Place dependentPlace) {
+                                                 StandardPlace dependentPlace) {
         super(numberOfStages, firstRateValue, secondRateValue, thirdRateValue, dependentPlace);
     }
 

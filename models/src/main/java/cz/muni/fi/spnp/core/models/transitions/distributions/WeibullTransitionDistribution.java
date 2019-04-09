@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class WeibullTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class WeibullTransitionDistribution extends TwoValuesTransitionDistributi
      *
      * @param alphaValue        alpha value of Weibull distribution
      * @param lambdaValue       lambda value of Weibull distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public WeibullTransitionDistribution(Double alphaValue, Double lambdaValue, Place dependentPlace) {
+    public WeibullTransitionDistribution(Double alphaValue, Double lambdaValue, StandardPlace dependentPlace) {
         super(alphaValue, lambdaValue, dependentPlace);
     }
 

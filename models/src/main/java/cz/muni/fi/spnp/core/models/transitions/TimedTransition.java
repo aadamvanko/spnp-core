@@ -10,12 +10,12 @@ public class TimedTransition extends Transition {
     public TimedTransition(int id,
                            String name,
                            TransitionDistribution transitionDistribution) {
-        this(id, name, 0.0, null, transitionDistribution);
+        this(id, name, 0, null, transitionDistribution);
     }
 
     public TimedTransition(int id,
                            String name,
-                           double priority,
+                           int priority,
                            Function<Integer> guardFunction,
                            TransitionDistribution transitionDistribution) {
         super(id, name, priority, guardFunction);
@@ -24,6 +24,18 @@ public class TimedTransition extends Transition {
             throw new IllegalArgumentException("Transition distribution is null");
 
         this.transitionDistribution = transitionDistribution;
+    }
+
+    /**
+     * Gets the {@link String} representation of the transition and its parameters.
+     *
+     * @return representation of the transition and its parameters
+     */
+    @Override
+    public String getDefinition() {
+        return String.format("priority(\"%s\", %d);", this.getName(), this.getPriority())
+                + System.lineSeparator()
+                + this.getTransitionDistribution().getDefinition(this);
     }
 
     public TransitionDistribution getTransitionDistribution() {

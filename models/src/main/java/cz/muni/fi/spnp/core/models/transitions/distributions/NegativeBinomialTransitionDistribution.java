@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
@@ -38,12 +38,12 @@ public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitio
      * @param numberValue       number value of negative binomial distribution
      * @param probabilityValue  probability value of negative binomial distribution
      * @param tValue            T value of negative binomial distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
     public NegativeBinomialTransitionDistribution(Double numberValue,
                                                   Double probabilityValue,
                                                   Double tValue,
-                                                  Place dependentPlace) {
+                                                  StandardPlace dependentPlace) {
         super(numberValue, probabilityValue, tValue, dependentPlace);
     }
 

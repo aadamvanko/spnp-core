@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 
 public class ParetoTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
@@ -31,9 +31,9 @@ public class ParetoTransitionDistribution extends TwoValuesTransitionDistributio
      *
      * @param scale             scale value of Pareto distribution
      * @param alpha             alpha value of Pareto distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public ParetoTransitionDistribution(Double scale, Double alpha, Place dependentPlace) {
+    public ParetoTransitionDistribution(Double scale, Double alpha, StandardPlace dependentPlace) {
         super(scale, alpha, dependentPlace);
     }
 

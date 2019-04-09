@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.utils.Constants;
 
@@ -29,9 +29,9 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
      * Creates new {@link ExponentialTransitionDistribution} object with {@link TransitionDistributionType#PlaceDependent} distribution type.
      *
      * @param rate              constant to be used in exponential distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public ExponentialTransitionDistribution(double rate, Place dependentPlace) {
+    public ExponentialTransitionDistribution(double rate, StandardPlace dependentPlace) {
         super(rate, dependentPlace);
     }
 

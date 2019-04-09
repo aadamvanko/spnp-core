@@ -1,7 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.utils.Constants;
 
@@ -29,9 +29,9 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
      * Creates new {@link ConstantTransitionDistribution} object with {@link TransitionDistributionType#PlaceDependent} distribution type.
      *
      * @param value             constant value to be used in distribution
-     * @param dependentPlace    reference to a {@link Place} object which is used for distribution
+     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public ConstantTransitionDistribution(double value, Place dependentPlace) {
+    public ConstantTransitionDistribution(double value, StandardPlace dependentPlace) {
         super(value, dependentPlace);
     }
 
