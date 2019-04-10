@@ -1,36 +1,61 @@
 package cz.muni.fi.spnp.core.models.arcs;
 
 import com.google.common.base.Objects;
+import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.Transition;
 
-import java.util.function.Supplier;
-
-public class Arc {
+public abstract class Arc {
 
     private int id;
     private int multiplicity;
-    private Supplier<Integer> calculateMultiplicityFunction;
-    private boolean isFluid;
+    private Place place;
+    private Transition transition;
+    private Function<Integer> calculateMultiplicityFunction;
 
-    public Arc(int id) {
-        this.id = id;
-    }
-
-    public Arc(int id, int multiplicity) {
-        this(id);
+    protected Arc(int id,
+                  Place place,
+                  Transition transition,
+                  int multiplicity) {
+        this(id, place, transition);
 
         if (multiplicity <= 0)
             throw new IllegalArgumentException("Arc multiplicity must be greater than zero.");
+
         this.multiplicity = multiplicity;
     }
 
-    public Arc(int id, Supplier<Integer> calculateMultiplicityFunction) {
-        this(id);
+    protected Arc(int id,
+                  Place place,
+                  Transition transition,
+                  Function<Integer> calculateMultiplicityFunction) {
+        this(id, place, transition);
 
         if (calculateMultiplicityFunction == null)
-            throw new IllegalArgumentException("Calculate multiplicity function must be defined.");
+            throw new IllegalArgumentException("Multiplicity function must be defined.");
 
         this.calculateMultiplicityFunction = calculateMultiplicityFunction;
     }
+
+    private Arc(int id,
+                Place place,
+                Transition transition) {
+        if (place == null)
+            throw new IllegalArgumentException("Place cannot be null");
+        if (transition == null)
+            throw new IllegalArgumentException("Transition cannot be null");
+
+        this.id = id;
+        this.place = place;
+        this.transition = transition;
+    }
+
+    /**
+     * Gets the {@link String} representation of the arc and its parameters.
+     *
+     * @return  representation of the arc and its parameters
+     */
+    public abstract String getDefinition();
 
     public int getId() {
         return id;
@@ -44,23 +69,34 @@ public class Arc {
         this.multiplicity = multiplicity;
     }
 
-    public Supplier<Integer> getCalculateMultiplicityFunction() {
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        if (place == null)
+            throw new IllegalArgumentException("Place cannot be null");
+
+        this.place = place;
+    }
+
+    public Transition getTransition() {
+        return transition;
+    }
+
+    public void setTransition(Transition transition) {
+        if (transition == null)
+            throw new IllegalArgumentException("Transition cannot be null");
+
+        this.transition = transition;
+    }
+
+    public Function<Integer> getCalculateMultiplicityFunction() {
         return calculateMultiplicityFunction;
     }
 
-    public void setCalculateMultiplicityFunction(Supplier<Integer> calculateMultiplicityFunction) {
-        if (calculateMultiplicityFunction == null)
-            throw new IllegalArgumentException("Calculate multiplicity function is null.");
-
+    public void setCalculateMultiplicityFunction(Function<Integer> calculateMultiplicityFunction) {
         this.calculateMultiplicityFunction = calculateMultiplicityFunction;
-    }
-
-    public boolean isFluid() {
-        return isFluid;
-    }
-
-    public void setFluid(boolean isFluid) {
-        this.isFluid = isFluid;
     }
 
     @Override

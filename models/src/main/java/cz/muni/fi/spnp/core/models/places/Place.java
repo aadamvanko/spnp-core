@@ -12,8 +12,7 @@ public abstract class Place {
     private int id;
     private String name;
 
-    protected Set<Arc> inputArcs;
-    protected Set<Arc> outputArcs;
+    protected Set<Arc> arcs;
 
     protected Place(int id, String name) {
         if (name == null)
@@ -22,8 +21,7 @@ public abstract class Place {
         this.id = id;
         this.name = name;
 
-        this.inputArcs = new HashSet<>();
-        this.outputArcs = new HashSet<>();
+        this.arcs = new HashSet<>();
     }
 
     /**
@@ -41,40 +39,22 @@ public abstract class Place {
         return name;
     }
 
-    public void addInputArc(Arc arc) {
+    public void addArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null");
 
-        inputArcs.add(arc);
+        this.arcs.add(arc);
     }
 
-    public void addOutputArc(Arc arc) {
+    public void removeArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null");
 
-        outputArcs.add(arc);
+        this.arcs.remove(arc);
     }
 
-    public void removeInputArc(Arc arc) {
-        if (arc == null)
-            throw new IllegalArgumentException("Arc is null");
-
-        inputArcs.remove(arc);
-    }
-
-    public void removeOutputArc(Arc arc) {
-        if (arc == null)
-            throw new IllegalArgumentException("Arc is null");
-
-        outputArcs.remove(arc);
-    }
-
-    public Set<Arc> getInputArcs() {
-        return Collections.unmodifiableSet(inputArcs);
-    }
-
-    public Set<Arc> getOutputArcs() {
-        return Collections.unmodifiableSet(outputArcs);
+    public Set<Arc> getArcs() {
+        return Collections.unmodifiableSet(this.arcs);
     }
 
     @Override

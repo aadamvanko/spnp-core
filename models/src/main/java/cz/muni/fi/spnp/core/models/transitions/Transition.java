@@ -4,9 +4,7 @@ import com.google.common.base.Objects;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public abstract class Transition {
 
@@ -15,13 +13,12 @@ public abstract class Transition {
     private int priority;
     private Function<Integer> guardFunction;
 
-    protected List<Arc> inputArcs;
-    protected List<Arc> outputArcs;
+    protected Set<Arc> arcs;
 
-    public Transition(int id,
-                      String name,
-                      int priority,
-                      Function<Integer> guardFunction) {
+    protected Transition(int id,
+                         String name,
+                         int priority,
+                         Function<Integer> guardFunction) {
         if (name == null)
             throw new IllegalArgumentException("Name is not defined.");
 
@@ -30,8 +27,7 @@ public abstract class Transition {
         this.priority = priority;
         this.guardFunction = guardFunction;
 
-        this.inputArcs = new ArrayList<>();
-        this.outputArcs = new ArrayList<>();
+        this.arcs = new HashSet<>();
     }
 
     /**
@@ -75,40 +71,22 @@ public abstract class Transition {
         this.guardFunction = guardFunction;
     }
 
-    public void addInputArc(Arc arc) {
+    public void addArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null");
 
-        inputArcs.add(arc);
+        this.arcs.add(arc);
     }
 
-    public void addOutputArc(Arc arc) {
+    public void removeArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null");
 
-        outputArcs.add(arc);
+        this.arcs.remove(arc);
     }
 
-    public void removeInputArc(Arc arc) {
-        if (arc == null)
-            throw new IllegalArgumentException("Arc is null");
-
-        inputArcs.remove(arc);
-    }
-
-    public void removeOutputArc(Arc arc) {
-        if (arc == null)
-            throw new IllegalArgumentException("Arc is null");
-
-        outputArcs.remove(arc);
-    }
-
-    public List<Arc> getInputArcs() {
-        return Collections.unmodifiableList(inputArcs);
-    }
-
-    public List<Arc> getOutputArcs() {
-        return Collections.unmodifiableList(outputArcs);
+    public Set<Arc> getArcs() {
+        return Collections.unmodifiableSet(this.arcs);
     }
 
     @Override
