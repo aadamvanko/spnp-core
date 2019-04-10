@@ -118,11 +118,20 @@ public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecond
     }
 
     @Override
-    protected String getFunctionsStringRepresentation() {
-        return this.getFirstFunction().getFullDefinition()
+    protected String getFunctionsFullDefinitions() {
+        return this.getFirstFunction().getDefinition()
                 + System.lineSeparator()
-                + this.getSecondFunction().getFullDefinition()
+                + this.getSecondFunction().getDefinition()
                 + System.lineSeparator()
-                + this.getThirdFunction().getFullDefinition();
+                + this.getThirdFunction().getDefinition();
+    }
+
+    @Override
+    protected String getFunctionsFullDeclarations() {
+        return this.getFirstFunction().getDefinition()
+                + System.lineSeparator()
+                + this.getSecondFunction().getDefinition()
+                + System.lineSeparator()
+                + this.getThirdFunction().getDefinition();
     }
 }

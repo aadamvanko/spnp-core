@@ -52,7 +52,12 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
     }
 
     @Override
-    protected String getFunctionsStringRepresentation() {
-        return this.getFunction().getFullDefinition();
+    protected String getFunctionsFullDefinitions() {
+        return this.getFunction().getDefinition();
+    }
+
+    @Override
+    protected String getFunctionsFullDeclarations() {
+        return this.getFunction().getDeclaration();
     }
 }

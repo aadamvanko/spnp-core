@@ -128,7 +128,7 @@ public class PetriNet {
         for (var transition : this.transitions) {
             var function = transition.getGuardFunction();
             if (transition.getGuardFunction() != null)
-                definitions.append(function.getFullDefinition());
+                definitions.append(function.getDefinition());
         }
 
         return definitions.toString();
@@ -155,7 +155,7 @@ public class PetriNet {
         for (var arc : this.arcs) {
             var function = arc.getCalculateMultiplicityFunction();
             if (function != null) {
-                definitions.append(function.getFullDefinition());
+                definitions.append(function.getDefinition());
             }
         }
 
@@ -194,7 +194,7 @@ public class PetriNet {
                 if (immediateTransition.getTransitionProbability() instanceof FunctionalTransitionProbability) {
                     var functionalProbability = (FunctionalTransitionProbability) immediateTransition.getTransitionProbability();
 
-                    definitions.append(functionalProbability.getFunction().getFullDefinition());
+                    definitions.append(functionalProbability.getFunction().getDefinition());
                 }
             }
         }

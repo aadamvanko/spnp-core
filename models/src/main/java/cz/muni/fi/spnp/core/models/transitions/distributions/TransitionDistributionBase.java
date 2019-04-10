@@ -47,9 +47,25 @@ public abstract class TransitionDistributionBase implements TransitionDistributi
         if (this.getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Functions definitions are available ONLY on Functional Transition Distribution type.");
 
-        return this.getFunctionsStringRepresentation();
+        return this.getFunctionsFullDefinitions();
+    }
+
+    /**
+     * Gets the {@link String} declarations of the functions defined in this distribution
+     * in case of {@link TransitionDistributionType#Functional} distribution type.
+     *
+     * @return functions declarations
+     */
+    @Override
+    public String getFunctionsDeclarations() {
+        if (this.getDistributionType() != TransitionDistributionType.Functional)
+            throw new IllegalStateException("Functions declarations are available ONLY on Functional Transition Distribution type.");
+
+        return this.getFunctionsFullDeclarations();
     }
 
 
-    protected abstract String getFunctionsStringRepresentation();
+    protected abstract String getFunctionsFullDefinitions();
+
+    protected abstract String getFunctionsFullDeclarations();
 }

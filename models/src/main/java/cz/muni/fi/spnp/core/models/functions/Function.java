@@ -45,7 +45,7 @@ public class Function<TReturnType> {
                              System.lineSeparator());
     }
 
-    public String getFullDefinition() {
+    public String getDefinition() {
         return String.format("%s %s() {%s%s%s}%s",
                 this.getReturnTypeString(),
                 this.getName(),

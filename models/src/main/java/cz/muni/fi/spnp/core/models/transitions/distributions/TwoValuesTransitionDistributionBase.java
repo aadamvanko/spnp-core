@@ -81,9 +81,16 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
     }
 
     @Override
-    protected String getFunctionsStringRepresentation() {
-        return this.getFirstFunction().getFullDefinition()
+    protected String getFunctionsFullDefinitions() {
+        return this.getFirstFunction().getDefinition()
                 + System.lineSeparator()
-                + this.getSecondFunction().getFullDefinition();
+                + this.getSecondFunction().getDefinition();
+    }
+
+    @Override
+    protected String getFunctionsFullDeclarations() {
+        return this.getFirstFunction().getDeclaration()
+                + System.lineSeparator()
+                + this.getSecondFunction().getDeclaration();
     }
 }

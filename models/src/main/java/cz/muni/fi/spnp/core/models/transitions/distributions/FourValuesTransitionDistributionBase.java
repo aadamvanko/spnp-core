@@ -150,13 +150,24 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
     }
 
     @Override
-    protected String getFunctionsStringRepresentation() {
-        return this.getFirstFunction().getFullDefinition()
+    protected String getFunctionsFullDefinitions() {
+        return this.getFirstFunction().getDefinition()
                 + System.lineSeparator()
-                + this.getSecondFunction().getFullDefinition()
+                + this.getSecondFunction().getDefinition()
                 + System.lineSeparator()
-                + this.getThirdFunction().getFullDefinition()
+                + this.getThirdFunction().getDefinition()
                 + System.lineSeparator()
-                + this.getFourthFunction().getFullDefinition();
+                + this.getFourthFunction().getDefinition();
+    }
+
+    @Override
+    protected String getFunctionsFullDeclarations() {
+        return this.getFirstFunction().getDeclaration()
+                + System.lineSeparator()
+                + this.getSecondFunction().getDeclaration()
+                + System.lineSeparator()
+                + this.getThirdFunction().getDeclaration()
+                + System.lineSeparator()
+                + this.getFourthFunction().getDeclaration();
     }
 }
