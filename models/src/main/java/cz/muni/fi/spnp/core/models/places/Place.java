@@ -29,7 +29,7 @@ public abstract class Place {
      *
      * @return  representation of the place and its parameters
      */
-    abstract String getDefinition();
+    public abstract String getDefinition();
 
     public int getId() {
         return id;

@@ -14,10 +14,18 @@ public interface TransitionDistribution {
     String getDefinition(TimedTransition transition);
 
     /**
-     * Gets the {@link String} representation of the functions definitions in case of
-     * {@link TransitionDistributionType#Functional} distribution type.
+     * Gets the {@link String} declarations of the functions defined in this distribution
+     * in case of {@link TransitionDistributionType#Functional} distribution type.
      *
-     * @return representation of functions definitions
+     * @return  functions declarations
+     */
+    String getFunctionsDeclarations();
+
+    /**
+     * Gets the {@link String} definitions of the functions defined in this distribution
+     * in case of {@link TransitionDistributionType#Functional} distribution type.
+     *
+     * @return  functions definitions
      */
     String getFunctionsDefinitions();
 

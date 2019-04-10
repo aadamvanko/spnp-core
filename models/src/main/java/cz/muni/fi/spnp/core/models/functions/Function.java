@@ -38,6 +38,13 @@ public class Function<TReturnType> {
         return body;
     }
 
+    public String getDeclaration() {
+        return String.format("%s %s();%s",
+                             this.getReturnTypeString(),
+                             this.getName(),
+                             System.lineSeparator());
+    }
+
     public String getFullDefinition() {
         return String.format("%s %s() {%s%s%s}%s",
                 this.getReturnTypeString(),
