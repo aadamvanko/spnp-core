@@ -41,19 +41,22 @@ public class InhibitorArc extends Arc {
         }
 
         if (this.getCalculateMultiplicityFunction() != null) {
-            return prefix + String.format("vharc(\"%s\", \"%s\", %s);",
+            return prefix + String.format("vharc(\"%s\", \"%s\", %s);%s",
                                           this.getTransition().getName(),
                                           this.getPlace().getName(),
-                                          this.getCalculateMultiplicityFunction().getName());
+                                          this.getCalculateMultiplicityFunction().getName(),
+                                          System.lineSeparator());
         } else if (this.getMultiplicity() > 1) {
-            return prefix + String.format("mharc(\"%s\", \"%s\", %d);",
+            return prefix + String.format("mharc(\"%s\", \"%s\", %d);%s",
                                           this.getTransition().getName(),
                                           this.getPlace().getName(),
-                                          this.getMultiplicity());
+                                          this.getMultiplicity(),
+                                          System.lineSeparator());
         } else {
-            return prefix + String.format("harc(\"%s\", \"%s\");",
+            return prefix + String.format("harc(\"%s\", \"%s\");%s",
                                           this.getTransition().getName(),
-                                          this.getPlace().getName());
+                                          this.getPlace().getName(),
+                                          System.lineSeparator());
         }
     }
 }

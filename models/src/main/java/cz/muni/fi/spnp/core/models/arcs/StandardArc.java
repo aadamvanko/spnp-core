@@ -69,19 +69,22 @@ public class StandardArc extends Arc {
                 }
 
                 if (this.getCalculateMultiplicityFunction() != null) {
-                    return prefix + String.format("viarc(\"%s\", \"%s\", %s);",
+                    return prefix + String.format("viarc(\"%s\", \"%s\", %s);%s",
                                                   this.getTransition().getName(),
                                                   this.getPlace().getName(),
-                                                  this.getCalculateMultiplicityFunction().getName());
+                                                  this.getCalculateMultiplicityFunction().getName(),
+                                                  System.lineSeparator());
                 } else if (this.getMultiplicity() > 1) {
-                    return prefix + String.format("miarc(\"%s\", \"%s\", %d);",
+                    return prefix + String.format("miarc(\"%s\", \"%s\", %d);%s",
                                                   this.getTransition().getName(),
                                                   this.getPlace().getName(),
-                                                  this.getMultiplicity());
+                                                  this.getMultiplicity(),
+                                                  System.lineSeparator());
                 } else {
-                    return prefix + String.format("iarc(\"%s\", \"%s\");",
+                    return prefix + String.format("iarc(\"%s\", \"%s\");%s",
                                                   this.getTransition().getName(),
-                                                  this.getPlace().getName());
+                                                  this.getPlace().getName(),
+                                                  System.lineSeparator());
                 }
 
             case Output:
@@ -93,19 +96,22 @@ public class StandardArc extends Arc {
                 }
 
                 if (this.getCalculateMultiplicityFunction() != null) {
-                    return prefix + String.format("voarc(\"%s\", \"%s\", %s);",
+                    return prefix + String.format("voarc(\"%s\", \"%s\", %s);%s",
                                                   this.getTransition().getName(),
                                                   this.getPlace().getName(),
-                                                  this.getCalculateMultiplicityFunction().getName());
+                                                  this.getCalculateMultiplicityFunction().getName(),
+                                                  System.lineSeparator());
                 } else if (this.getMultiplicity() > 1) {
-                    return prefix + String.format("moarc(\"%s\", \"%s\", %d);",
+                    return prefix + String.format("moarc(\"%s\", \"%s\", %d);%s",
                                                   this.getTransition().getName(),
                                                   this.getPlace().getName(),
-                                                  this.getMultiplicity());
+                                                  this.getMultiplicity(),
+                                                  System.lineSeparator());
                 } else {
-                    return prefix + String.format("oarc(\"%s\", \"%s\");",
+                    return prefix + String.format("oarc(\"%s\", \"%s\");%s",
                                                   this.getTransition().getName(),
-                                                  this.getPlace().getName());
+                                                  this.getPlace().getName(),
+                                                  System.lineSeparator());
                 }
 
             default:

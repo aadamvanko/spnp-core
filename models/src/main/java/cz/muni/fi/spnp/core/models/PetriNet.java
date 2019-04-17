@@ -1,6 +1,9 @@
 package cz.muni.fi.spnp.core.models;
 
 import cz.muni.fi.spnp.core.models.arcs.Arc;
+import cz.muni.fi.spnp.core.models.arcs.ArcDirection;
+import cz.muni.fi.spnp.core.models.arcs.InhibitorArc;
+import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
@@ -78,34 +81,16 @@ public class PetriNet {
     }
 
     public String getDefinition() {
-        StringBuilder definition = new StringBuilder("void net() {");
-        definition.append(System.lineSeparator());
-
-        // add places
-        definition.append("/* ==== PLACES ==== */");
-        definition.append(System.lineSeparator());
-        for (var place : this.places) {
-            definition.append(place.getDefinition());
-        }
-
-        // add transitions
-        definition.append("/* ==== TRANSITIONS ==== */");
-        definition.append(System.lineSeparator());
-        for (var transition : this.transitions) {
-            definition.append(transition.getDefinition());
-        }
-
-        // add arcs
-        definition.append("/* ==== ARCS ==== */");
-        definition.append(System.lineSeparator());
-        for (var arc : this.arcs) {
-            definition.append(arc.getDefinition());
-        }
-
-        definition.append("}");
-        definition.append(System.lineSeparator());
-
-        return definition.toString();
+        return "void net() {"
+                + System.lineSeparator()
+                + getPlacesDefinition()         // add places
+                + System.lineSeparator()
+                + getTransitionsDefinition()    // add transitions
+                + System.lineSeparator()
+                + getArcsDefinition()           // add arcs
+                + "}"
+                + System.lineSeparator()
+                + System.lineSeparator();
     }
 
     public String getGuardFunctionsDeclarations() {
@@ -130,6 +115,12 @@ public class PetriNet {
             if (transition.getGuardFunction() != null)
                 definitions.append(function.getDefinition());
         }
+
+        if (definitions.length() == 0)
+            return "";
+
+        definitions.insert(0, "/* Guard functions */" + System.lineSeparator());
+        definitions.append(System.lineSeparator());
 
         return definitions.toString();
     }
@@ -158,6 +149,12 @@ public class PetriNet {
                 definitions.append(function.getDefinition());
             }
         }
+
+        if (definitions.length() == 0)
+            return "";
+
+        definitions.insert(0, "/* Cardinality functions */" + System.lineSeparator());
+        definitions.append(System.lineSeparator());
 
         return definitions.toString();
     }
@@ -198,6 +195,13 @@ public class PetriNet {
                 }
             }
         }
+
+        if (definitions.length() == 0)
+            return "";
+
+        definitions.insert(0, "/* Probability functions */" + System.lineSeparator());
+        definitions.append(System.lineSeparator());
+
         return definitions.toString();
     }
 
@@ -234,6 +238,132 @@ public class PetriNet {
             }
         }
 
+        if (definitions.length() == 0)
+            return "";
+
+        definitions.insert(0, "/* Distribution functions */" + System.lineSeparator());
+        definitions.append(System.lineSeparator());
+
         return definitions.toString();
+    }
+
+
+    private String getPlacesDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        this.places.forEach(place -> definition.append(place.getDefinition()));
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* ==== PLACES ==== */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getTransitionsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        definition.append(getImmediateTransitionsDefinition());
+        definition.append(getTimedTransitionsDefinition());
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* ==== TRANSITIONS ==== */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getImmediateTransitionsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        this.transitions.stream()
+                        .filter(transition -> transition instanceof ImmediateTransition)
+                        .forEach(transition -> definition.append(transition.getDefinition()));
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* Immediate transitions */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getTimedTransitionsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        this.transitions.stream()
+                        .filter(transition -> transition instanceof TimedTransition)
+                        .forEach(transition -> definition.append(transition.getDefinition()));
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* Timed transitions */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getArcsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        definition.append(getInputArcsDefinition());
+        definition.append(getOutputArcsDefinition());
+        definition.append(getInhibitorArcsDefinition());
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* ==== ARCS ==== */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getInputArcsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        this.arcs.stream()
+                 .filter(arc -> arc instanceof StandardArc)
+                 .filter(arc -> ((StandardArc) arc).getDirection() == ArcDirection.Input)
+                 .forEach(arc -> definition.append(arc.getDefinition()));
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* Input arcs */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getOutputArcsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        this.arcs.stream()
+                 .filter(arc -> arc instanceof StandardArc)
+                 .filter(arc -> ((StandardArc) arc).getDirection() == ArcDirection.Output)
+                 .forEach(arc -> definition.append(arc.getDefinition()));
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* Output arcs */" + System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    private String getInhibitorArcsDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        this.arcs.stream()
+                 .filter(arc -> arc instanceof InhibitorArc)
+                 .forEach(arc -> definition.append(arc.getDefinition()));
+
+        if (definition.length() == 0)
+            return "";
+
+        definition.insert(0, "/* Inhibitor arcs */" + System.lineSeparator());
+
+        return definition.toString();
     }
 }
