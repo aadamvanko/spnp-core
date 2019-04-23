@@ -10,20 +10,81 @@ import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.FunctionalTransitionProbability;
+import cz.muni.fi.spnp.core.models.variables.Variable;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PetriNet {
 
+    private Set<Include> includes;
+    private Set<Define> defines;
+    private Set<Variable> variables;
     private Set<Arc> arcs;
     private Set<Place> places;
     private Set<Transition> transitions;
 
     public PetriNet() {
+        includes = new HashSet<>();
+        defines = new HashSet<>();
+        variables = new HashSet<>();
         arcs = new HashSet<>();
         places = new HashSet<>();
         transitions = new HashSet<>();
+    }
+
+    public void addInclude(Include include) {
+        if (include == null)
+            throw new IllegalArgumentException("Include is null.");
+        if (includes.contains(include))
+            throw new IllegalArgumentException("Include is already present in this Petri net.");
+
+        this.includes.add(include);
+    }
+
+    public void removeInclude(Include include) {
+        if (include == null)
+            throw new IllegalArgumentException("Include is null.");
+        if (!includes.contains(include))
+            throw new IllegalArgumentException("Include is not present in this Petri net.");
+
+        this.includes.remove(include);
+    }
+
+    public void addDefine(Define define) {
+        if (define == null)
+            throw new IllegalArgumentException("Define is null.");
+        if (defines.contains(define))
+            throw new IllegalArgumentException("Define is already present in this Petri net.");
+
+        this.defines.add(define);
+    }
+
+    public void removeDefine(Define define) {
+        if (define == null)
+            throw new IllegalArgumentException("Define is null.");
+        if (!defines.contains(define))
+            throw new IllegalArgumentException("Define is not present in this Petri net.");
+
+        this.defines.remove(define);
+    }
+
+    public void addVariable(Variable variable) {
+        if (variable == null)
+            throw new IllegalArgumentException("Variable is null.");
+        if (variables.contains(variable))
+            throw new IllegalArgumentException("Variable is already present in this Petri net.");
+
+        this.variables.add(variable);
+    }
+
+    public void removeVariable(Variable variable) {
+        if (variable == null)
+            throw new IllegalArgumentException("Variable is null.");
+        if (!variables.contains(variable))
+            throw new IllegalArgumentException("Variable is not present in this Petri net.");
+
+        this.variables.remove(variable);
     }
 
     public void addArc(Arc arc) {
@@ -81,16 +142,52 @@ public class PetriNet {
     }
 
     public String getDefinition() {
-        return "void net() {"
-                + System.lineSeparator()
-                + getPlacesDefinition()         // add places
-                + System.lineSeparator()
-                + getTransitionsDefinition()    // add transitions
-                + System.lineSeparator()
-                + getArcsDefinition()           // add arcs
-                + "}"
-                + System.lineSeparator()
-                + System.lineSeparator();
+        return String.format(
+                "void net() {%n%s%n%s%n%s}%n%n",
+                getPlacesDefinition(),
+                getTransitionsDefinition(),
+                getArcsDefinition());
+    }
+
+    public String getIncludesDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        for (var include : this.includes) {
+            definition.append(include.getDefinition());
+        }
+
+        if (definition.length() > 0)
+            definition.append(System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    public String getDefinesDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        for (var define : this.defines) {
+            definition.append(define.getDefinition());
+        }
+
+        if (definition.length() > 0)
+            definition.append(System.lineSeparator());
+
+        return definition.toString();
+    }
+
+    public String getVariablesDefinition() {
+        StringBuilder definition = new StringBuilder();
+
+        for (var variable : this.variables) {
+            definition.append(variable.getDefinition());
+        }
+
+        if (definition.length() > 0) {
+            definition.insert(0, "/* Variables */" + System.lineSeparator());
+            definition.append(System.lineSeparator());
+        }
+
+        return definition.toString();
     }
 
     public String getGuardFunctionsDeclarations() {

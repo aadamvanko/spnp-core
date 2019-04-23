@@ -39,20 +39,17 @@ public class Function<TReturnType> {
     }
 
     public String getDeclaration() {
-        return String.format("%s %s();%s",
+        return String.format("%s %s();%n",
                              this.getReturnTypeString(),
-                             this.getName(),
-                             System.lineSeparator());
+                             this.getName());
     }
 
     public String getDefinition() {
-        return String.format("%s %s() {%s%s%s}%s",
+        return String.format(
+                "%s %s() {%n%s%n}%n",
                 this.getReturnTypeString(),
                 this.getName(),
-                System.lineSeparator(),
-                this.getBody(),
-                System.lineSeparator(),
-                System.lineSeparator());
+                this.getBody());
     }
 
 
