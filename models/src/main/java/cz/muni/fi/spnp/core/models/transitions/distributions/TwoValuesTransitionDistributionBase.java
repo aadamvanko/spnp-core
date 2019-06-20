@@ -1,6 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondValue> extends TransitionDistributionBase {
@@ -22,8 +23,12 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
 
         if (firstFunction == null)
             throw new IllegalArgumentException("First function must be set.");
+        if (firstFunction.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
         if (secondFunction == null)
             throw new IllegalArgumentException("Second function must be set.");
+        if (secondFunction.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.firstFunction = firstFunction;
         this.secondFunction = secondFunction;
@@ -65,6 +70,8 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
     protected void setFirstFunction(Function<TFirstValue> firstFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
+        if (firstFunction != null && firstFunction.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.firstFunction = firstFunction;
     }
@@ -76,6 +83,8 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
     protected void setSecondFunction(Function<TSecondValue> secondFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
+        if (secondFunction != null && secondFunction.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.secondFunction = secondFunction;
     }

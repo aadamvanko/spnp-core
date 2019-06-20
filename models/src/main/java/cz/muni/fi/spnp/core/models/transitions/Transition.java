@@ -3,6 +3,7 @@ package cz.muni.fi.spnp.core.models.transitions;
 import com.google.common.base.Objects;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 
 import java.util.*;
 
@@ -21,6 +22,8 @@ public abstract class Transition {
                          Function<Integer> guardFunction) {
         if (name == null)
             throw new IllegalArgumentException("Name is not defined.");
+        if (guardFunction != null && guardFunction.getFunctionType() != FunctionType.Guard)
+            throw new IllegalArgumentException("Guard function has incompatible type.");
 
         this.id = id;
         this.name = name;
@@ -68,6 +71,9 @@ public abstract class Transition {
     }
 
     public void setGuardFunction(Function<Integer> guardFunction) {
+        if (guardFunction != null && guardFunction.getFunctionType() != FunctionType.Guard)
+            throw new IllegalArgumentException("Guard function has incompatible type.");
+
         this.guardFunction = guardFunction;
     }
 

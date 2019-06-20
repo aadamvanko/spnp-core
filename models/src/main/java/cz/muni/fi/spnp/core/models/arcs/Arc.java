@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.arcs;
 
 import com.google.common.base.Objects;
 import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 
@@ -33,6 +34,8 @@ public abstract class Arc {
 
         if (calculateMultiplicityFunction == null)
             throw new IllegalArgumentException("Multiplicity function must be defined.");
+        if (calculateMultiplicityFunction.getFunctionType() != FunctionType.ArcCardinality)
+            throw new IllegalArgumentException("Multiplicity function has incompatible type.");
 
         this.calculateMultiplicityFunction = calculateMultiplicityFunction;
     }
@@ -96,6 +99,9 @@ public abstract class Arc {
     }
 
     public void setCalculateMultiplicityFunction(Function<Integer> calculateMultiplicityFunction) {
+        if (calculateMultiplicityFunction != null && calculateMultiplicityFunction.getFunctionType() != FunctionType.ArcCardinality)
+            throw new IllegalArgumentException("Multiplicity function has incompatible type.");
+
         this.calculateMultiplicityFunction = calculateMultiplicityFunction;
     }
 

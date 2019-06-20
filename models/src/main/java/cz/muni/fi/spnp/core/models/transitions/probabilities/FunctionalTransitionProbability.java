@@ -1,6 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.probabilities;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 
 public class FunctionalTransitionProbability implements TransitionProbability {
@@ -10,6 +11,8 @@ public class FunctionalTransitionProbability implements TransitionProbability {
     public FunctionalTransitionProbability(Function<Double> function) {
         if (function == null)
             throw new IllegalArgumentException("Function must be defined.");
+        if (function.getFunctionType() != FunctionType.Probability)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.function = function;
     }
@@ -21,6 +24,8 @@ public class FunctionalTransitionProbability implements TransitionProbability {
     public void setFunction(Function<Double> function) {
         if (function == null)
             throw new IllegalArgumentException("Function is not defined.");
+        if (function.getFunctionType() != FunctionType.Probability)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.function = function;
     }

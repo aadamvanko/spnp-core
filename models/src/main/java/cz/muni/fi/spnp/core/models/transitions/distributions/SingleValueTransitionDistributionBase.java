@@ -1,6 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class SingleValueTransitionDistributionBase<TValue> extends TransitionDistributionBase {
@@ -19,6 +20,8 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
 
         if (function == null)
             throw new IllegalArgumentException("Function must be set.");
+        if (function.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.function = function;
     }
@@ -47,6 +50,8 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
     protected void setFunction(Function<TValue> function) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
+        if (function != null && function.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
         this.function = function;
     }
