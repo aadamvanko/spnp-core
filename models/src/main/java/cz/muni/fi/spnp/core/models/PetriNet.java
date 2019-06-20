@@ -4,6 +4,8 @@ import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.arcs.ArcDirection;
 import cz.muni.fi.spnp.core.models.arcs.InhibitorArc;
 import cz.muni.fi.spnp.core.models.arcs.StandardArc;
+import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
@@ -14,6 +16,7 @@ import cz.muni.fi.spnp.core.models.variables.Variable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PetriNet {
 
@@ -23,6 +26,7 @@ public class PetriNet {
     private Set<Arc> arcs;
     private Set<Place> places;
     private Set<Transition> transitions;
+    private Set<Function> functions;
 
     public PetriNet() {
         includes = new HashSet<>();
@@ -108,7 +112,7 @@ public class PetriNet {
     public void addPlace(Place place) {
         if (place == null)
             throw new IllegalArgumentException("Place is null.");
-        if (!places.contains(place))
+        if (places.contains(place))
             throw new IllegalArgumentException("Place is already present in this Petri net.");
 
         this.places.add(place);
@@ -126,7 +130,7 @@ public class PetriNet {
     public void addTransition(Transition transition) {
         if (transition == null)
             throw new IllegalArgumentException("Transition is null");
-        if (!transitions.contains(transition))
+        if (transitions.contains(transition))
             throw new IllegalArgumentException("Transition is already present in this Petri net.");
 
         this.transitions.add(transition);
@@ -139,6 +143,24 @@ public class PetriNet {
             throw new IllegalArgumentException("Transition is not present in this Petri net.");
 
         this.transitions.remove(transition);
+    }
+
+    public void addFunction(Function function) {
+        if (function == null)
+            throw new IllegalArgumentException("Function is null.");
+        if (functions.contains(function))
+            throw new IllegalArgumentException("Function is already present in this Petri net.");
+
+        this.functions.add(function);
+    }
+
+    public void removeFunction(Function function) {
+        if (function == null)
+            throw new IllegalArgumentException("Function is null.");
+        if (!functions.contains(function))
+            throw new IllegalArgumentException("Function is not present in this Petri net.");
+
+        this.functions.remove(function);
     }
 
     public String getDefinition() {
@@ -190,158 +212,18 @@ public class PetriNet {
         return definition.toString();
     }
 
-    public String getGuardFunctionsDeclarations() {
-        StringBuilder declarations = new StringBuilder();
+    public String getFunctionsDeclarations(FunctionType functionsType) {
+        if (functionsType == null)
+            throw new IllegalArgumentException("Functions type is not defined.");
 
-        // get declarations from transitions
-        for (var transition : this.transitions) {
-            var function = transition.getGuardFunction();
-            if (transition.getGuardFunction() != null)
-                declarations.append(function.getDeclaration());
-        }
-
-        return declarations.toString();
+        return buildFunctionsDeclarations(functionsType);
     }
 
-    public String getGuardFunctionsDefinitions() {
-        StringBuilder definitions = new StringBuilder();
+    public String getFunctionsDefinitions(FunctionType functionsType) {
+        if (functionsType == null)
+            throw new IllegalArgumentException("Functions type is not defined.");
 
-        // get declarations from transitions
-        for (var transition : this.transitions) {
-            var function = transition.getGuardFunction();
-            if (transition.getGuardFunction() != null)
-                definitions.append(function.getDefinition());
-        }
-
-        if (definitions.length() == 0)
-            return "";
-
-        definitions.insert(0, "/* Guard functions */" + System.lineSeparator());
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
-    }
-
-    public String getCardinalityFunctionsDeclarations() {
-        StringBuilder declarations = new StringBuilder();
-
-        // get declarations from arcs
-        for (var arc : this.arcs) {
-            var function = arc.getCalculateMultiplicityFunction();
-            if (function != null) {
-                declarations.append(function.getDeclaration());
-            }
-        }
-
-        return declarations.toString();
-    }
-
-    public String getCardinalityFunctionsDefinitions() {
-        StringBuilder definitions = new StringBuilder();
-
-        // get declarations from arcs
-        for (var arc : this.arcs) {
-            var function = arc.getCalculateMultiplicityFunction();
-            if (function != null) {
-                definitions.append(function.getDefinition());
-            }
-        }
-
-        if (definitions.length() == 0)
-            return "";
-
-        definitions.insert(0, "/* Cardinality functions */" + System.lineSeparator());
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
-    }
-
-    public String getProbabilityFunctionsDeclarations() {
-        StringBuilder declarations = new StringBuilder();
-
-        // get declarations from transitions
-        for (var transition : this.transitions) {
-            if (transition instanceof ImmediateTransition) {
-                var immediateTransition = (ImmediateTransition) transition;
-
-                // append functions from probability
-                if (immediateTransition.getTransitionProbability() instanceof FunctionalTransitionProbability) {
-                    var functionalProbability = (FunctionalTransitionProbability) immediateTransition.getTransitionProbability();
-
-                    declarations.append(functionalProbability.getFunction().getDeclaration());
-                }
-            }
-        }
-
-        return declarations.toString();
-    }
-
-    public String getProbabilityFunctionsDefinitions() {
-        StringBuilder definitions = new StringBuilder();
-
-        // get definitions from transitions
-        for (var transition : this.transitions) {
-            if (transition instanceof ImmediateTransition) {
-                var immediateTransition = (ImmediateTransition) transition;
-
-                // append functions from probability
-                if (immediateTransition.getTransitionProbability() instanceof FunctionalTransitionProbability) {
-                    var functionalProbability = (FunctionalTransitionProbability) immediateTransition.getTransitionProbability();
-
-                    definitions.append(functionalProbability.getFunction().getDefinition());
-                }
-            }
-        }
-
-        if (definitions.length() == 0)
-            return "";
-
-        definitions.insert(0, "/* Probability functions */" + System.lineSeparator());
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
-    }
-
-    public String getDistributionFunctionsDeclarations() {
-        StringBuilder declarations = new StringBuilder();
-
-        // get declarations from transitions
-        for (var transition : this.transitions) {
-            if (transition instanceof TimedTransition) {
-                var timedTransition = (TimedTransition) transition;
-
-                // append functions from distribution
-                if (timedTransition.getTransitionDistribution().getDistributionType() == TransitionDistributionType.Functional) {
-                    declarations.append(timedTransition.getTransitionDistribution().getFunctionsDeclarations());
-                }
-            }
-        }
-
-        return declarations.toString();
-    }
-
-    public String getDistributionFunctionsDefinitions() {
-        StringBuilder definitions = new StringBuilder();
-
-        // get definitions from transitions
-        for (var transition : this.transitions) {
-            if (transition instanceof TimedTransition) {
-                var timedTransition = (TimedTransition) transition;
-
-                // append functions from distribution
-                if (timedTransition.getTransitionDistribution().getDistributionType() == TransitionDistributionType.Functional) {
-                    definitions.append(timedTransition.getTransitionDistribution().getFunctionsDefinitions());
-                }
-            }
-        }
-
-        if (definitions.length() == 0)
-            return "";
-
-        definitions.insert(0, "/* Distribution functions */" + System.lineSeparator());
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
+        return buildFunctionsDefinitions(functionsType);
     }
 
 
@@ -462,5 +344,67 @@ public class PetriNet {
         definition.insert(0, "/* Inhibitor arcs */" + System.lineSeparator());
 
         return definition.toString();
+    }
+
+    private String buildFunctionsDeclarations(FunctionType functionsType) {
+        // get functions of specified type
+        var filteredFunctions = functions.stream()
+                                         .filter(function -> function.getFunctionType() == functionsType)
+                                         .collect(Collectors.toSet());
+
+        if (filteredFunctions.isEmpty())
+            return "";
+
+        StringBuilder declarations = new StringBuilder();
+
+        // create common string from all filtered functions
+        filteredFunctions.forEach(function -> declarations.append(function.getDeclaration()));
+
+        return declarations.toString();
+    }
+
+    private String buildFunctionsDefinitions(FunctionType functionsType) {
+        // get functions of specified type
+        var filteredFunctions = functions.stream()
+                                         .filter(function -> function.getFunctionType() == functionsType)
+                                         .collect(Collectors.toSet());
+
+        if (filteredFunctions.isEmpty())
+            return "";
+
+        StringBuilder definitions = new StringBuilder();
+
+        // add section title
+        definitions.append(getSectionTitleCommentFor(functionsType))
+                   .append(System.lineSeparator()).append(System.lineSeparator());
+
+        // create common string from all filtered functions
+        filteredFunctions.forEach(function -> definitions.append(function.getDefinition()));
+
+        return definitions.toString();
+    }
+
+    private String getSectionTitleCommentFor(FunctionType functionsType) {
+        switch (functionsType) {
+            case Generic:
+                return "/*  C functions  */";
+            case Guard:
+                return "/*  Guard functions  */";
+            case Reward:
+                return "/*  Reward functions  */";
+            case ArcCardinality:
+                return "/*  Cardinality functions  */";
+            case Probability:
+                return "/*  Probability functions  */";
+            case Distribution:
+                return "/*  Distribution functions  */";
+            case Halting:
+                return "/*  Halting functions  */";
+            case SPNP:
+                return "/*  SPNP functions  */";
+
+            default:
+                throw new IllegalArgumentException("Function type is unknown or undefined.");
+        }
     }
 }

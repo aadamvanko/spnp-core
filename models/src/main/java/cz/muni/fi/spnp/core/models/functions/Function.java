@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.models.functions;
 
+import java.util.Objects;
+
 public class Function<TReturnType> {
 
     private String name;
@@ -59,6 +61,23 @@ public class Function<TReturnType> {
                 this.getReturnTypeString(),
                 this.getName(),
                 this.getBody());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Function<?> function = (Function<?>) o;
+
+        return name.equals(function.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 
 
