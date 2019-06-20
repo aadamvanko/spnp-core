@@ -3,6 +3,7 @@ package cz.muni.fi.spnp.core.models.functions;
 public class Function<TReturnType> {
 
     private String name;
+    private FunctionType functionType;
     private Class<TReturnType> returnType;
     private String body;
 
@@ -10,24 +11,32 @@ public class Function<TReturnType> {
      * Creates function definition with specified body and return value.
      *
      * @param name          function name
+     * @param type          type of the function
      * @param body          function body definition
      * @param returnType    type of function's return value
      */
-    public Function(String name, String body, Class<TReturnType> returnType) {
+    public Function(String name, FunctionType type, String body, Class<TReturnType> returnType) {
         if (name == null)
             throw new IllegalArgumentException("Function name is not specified.");
+        if (type == null)
+            throw new IllegalArgumentException("Function type is not defined");
         if (returnType == null)
             throw new IllegalArgumentException("Return type is not specified.");
         if (body == null)
             throw new IllegalArgumentException("Function body is not specified.");
 
         this.name = name;
+        this.functionType = type;
         this.returnType = returnType;
         this.body = body;
     }
 
     public String getName() {
         return name;
+    }
+
+    public FunctionType getFunctionType() {
+        return functionType;
     }
 
     public Class<TReturnType> getReturnType() {
