@@ -21,7 +21,7 @@ public class Function<TReturnType> {
         if (name == null)
             throw new IllegalArgumentException("Function name is not specified.");
         if (type == null)
-            throw new IllegalArgumentException("Function type is not defined");
+            throw new IllegalArgumentException("Function type is not defined.");
         if (returnType == null)
             throw new IllegalArgumentException("Return type is not specified.");
         if (body == null)

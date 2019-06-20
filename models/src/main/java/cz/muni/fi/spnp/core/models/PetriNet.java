@@ -10,9 +10,8 @@ import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
-import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
-import cz.muni.fi.spnp.core.models.transitions.probabilities.FunctionalTransitionProbability;
 import cz.muni.fi.spnp.core.models.variables.Variable;
+import cz.muni.fi.spnp.core.models.variables.VariableType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -165,10 +164,12 @@ public class PetriNet {
 
     public String getDefinition() {
         return String.format(
-                "void net() {%n%s%n%s%n%s}%n%n",
+                "void net() {%n%s%s%n%s%n%s%n%s}%n%n",
+                getParameterVariablesDefinition(),
                 getPlacesDefinition(),
                 getTransitionsDefinition(),
-                getArcsDefinition());
+                getArcsDefinition(),
+                getParameterVariablesBindings());
     }
 
     public String getIncludesDefinition() {
@@ -200,12 +201,10 @@ public class PetriNet {
     public String getVariablesDefinition() {
         StringBuilder definition = new StringBuilder();
 
-        for (var variable : this.variables) {
-            definition.append(variable.getDefinition());
-        }
+        variables.forEach(variable -> definition.append(variable.getDefinition()));
 
         if (definition.length() > 0) {
-            definition.insert(0, "/* Variables */" + System.lineSeparator());
+            definition.insert(0, "/*  Variables  */" + System.lineSeparator());
             definition.append(System.lineSeparator());
         }
 
@@ -226,6 +225,25 @@ public class PetriNet {
         return buildFunctionsDefinitions(functionsType);
     }
 
+
+    private String getParameterVariablesDefinition() {
+        // get parameter variables
+        var parameterVariables = variables.stream()
+                                          .filter(variable -> variable.getType() == VariableType.Parameter)
+                                          .collect(Collectors.toSet());
+
+        if (parameterVariables.isEmpty())
+            return "";
+
+        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES ==== */" + System.lineSeparator());
+
+        // create common string with all definitions
+        parameterVariables.forEach(variable -> definitions.append(String.format("parm(\"%s\");%n", variable.getName())));
+
+        definitions.append(System.lineSeparator());
+
+        return definitions.toString();
+    }
 
     private String getPlacesDefinition() {
         StringBuilder definition = new StringBuilder();
@@ -344,6 +362,26 @@ public class PetriNet {
         definition.insert(0, "/* Inhibitor arcs */" + System.lineSeparator());
 
         return definition.toString();
+    }
+
+    private String getParameterVariablesBindings() {
+        // get parameter variables
+        var parameterVariables = variables.stream()
+                                          .filter(variable -> variable.getType() == VariableType.Parameter)
+                                          .collect(Collectors.toSet());
+
+        if (parameterVariables.isEmpty())
+            return "";
+
+        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES BINDINGS ==== */" + System.lineSeparator());
+
+        // create common string with all definitions
+        parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n",
+                                                                            variable.getName(), variable.getName())));
+
+        definitions.append(System.lineSeparator());
+
+        return definitions.toString();
     }
 
     private String buildFunctionsDeclarations(FunctionType functionsType) {

@@ -5,18 +5,26 @@ import java.util.Objects;
 public abstract class Variable {
 
     private String name;
+    private VariableType type;
 
-    protected Variable(String name) {
+    protected Variable(String name, VariableType type) {
         if (name == null)
-            throw new IllegalArgumentException("Name is not defined");
+            throw new IllegalArgumentException("Name is not defined.");
+        if (type == null)
+            throw new IllegalArgumentException("Variable type is not defined.");
 
         this.name = name;
+        this.type = type;
     }
 
     public abstract String getDefinition();
 
     public String getName() {
         return name;
+    }
+
+    public VariableType getType() {
+        return type;
     }
 
     @Override

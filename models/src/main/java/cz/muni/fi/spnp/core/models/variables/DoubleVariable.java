@@ -4,8 +4,8 @@ public class DoubleVariable extends Variable {
 
     private double value;
 
-    public DoubleVariable(String name, double value) {
-        super(name);
+    public DoubleVariable(String name, VariableType type, double value) {
+        super(name, type);
 
         this.value = value;
     }

@@ -4,8 +4,8 @@ public class IntegerVariable extends Variable {
 
     private int value;
 
-    protected IntegerVariable(String name, int value) {
-        super(name);
+    protected IntegerVariable(String name, VariableType type, int value) {
+        super(name, type);
 
         this.value = value;
     }
