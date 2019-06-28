@@ -27,6 +27,11 @@ public class PetriNet {
     private Set<Transition> transitions;
     private Set<Function> functions;
 
+    private Function assertFunction;
+    private Function acInitFunction;
+    private Function acReachFunction;
+    private Function acFinalFunction;
+
     public PetriNet() {
         includes = new HashSet<>();
         defines = new HashSet<>();
@@ -34,6 +39,9 @@ public class PetriNet {
         arcs = new HashSet<>();
         places = new HashSet<>();
         transitions = new HashSet<>();
+        functions = new HashSet<>();
+
+        createDefaultRequiredFunctions();
     }
 
     public void addInclude(Include include) {
@@ -162,6 +170,74 @@ public class PetriNet {
         this.functions.remove(function);
     }
 
+    public Function getAssertFunction() {
+        return assertFunction;
+    }
+
+    public void setAssertFunction(Function assertFunction) {
+        if (assertFunction == null)
+            throw new IllegalArgumentException("Assert function is not set.");
+        if (assertFunction.getFunctionType() != FunctionType.SPNP)
+            throw new IllegalArgumentException("Assert function has invalid type.");
+        if (assertFunction.getReturnType() != Integer.class)
+            throw new IllegalArgumentException("Assert function has invalid return type.");
+        if (!assertFunction.getName().equals("assert"))
+            throw new IllegalArgumentException("Assert function has incorrect name.");
+
+        this.assertFunction = assertFunction;
+    }
+
+    public Function getAcInitFunction() {
+        return acInitFunction;
+    }
+
+    public void setAcInitFunction(Function acInitFunction) {
+        if (acInitFunction == null)
+            throw new IllegalArgumentException("ac_init() function is not set.");
+        if (acInitFunction.getFunctionType() != FunctionType.SPNP)
+            throw new IllegalArgumentException("ac_init() function has invalid type.");
+        if (acInitFunction.getReturnType() != Void.class)
+            throw new IllegalArgumentException("ac_init() function has invalid return type.");
+        if (!acInitFunction.getName().equals("ac_init"))
+            throw new IllegalArgumentException("ac_init() function has incorrect name.");
+
+        this.acInitFunction = acInitFunction;
+    }
+
+    public Function getAcReachFunction() {
+        return acReachFunction;
+    }
+
+    public void setAcReachFunction(Function acReachFunction) {
+        if (acReachFunction == null)
+            throw new IllegalArgumentException("ac_reach() function is not set.");
+        if (acReachFunction.getFunctionType() != FunctionType.SPNP)
+            throw new IllegalArgumentException("ac_reach() function has invalid type.");
+        if (acReachFunction.getReturnType() != Void.class)
+            throw new IllegalArgumentException("ac_reach() function has invalid return type.");
+        if (!acReachFunction.getName().equals("ac_reach"))
+            throw new IllegalArgumentException("ac_reach() function has incorrect name.");
+
+        this.acReachFunction = acReachFunction;
+    }
+
+    public Function getAcFinalFunction() {
+        return acFinalFunction;
+    }
+
+    public void setAcFinalFunction(Function acFinalFunction) {
+        if (acFinalFunction == null)
+            throw new IllegalArgumentException("ac_final() function is not set.");
+        if (acFinalFunction.getFunctionType() != FunctionType.SPNP)
+            throw new IllegalArgumentException("ac_final() function has invalid type.");
+        if (acFinalFunction.getReturnType() != Void.class)
+            throw new IllegalArgumentException("ac_final() function has invalid return type.");
+        if (!acFinalFunction.getName().equals("ac_final"))
+            throw new IllegalArgumentException("ac_final() function has incorrect name.");
+
+        this.acFinalFunction = acFinalFunction;
+    }
+
     public String getDefinition() {
         return String.format(
                 "void net() {%n%s%s%n%s%n%s%n%s}%n%n",
@@ -175,9 +251,7 @@ public class PetriNet {
     public String getIncludesDefinition() {
         StringBuilder definition = new StringBuilder();
 
-        for (var include : this.includes) {
-            definition.append(include.getDefinition());
-        }
+        this.includes.forEach(include -> definition.append(include.getDefinition()));
 
         if (definition.length() > 0)
             definition.append(System.lineSeparator());
@@ -188,9 +262,7 @@ public class PetriNet {
     public String getDefinesDefinition() {
         StringBuilder definition = new StringBuilder();
 
-        for (var define : this.defines) {
-            definition.append(define.getDefinition());
-        }
+        this.defines.forEach(define -> definition.append(define.getDefinition()));
 
         if (definition.length() > 0)
             definition.append(System.lineSeparator());
@@ -211,20 +283,27 @@ public class PetriNet {
         return definition.toString();
     }
 
-    public String getFunctionsDeclarations(FunctionType functionsType) {
+    public String getUserFunctionsDeclarations(FunctionType functionsType) {
         if (functionsType == null)
             throw new IllegalArgumentException("Functions type is not defined.");
 
         return buildFunctionsDeclarations(functionsType);
     }
 
-    public String getFunctionsDefinitions(FunctionType functionsType) {
+    public String getUserFunctionsDefinitions(FunctionType functionsType) {
         if (functionsType == null)
             throw new IllegalArgumentException("Functions type is not defined.");
 
         return buildFunctionsDefinitions(functionsType);
     }
 
+    public String getRequiredFunctionsDefinitions() {
+        return String.format("%s%n%s%n%s%n%s%n",
+                             assertFunction.getDefinition(),
+                             acInitFunction.getDefinition(),
+                             acReachFunction.getDefinition(),
+                             acFinalFunction.getDefinition());
+    }
 
     private String getParameterVariablesDefinition() {
         // get parameter variables
@@ -444,5 +523,16 @@ public class PetriNet {
             default:
                 throw new IllegalArgumentException("Function type is unknown or undefined.");
         }
+    }
+
+    private void createDefaultRequiredFunctions() {
+        assertFunction = new Function<>("assert", FunctionType.SPNP, "", Integer.class);
+        acInitFunction = new Function<>("ac_init", FunctionType.SPNP,
+                                        "/* Information on the net structure */" + System.lineSeparator() + "pr_net_info();",
+                                        Void.class);
+        acReachFunction = new Function<>("ac_reach", FunctionType.SPNP,
+                                         "/* Information on the reachability graph */" + System.lineSeparator() + "pr_rg_info();",
+                                         Void.class);
+        acFinalFunction = new Function<>("ac_final", FunctionType.SPNP, "", Void.class);
     }
 }
