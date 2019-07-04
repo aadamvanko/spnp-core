@@ -6,6 +6,7 @@ import cz.muni.fi.spnp.core.models.arcs.InhibitorArc;
 import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
+import cz.muni.fi.spnp.core.models.options.InputParameter;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
@@ -22,6 +23,7 @@ public class PetriNet {
     private Set<Include> includes;
     private Set<Define> defines;
     private Set<Variable> variables;
+    private Set<InputParameter> inputParameters;
     private Set<Arc> arcs;
     private Set<Place> places;
     private Set<Transition> transitions;
@@ -36,6 +38,7 @@ public class PetriNet {
         includes = new HashSet<>();
         defines = new HashSet<>();
         variables = new HashSet<>();
+        inputParameters = new HashSet<>();
         arcs = new HashSet<>();
         places = new HashSet<>();
         transitions = new HashSet<>();
@@ -96,6 +99,24 @@ public class PetriNet {
             throw new IllegalArgumentException("Variable is not present in this Petri net.");
 
         this.variables.remove(variable);
+    }
+
+    public void addInputParameter(InputParameter parameter) {
+        if (parameter == null)
+            throw new IllegalArgumentException("Input parameter is null.");
+        if (inputParameters.contains(parameter))
+            throw new IllegalArgumentException("Input parameter with this name is already defined.");
+
+        this.inputParameters.add(parameter);
+    }
+
+    public void removeInputParameter(InputParameter parameter) {
+        if (parameter == null)
+            throw new IllegalArgumentException("Input parameter is null.");
+        if (!inputParameters.contains(parameter))
+            throw new IllegalArgumentException("Input parameter is not present in this Petri net.");
+
+        this.inputParameters.remove(parameter);
     }
 
     public void addArc(Arc arc) {
