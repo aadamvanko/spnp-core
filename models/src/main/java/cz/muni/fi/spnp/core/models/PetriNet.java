@@ -7,6 +7,7 @@ import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.options.InputParameter;
+import cz.muni.fi.spnp.core.models.options.Option;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
@@ -28,6 +29,7 @@ public class PetriNet {
     private Set<Place> places;
     private Set<Transition> transitions;
     private Set<Function> functions;
+    private Set<Option> options;
 
     private Function assertFunction;
     private Function acInitFunction;
@@ -43,6 +45,7 @@ public class PetriNet {
         places = new HashSet<>();
         transitions = new HashSet<>();
         functions = new HashSet<>();
+        options = new HashSet<>();
 
         createDefaultRequiredFunctions();
     }
@@ -50,7 +53,7 @@ public class PetriNet {
     public void addInclude(Include include) {
         if (include == null)
             throw new IllegalArgumentException("Include is null.");
-        if (includes.contains(include))
+        if (this.includes.contains(include))
             throw new IllegalArgumentException("Include is already present in this Petri net.");
 
         this.includes.add(include);
@@ -59,7 +62,7 @@ public class PetriNet {
     public void removeInclude(Include include) {
         if (include == null)
             throw new IllegalArgumentException("Include is null.");
-        if (!includes.contains(include))
+        if (!this.includes.contains(include))
             throw new IllegalArgumentException("Include is not present in this Petri net.");
 
         this.includes.remove(include);
@@ -68,7 +71,7 @@ public class PetriNet {
     public void addDefine(Define define) {
         if (define == null)
             throw new IllegalArgumentException("Define is null.");
-        if (defines.contains(define))
+        if (this.defines.contains(define))
             throw new IllegalArgumentException("Define is already present in this Petri net.");
 
         this.defines.add(define);
@@ -77,7 +80,7 @@ public class PetriNet {
     public void removeDefine(Define define) {
         if (define == null)
             throw new IllegalArgumentException("Define is null.");
-        if (!defines.contains(define))
+        if (!this.defines.contains(define))
             throw new IllegalArgumentException("Define is not present in this Petri net.");
 
         this.defines.remove(define);
@@ -86,7 +89,7 @@ public class PetriNet {
     public void addVariable(Variable variable) {
         if (variable == null)
             throw new IllegalArgumentException("Variable is null.");
-        if (variables.contains(variable))
+        if (this.variables.contains(variable))
             throw new IllegalArgumentException("Variable is already present in this Petri net.");
 
         this.variables.add(variable);
@@ -95,7 +98,7 @@ public class PetriNet {
     public void removeVariable(Variable variable) {
         if (variable == null)
             throw new IllegalArgumentException("Variable is null.");
-        if (!variables.contains(variable))
+        if (!this.variables.contains(variable))
             throw new IllegalArgumentException("Variable is not present in this Petri net.");
 
         this.variables.remove(variable);
@@ -104,7 +107,7 @@ public class PetriNet {
     public void addInputParameter(InputParameter parameter) {
         if (parameter == null)
             throw new IllegalArgumentException("Input parameter is null.");
-        if (inputParameters.contains(parameter))
+        if (this.inputParameters.contains(parameter))
             throw new IllegalArgumentException("Input parameter with this name is already defined.");
 
         this.inputParameters.add(parameter);
@@ -113,7 +116,7 @@ public class PetriNet {
     public void removeInputParameter(InputParameter parameter) {
         if (parameter == null)
             throw new IllegalArgumentException("Input parameter is null.");
-        if (!inputParameters.contains(parameter))
+        if (!this.inputParameters.contains(parameter))
             throw new IllegalArgumentException("Input parameter is not present in this Petri net.");
 
         this.inputParameters.remove(parameter);
@@ -122,7 +125,7 @@ public class PetriNet {
     public void addArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null.");
-        if (arcs.contains(arc))
+        if (this.arcs.contains(arc))
             throw new IllegalArgumentException("Arc is already present in this Petri net.");
 
         this.arcs.add(arc);
@@ -131,7 +134,7 @@ public class PetriNet {
     public void removeArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null.");
-        if (!arcs.contains(arc))
+        if (!this.arcs.contains(arc))
             throw new IllegalArgumentException("Arc is not present in this Petri net.");
 
         this.arcs.remove(arc);
@@ -140,7 +143,7 @@ public class PetriNet {
     public void addPlace(Place place) {
         if (place == null)
             throw new IllegalArgumentException("Place is null.");
-        if (places.contains(place))
+        if (this.places.contains(place))
             throw new IllegalArgumentException("Place is already present in this Petri net.");
 
         this.places.add(place);
@@ -149,7 +152,7 @@ public class PetriNet {
     public void removePlace(Place place) {
         if (place == null)
             throw new IllegalArgumentException("Place is null.");
-        if (!places.contains(place))
+        if (!this.places.contains(place))
             throw new IllegalArgumentException("Place is not present in this Petri net.");
 
         this.places.remove(place);
@@ -158,7 +161,7 @@ public class PetriNet {
     public void addTransition(Transition transition) {
         if (transition == null)
             throw new IllegalArgumentException("Transition is null");
-        if (transitions.contains(transition))
+        if (this.transitions.contains(transition))
             throw new IllegalArgumentException("Transition is already present in this Petri net.");
 
         this.transitions.add(transition);
@@ -167,7 +170,7 @@ public class PetriNet {
     public void removeTransition(Transition transition) {
         if (transition == null)
             throw new IllegalArgumentException("Transition is null.");
-        if (!transitions.contains(transition))
+        if (!this.transitions.contains(transition))
             throw new IllegalArgumentException("Transition is not present in this Petri net.");
 
         this.transitions.remove(transition);
@@ -176,7 +179,7 @@ public class PetriNet {
     public void addFunction(Function function) {
         if (function == null)
             throw new IllegalArgumentException("Function is null.");
-        if (functions.contains(function))
+        if (this.functions.contains(function))
             throw new IllegalArgumentException("Function is already present in this Petri net.");
 
         this.functions.add(function);
@@ -185,10 +188,28 @@ public class PetriNet {
     public void removeFunction(Function function) {
         if (function == null)
             throw new IllegalArgumentException("Function is null.");
-        if (!functions.contains(function))
+        if (!this.functions.contains(function))
             throw new IllegalArgumentException("Function is not present in this Petri net.");
 
         this.functions.remove(function);
+    }
+
+    public void addOption(Option option) {
+        if (option == null)
+            throw new IllegalArgumentException("Option is null.");
+        if (this.options.contains(option))
+            throw new IllegalArgumentException("Option is already present in the Petri net.");
+
+        this.options.add(option);
+    }
+
+    public void removeOption(Option option) {
+        if (option == null)
+            throw new IllegalArgumentException("Option is null.");
+        if (!this.options.contains(option))
+            throw new IllegalArgumentException("Option is not present in this Petri net.");
+
+        this.options.remove(option);
     }
 
     public Function getAssertFunction() {
@@ -292,16 +313,35 @@ public class PetriNet {
     }
 
     public String getVariablesDefinition() {
-        StringBuilder definition = new StringBuilder();
+        StringBuilder definitions = new StringBuilder();
 
-        variables.forEach(variable -> definition.append(variable.getDefinition()));
+        // add global variables
+        variables.forEach(variable -> definitions.append(variable.getDefinition()));
 
-        if (definition.length() > 0) {
-            definition.insert(0, "/*  Variables  */" + System.lineSeparator());
-            definition.append(System.lineSeparator());
+        // add input parameters
+        inputParameters.forEach(parameter -> definitions.append(parameter.getDeclaration()));
+
+        if (definitions.length() > 0) {
+            definitions.insert(0, "/*  Variables  */" + System.lineSeparator());
+            definitions.append(System.lineSeparator());
         }
 
-        return definition.toString();
+        return definitions.toString();
+    }
+
+    public String getOptionsDefinition() {
+        StringBuilder definitions = new StringBuilder("void options() {%n");
+
+        // add input parameters
+        this.inputParameters.forEach(parameter -> definitions.append(parameter.getDefinition()));
+
+        // add options
+        this.options.forEach(option -> definitions.append(option.getDefinition()));
+
+        definitions.append("}");
+        definitions.append(System.lineSeparator());
+
+        return definitions.toString();
     }
 
     public String getUserFunctionsDeclarations(FunctionType functionsType) {

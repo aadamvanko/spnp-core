@@ -1,0 +1,31 @@
+package cz.muni.fi.spnp.core.models.options;
+
+public enum ConstantValue {
+    VAL_YES,
+    VAL_NO,
+    VAL_TAN,
+    VAL_CANONIC,
+    VAL_LEXICAL,
+    VAL_MATRIX,
+    VAL_FROMTO,
+    VAL_TOFROM,
+    VAL_CTMC,
+    VAL_DTMC,
+    VAL_SSSOR,
+    VAL_GASEI,
+    VAL_POWER,
+    VAL_TSUNIF,
+    VAL_FOXUNIF,
+    VAL_REPL,
+    VAL_BATCH,
+    VAL_RESTART,
+    VAL_SPLIT,
+    VAL_IS,
+    VAL_THIN,
+    VAL_ISTHIN,
+    VAL_REG,
+    VAL_ISREG,
+    VAL_REDONTHEFLY,
+    VAL_REDAFTERRG,
+    VAL_REDNEVER
+}
