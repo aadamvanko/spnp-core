@@ -18,7 +18,7 @@
     </properties>
 
     <modules>
-        <module>engine</module>
+        <module>transformators</module>
         <module>models</module>
     </modules>
 

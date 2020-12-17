@@ -10,7 +10,7 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>core.engine</artifactId>
+    <artifactId>core.transformators</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

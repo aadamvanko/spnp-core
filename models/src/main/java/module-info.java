@@ -8,4 +8,5 @@ module spnp.core.models {
     exports cz.muni.fi.spnp.core.models.transitions;
     exports cz.muni.fi.spnp.core.models.transitions.distributions;
     exports cz.muni.fi.spnp.core.models.transitions.probabilities;
+    exports cz.muni.fi.spnp.core.models;
 }
