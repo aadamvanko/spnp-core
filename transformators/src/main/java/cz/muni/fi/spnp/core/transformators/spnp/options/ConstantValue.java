@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.models.options;
+package cz.muni.fi.spnp.core.transformators.spnp.options;
 
 public enum ConstantValue {
     VAL_YES,

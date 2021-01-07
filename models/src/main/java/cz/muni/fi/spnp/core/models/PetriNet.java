@@ -6,8 +6,6 @@ import cz.muni.fi.spnp.core.models.arcs.InhibitorArc;
 import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
-import cz.muni.fi.spnp.core.models.options.InputParameter;
-import cz.muni.fi.spnp.core.models.options.Option;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
@@ -21,15 +19,13 @@ import java.util.stream.Collectors;
 
 public class PetriNet {
 
-    private Set<Include> includes;
-    private Set<Define> defines;
-    private Set<Variable> variables;
-    private Set<InputParameter> inputParameters;
-    private Set<Arc> arcs;
-    private Set<Place> places;
-    private Set<Transition> transitions;
-    private Set<Function> functions;
-    private Set<Option> options;
+    private final Set<Include> includes;
+    private final Set<Define> defines;
+    private final Set<Variable> variables;
+    private final Set<Arc> arcs;
+    private final Set<Place> places;
+    private final Set<Transition> transitions;
+    private final Set<Function> functions;
 
     private Function assertFunction;
     private Function acInitFunction;
@@ -40,14 +36,16 @@ public class PetriNet {
         includes = new HashSet<>();
         defines = new HashSet<>();
         variables = new HashSet<>();
-        inputParameters = new HashSet<>();
         arcs = new HashSet<>();
         places = new HashSet<>();
         transitions = new HashSet<>();
         functions = new HashSet<>();
-        options = new HashSet<>();
 
         createDefaultRequiredFunctions();
+    }
+
+    public Set<Place> getPlaces() {
+        return places;
     }
 
     public void addInclude(Include include) {
@@ -102,24 +100,6 @@ public class PetriNet {
             throw new IllegalArgumentException("Variable is not present in this Petri net.");
 
         this.variables.remove(variable);
-    }
-
-    public void addInputParameter(InputParameter parameter) {
-        if (parameter == null)
-            throw new IllegalArgumentException("Input parameter is null.");
-        if (this.inputParameters.contains(parameter))
-            throw new IllegalArgumentException("Input parameter with this name is already defined.");
-
-        this.inputParameters.add(parameter);
-    }
-
-    public void removeInputParameter(InputParameter parameter) {
-        if (parameter == null)
-            throw new IllegalArgumentException("Input parameter is null.");
-        if (!this.inputParameters.contains(parameter))
-            throw new IllegalArgumentException("Input parameter is not present in this Petri net.");
-
-        this.inputParameters.remove(parameter);
     }
 
     public void addArc(Arc arc) {
@@ -194,24 +174,6 @@ public class PetriNet {
         this.functions.remove(function);
     }
 
-    public void addOption(Option option) {
-        if (option == null)
-            throw new IllegalArgumentException("Option is null.");
-        if (this.options.contains(option))
-            throw new IllegalArgumentException("Option is already present in the Petri net.");
-
-        this.options.add(option);
-    }
-
-    public void removeOption(Option option) {
-        if (option == null)
-            throw new IllegalArgumentException("Option is null.");
-        if (!this.options.contains(option))
-            throw new IllegalArgumentException("Option is not present in this Petri net.");
-
-        this.options.remove(option);
-    }
-
     public Function getAssertFunction() {
         return assertFunction;
     }
@@ -279,16 +241,16 @@ public class PetriNet {
 
         this.acFinalFunction = acFinalFunction;
     }
-
-    public String getDefinition() {
-        return String.format(
-                "void net() {%n%s%s%n%s%n%s%n%s}%n%n",
-                getParameterVariablesDefinition(),
-                getPlacesDefinition(),
-                getTransitionsDefinition(),
-                getArcsDefinition(),
-                getParameterVariablesBindings());
-    }
+//
+//    public String getDefinition() {
+//        return String.format(
+//                "void net() {%n%s%s%n%s%n%s%n%s}%n%n",
+//                getParameterVariablesDefinition(),
+//                getPlacesDefinition(),
+//                getTransitionsDefinition(),
+//                getArcsDefinition(),
+//                getParameterVariablesBindings());
+//    }
 
     public String getIncludesDefinition() {
         StringBuilder definition = new StringBuilder();
@@ -312,37 +274,34 @@ public class PetriNet {
         return definition.toString();
     }
 
-    public String getVariablesDefinition() {
-        StringBuilder definitions = new StringBuilder();
-
-        // add global variables
-        variables.forEach(variable -> definitions.append(variable.getDefinition()));
-
-        // add input parameters
-        inputParameters.forEach(parameter -> definitions.append(parameter.getDeclaration()));
-
-        if (definitions.length() > 0) {
-            definitions.insert(0, "/*  Variables  */" + System.lineSeparator());
-            definitions.append(System.lineSeparator());
-        }
-
-        return definitions.toString();
-    }
-
-    public String getOptionsDefinition() {
-        StringBuilder definitions = new StringBuilder("void options() {%n");
-
-        // add input parameters
-        this.inputParameters.forEach(parameter -> definitions.append(parameter.getDefinition()));
-
-        // add options
-        this.options.forEach(option -> definitions.append(option.getDefinition()));
-
-        definitions.append("}");
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
-    }
+//    public String getVariablesDefinition() {
+//        StringBuilder definitions = new StringBuilder();
+//
+//        // add global variables
+//        variables.forEach(variable -> definitions.append(variable.getDefinition()));
+//
+//        // add input parameters
+//        inputParameters.forEach(parameter -> definitions.append(parameter.getDeclaration()));
+//
+//        if (definitions.length() > 0) {
+//            definitions.insert(0, "/*  Variables  */" + System.lineSeparator());
+//            definitions.append(System.lineSeparator());
+//        }
+//
+//        return definitions.toString();
+//    }
+//
+//    public String getOptionsDefinition() {
+//        StringBuilder definitions = new StringBuilder("void options() {%n");
+//
+//        // add options
+//        this.options.forEach(option -> definitions.append(option.getDefinition()));
+//
+//        definitions.append("}");
+//        definitions.append(System.lineSeparator());
+//
+//        return definitions.toString();
+//    }
 
     public String getUserFunctionsDeclarations(FunctionType functionsType) {
         if (functionsType == null)
@@ -385,18 +344,18 @@ public class PetriNet {
         return definitions.toString();
     }
 
-    private String getPlacesDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.places.forEach(place -> definition.append(place.getDefinition()));
-
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* ==== PLACES ==== */" + System.lineSeparator());
-
-        return definition.toString();
-    }
+//    private String getPlacesDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.places.forEach(place -> definition.append(place.getDefinition()));
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* ==== PLACES ==== */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
     private String getTransitionsDefinition() {
         StringBuilder definition = new StringBuilder();
@@ -563,27 +522,17 @@ public class PetriNet {
     }
 
     private String getSectionTitleCommentFor(FunctionType functionsType) {
-        switch (functionsType) {
-            case Generic:
-                return "/*  C functions  */";
-            case Guard:
-                return "/*  Guard functions  */";
-            case Reward:
-                return "/*  Reward functions  */";
-            case ArcCardinality:
-                return "/*  Cardinality functions  */";
-            case Probability:
-                return "/*  Probability functions  */";
-            case Distribution:
-                return "/*  Distribution functions  */";
-            case Halting:
-                return "/*  Halting functions  */";
-            case SPNP:
-                return "/*  SPNP functions  */";
-
-            default:
-                throw new IllegalArgumentException("Function type is unknown or undefined.");
-        }
+        return switch (functionsType) {
+            case Generic -> "/*  C functions  */";
+            case Guard -> "/*  Guard functions  */";
+            case Reward -> "/*  Reward functions  */";
+            case ArcCardinality -> "/*  Cardinality functions  */";
+            case Probability -> "/*  Probability functions  */";
+            case Distribution -> "/*  Distribution functions  */";
+            case Halting -> "/*  Halting functions  */";
+            case SPNP -> "/*  SPNP functions  */";
+            default -> throw new IllegalArgumentException("Function type is unknown or undefined.");
+        };
     }
 
     private void createDefaultRequiredFunctions() {

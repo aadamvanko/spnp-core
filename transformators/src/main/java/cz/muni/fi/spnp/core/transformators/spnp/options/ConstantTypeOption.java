@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.options;
+package cz.muni.fi.spnp.core.transformators.spnp.options;
+
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 
 public class ConstantTypeOption extends Option {
 
-    private ConstantValue value;
+    private final ConstantValue value;
 
     public ConstantTypeOption(OptionKey key, ConstantValue value) {
         super(key);
@@ -20,7 +22,7 @@ public class ConstantTypeOption extends Option {
     }
 
     @Override
-    public String getDefinition() {
-        return String.format("iopt(%s, %s);%n", this.getKey().toString(), this.getValue().toString());
+    public void accept(OptionVisitor optionVisitor) {
+        optionVisitor.visit(this);
     }
 }

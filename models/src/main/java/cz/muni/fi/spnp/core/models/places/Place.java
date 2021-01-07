@@ -2,15 +2,16 @@ package cz.muni.fi.spnp.core.models.places;
 
 import com.google.common.base.Objects;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
+import cz.muni.fi.spnp.core.models.visitors.PlaceVisitor;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Place {
+public abstract class Place implements Comparable<Place> {
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     protected Set<Arc> arcs;
 
@@ -23,13 +24,6 @@ public abstract class Place {
 
         this.arcs = new HashSet<>();
     }
-
-    /**
-     * Gets the {@link String} representation of the place and its parameters.
-     *
-     * @return  representation of the place and its parameters
-     */
-    public abstract String getDefinition();
 
     public int getId() {
         return id;
@@ -72,5 +66,11 @@ public abstract class Place {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public abstract void accept(PlaceVisitor placeVisitor);
+
+    public int compareTo(Place other) {
+        return name.compareTo(other.getName());
     }
 }

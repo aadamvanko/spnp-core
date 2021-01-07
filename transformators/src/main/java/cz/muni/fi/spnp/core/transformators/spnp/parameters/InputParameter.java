@@ -1,11 +1,11 @@
-package cz.muni.fi.spnp.core.models.options;
+package cz.muni.fi.spnp.core.transformators.spnp.parameters;
 
 import java.util.Objects;
 
 public abstract class InputParameter {
 
-    private String parameterName;
-    private String userPromptText;
+    private final String parameterName;
+    private final String userPromptText;
 
     protected InputParameter(String parameterName, String userPromptText) {
         if (parameterName == null)

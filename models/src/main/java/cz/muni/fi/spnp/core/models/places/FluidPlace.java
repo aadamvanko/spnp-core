@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.models.places;
 
+import cz.muni.fi.spnp.core.models.visitors.PlaceVisitor;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,7 +11,7 @@ public class FluidPlace extends Place {
 
     private double initialValue;
     private double boundValue;
-    private Set<Double> breakValues;
+    private final Set<Double> breakValues;
 
     public FluidPlace(int id, String name) {
         this(id, name, 0.0, 0.0, null);
@@ -25,36 +27,6 @@ public class FluidPlace extends Place {
         this.initialValue = initialValue;
         this.boundValue = boundValue;
         this.breakValues = Objects.requireNonNullElseGet(breakValues, HashSet::new);
-    }
-
-    /**
-     * Gets the {@link String} representation of the place and its parameters.
-     *
-     * @return representation of the place and its parameters
-     */
-    @Override
-    public String getDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        definition.append(String.format("fplace(\"%s\");", this.getName()));
-        definition.append(System.lineSeparator());
-
-        if (this.getInitialValue() > 0) {
-            definition.append(String.format("finit(\"%s\", %f);", this.getName(), this.getInitialValue()));
-            definition.append(System.lineSeparator());
-        }
-        if (this.getBoundValue() > 0.0) {
-            definition.append(String.format("fbound(\"%s\", %f);", this.getName(), this.getBoundValue()));
-            definition.append(System.lineSeparator());
-        }
-        if (!this.getBreakValues().isEmpty()) {
-            for (var breakValue : this.getBreakValues()) {
-                definition.append(String.format("fbreak(\"%s\", %f);", this.getName(), breakValue));
-                definition.append(System.lineSeparator());
-            }
-        }
-
-        return definition.toString();
     }
 
     public double getInitialValue() {
@@ -83,5 +55,10 @@ public class FluidPlace extends Place {
 
     public void removeBreakValue(double breakValue) {
         this.breakValues.remove(breakValue);
+    }
+
+    @Override
+    public void accept(PlaceVisitor placeVisitor) {
+        placeVisitor.visit(this);
     }
 }

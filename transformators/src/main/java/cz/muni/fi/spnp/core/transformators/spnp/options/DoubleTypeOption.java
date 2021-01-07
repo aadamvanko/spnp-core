@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.options;
+package cz.muni.fi.spnp.core.transformators.spnp.options;
+
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 
 public class DoubleTypeOption extends Option {
 
-    private double value;
+    private final double value;
 
     public DoubleTypeOption(OptionKey key, double value) {
         super(key);
@@ -18,7 +20,7 @@ public class DoubleTypeOption extends Option {
     }
 
     @Override
-    public String getDefinition() {
-        return String.format("fopt(%s, %f);%n", this.getKey().toString(), this.getValue());
+    public void accept(OptionVisitor optionVisitor) {
+        optionVisitor.visit(this);
     }
 }

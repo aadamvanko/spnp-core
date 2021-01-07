@@ -1,10 +1,12 @@
-package cz.muni.fi.spnp.core.models.options;
+package cz.muni.fi.spnp.core.transformators.spnp.options;
+
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 
 import java.util.Objects;
 
-public abstract class Option {
+public abstract class Option implements Comparable<Option> {
 
-    private OptionKey key;
+    private final OptionKey key;
 
     protected Option(OptionKey key) {
         if (key == null)
@@ -12,8 +14,6 @@ public abstract class Option {
 
         this.key = key;
     }
-
-    public abstract String getDefinition();
 
     public OptionKey getKey() {
         return key;
@@ -34,5 +34,11 @@ public abstract class Option {
     @Override
     public int hashCode() {
         return Objects.hash(key);
+    }
+
+    public abstract void accept(OptionVisitor optionVisitor);
+
+    public int compareTo(Option other) {
+        return key.compareTo(other.getKey());
     }
 }

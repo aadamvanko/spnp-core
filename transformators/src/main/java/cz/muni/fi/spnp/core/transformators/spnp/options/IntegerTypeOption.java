@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.options;
+package cz.muni.fi.spnp.core.transformators.spnp.options;
+
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 
 public class IntegerTypeOption extends Option {
 
-    private int value;
+    private final int value;
 
     public IntegerTypeOption(OptionKey key, int value) {
         super(key);
@@ -18,7 +20,7 @@ public class IntegerTypeOption extends Option {
     }
 
     @Override
-    public String getDefinition() {
-        return String.format("iopt(%s, %d);%n", this.getKey().toString(), this.getValue());
+    public void accept(OptionVisitor optionVisitor) {
+        optionVisitor.visit(this);
     }
 }
