@@ -16,9 +16,9 @@ import cz.muni.fi.spnp.core.transformators.spnp.parameters.IntegerInputParameter
 import java.util.HashSet;
 
 
-public class OptionsTestSimple1 extends TransformatorTest{
+public class OptionsTestSimple extends TransformatorTest{
 
-    public OptionsTestSimple1(){
+    public OptionsTestSimple(){
         super();
     }
 

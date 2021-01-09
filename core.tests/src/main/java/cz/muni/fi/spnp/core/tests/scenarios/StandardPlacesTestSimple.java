@@ -10,9 +10,9 @@ import cz.muni.fi.spnp.core.transformators.spnp.parameters.InputParameter;
 import java.util.HashSet;
 
 
-public class StandardPlacesTestSimple1 extends TransformatorTest{
+public class StandardPlacesTestSimple extends TransformatorTest{
 
-    public StandardPlacesTestSimple1(){
+    public StandardPlacesTestSimple(){
         super();
     }
 
