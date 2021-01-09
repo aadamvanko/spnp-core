@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.tests.options;
+package cz.muni.fi.spnp.core.tests.scenarios;
 
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.tests.TransformatorTest;
