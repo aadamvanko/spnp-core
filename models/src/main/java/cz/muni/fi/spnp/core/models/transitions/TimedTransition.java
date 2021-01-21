@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistribution;
+import cz.muni.fi.spnp.core.models.visitors.TransitionVisitor;
 
 public class TimedTransition extends Transition {
 
@@ -26,18 +27,6 @@ public class TimedTransition extends Transition {
         this.transitionDistribution = transitionDistribution;
     }
 
-    /**
-     * Gets the {@link String} representation of the transition and its parameters.
-     *
-     * @return representation of the transition and its parameters
-     */
-    @Override
-    public String getDefinition() {
-        return String.format("priority(\"%s\", %d);", this.getName(), this.getPriority())
-                + System.lineSeparator()
-                + this.getTransitionDistribution().getDefinition(this);
-    }
-
     public TransitionDistribution getTransitionDistribution() {
         return transitionDistribution;
     }
@@ -47,5 +36,10 @@ public class TimedTransition extends Transition {
             throw new IllegalArgumentException("Transition distribution is null");
 
         this.transitionDistribution = transitionDistribution;
+    }
+
+    @Override
+    public void accept(TransitionVisitor transitionVisitor) {
+        transitionVisitor.visit(this);
     }
 }

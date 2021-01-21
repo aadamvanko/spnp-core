@@ -2,10 +2,12 @@ package cz.muni.fi.spnp.core.transformators.spnp;
 
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.Transformator;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImpl;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -134,6 +136,7 @@ public class SPNPTransformator implements Transformator {
         StringBuilder netDefinition = new StringBuilder();
         netDefinition.append("void net() {" + System.lineSeparator());
         netDefinition.append(tabify(placesDefinition(petriNet)));
+        netDefinition.append(tabify(transitionsDefinition(petriNet)));
         // TODO arcs, ...
         netDefinition.append("}");
         return netDefinition.toString();
@@ -147,6 +150,16 @@ public class SPNPTransformator implements Transformator {
             option.accept(placeVisitorImpl);
         }
         return placeVisitorImpl.getResult();
+    }
+
+    private String transitionsDefinition(PetriNet petriNet) {
+        TransitionVisitorImpl transitionVisitor = new TransitionVisitorImpl();
+        List<Transition> sortedTransitions = new ArrayList<>(petriNet.getTransitions());
+        Collections.sort(sortedTransitions);
+        for (var transition : sortedTransitions) {
+            transition.accept(transitionVisitor);
+        }
+        return transitionVisitor.getResult();
     }
 
     private String generateAssert() {

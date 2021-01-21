@@ -4,12 +4,15 @@ import com.google.common.base.Objects;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
+import cz.muni.fi.spnp.core.models.visitors.TransitionVisitor;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-public abstract class Transition {
+public abstract class Transition implements Comparable<Transition> {
 
-    private int id;
+    private final int id;
     private String name;
     private int priority;
     private Function<Integer> guardFunction;
@@ -32,13 +35,6 @@ public abstract class Transition {
 
         this.arcs = new HashSet<>();
     }
-
-    /**
-     * Gets the {@link String} representation of the transition and its parameters.
-     *
-     * @return  representation of the transition and its parameters
-     */
-    public abstract String getDefinition();
 
     public int getId() {
         return id;
@@ -110,5 +106,11 @@ public abstract class Transition {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public abstract void accept(TransitionVisitor transitionVisitor);
+
+    public int compareTo(Transition other) {
+        return name.compareTo(other.getName());
     }
 }

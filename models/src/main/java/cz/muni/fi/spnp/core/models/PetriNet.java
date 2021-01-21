@@ -7,8 +7,6 @@ import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
-import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.models.variables.Variable;
 import cz.muni.fi.spnp.core.models.variables.VariableType;
@@ -46,6 +44,10 @@ public class PetriNet {
 
     public Set<Place> getPlaces() {
         return places;
+    }
+
+    public Set<Transition> getTransitions() {
+        return transitions;
     }
 
     public void addInclude(Include include) {
@@ -357,49 +359,49 @@ public class PetriNet {
 //        return definition.toString();
 //    }
 
-    private String getTransitionsDefinition() {
-        StringBuilder definition = new StringBuilder();
+//    private String getTransitionsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        definition.append(getImmediateTransitionsDefinition());
+//        definition.append(getTimedTransitionsDefinition());
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* ==== TRANSITIONS ==== */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
-        definition.append(getImmediateTransitionsDefinition());
-        definition.append(getTimedTransitionsDefinition());
+//    private String getImmediateTransitionsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.transitions.stream()
+//                        .filter(transition -> transition instanceof ImmediateTransition)
+//                        .forEach(transition -> definition.append(transition.getDefinition()));
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* Immediate transitions */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* ==== TRANSITIONS ==== */" + System.lineSeparator());
-
-        return definition.toString();
-    }
-
-    private String getImmediateTransitionsDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.transitions.stream()
-                        .filter(transition -> transition instanceof ImmediateTransition)
-                        .forEach(transition -> definition.append(transition.getDefinition()));
-
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* Immediate transitions */" + System.lineSeparator());
-
-        return definition.toString();
-    }
-
-    private String getTimedTransitionsDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.transitions.stream()
-                        .filter(transition -> transition instanceof TimedTransition)
-                        .forEach(transition -> definition.append(transition.getDefinition()));
-
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* Timed transitions */" + System.lineSeparator());
-
-        return definition.toString();
-    }
+//    private String getTimedTransitionsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.transitions.stream()
+//                        .filter(transition -> transition instanceof TimedTransition)
+//                        .forEach(transition -> definition.append(transition.getDefinition()));
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* Timed transitions */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
     private String getArcsDefinition() {
         StringBuilder definition = new StringBuilder();
