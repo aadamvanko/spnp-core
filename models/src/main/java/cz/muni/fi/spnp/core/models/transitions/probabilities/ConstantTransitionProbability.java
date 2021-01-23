@@ -1,6 +1,6 @@
 package cz.muni.fi.spnp.core.models.transitions.probabilities;
 
-import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
+import cz.muni.fi.spnp.core.models.visitors.TransitionProbabilityVisitor;
 
 public class ConstantTransitionProbability implements TransitionProbability {
 
@@ -22,18 +22,9 @@ public class ConstantTransitionProbability implements TransitionProbability {
         this.value = value;
     }
 
-    /**
-     * Gets the {@link String} representation of the immediate transition probability.
-     *
-     * @param transition {@link ImmediateTransition} on which the probability is applied.
-     * @return representation of the immediate transition probability
-     */
-    @Override
-    public String getDefinition(ImmediateTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
 
-        return String.format("void probval(\"%s\", %f);",
-                transition.getName(), this.getValue());
+    @Override
+    public void accept(TransitionProbabilityVisitor transitionProbabilityVisitor) {
+        transitionProbabilityVisitor.visit(this);
     }
 }

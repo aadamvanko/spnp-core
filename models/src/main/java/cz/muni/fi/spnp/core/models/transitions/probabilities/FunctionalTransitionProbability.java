@@ -2,7 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.probabilities;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
-import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
+import cz.muni.fi.spnp.core.models.visitors.TransitionProbabilityVisitor;
 
 public class FunctionalTransitionProbability implements TransitionProbability {
 
@@ -30,18 +30,8 @@ public class FunctionalTransitionProbability implements TransitionProbability {
         this.function = function;
     }
 
-    /**
-     * Gets the {@link String} representation of the immediate transition probability.
-     *
-     * @param transition {@link ImmediateTransition} on which the probability is applied.
-     * @return representation of the immediate transition probability
-     */
     @Override
-    public String getDefinition(ImmediateTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
-
-        return String.format("void probfun(\"%s\", %s);",
-                transition.getName(), this.getFunction().getName());
+    public void accept(TransitionProbabilityVisitor transitionProbabilityVisitor) {
+        transitionProbabilityVisitor.visit(this);
     }
 }

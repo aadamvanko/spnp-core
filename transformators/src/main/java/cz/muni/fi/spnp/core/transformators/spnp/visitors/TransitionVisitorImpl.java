@@ -22,7 +22,7 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
         }
 
         if (immediateTransition.getTransitionProbability() != null) {
-            definition.append(immediateTransition.getTransitionProbability().getDefinition(immediateTransition));
+            definition.append(getTransitionProbabilityDefinition(immediateTransition));
             definition.append(System.lineSeparator());
         }
 
@@ -35,5 +35,11 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
                 + System.lineSeparator()
                 + timedTransition.getTransitionDistribution().getDefinition(timedTransition);
         stringBuilder.append(definition);
+    }
+
+    private String getTransitionProbabilityDefinition(ImmediateTransition immediateTransition) {
+        TransitionProbabilityVisitorImpl transitionProbabilityVisitor = new TransitionProbabilityVisitorImpl(immediateTransition);
+        immediateTransition.getTransitionProbability().accept(transitionProbabilityVisitor);
+        return transitionProbabilityVisitor.getResult();
     }
 }
