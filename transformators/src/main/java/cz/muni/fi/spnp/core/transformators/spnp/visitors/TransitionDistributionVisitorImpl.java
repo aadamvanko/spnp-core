@@ -19,21 +19,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (betaTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void betval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("betval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(betaTransitionDistribution.getFirstValue()),
                         formatDouble(betaTransitionDistribution.getSecondValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void betfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("betfun(\"%s\", %s, %s);",
                         transition.getName(),
                         betaTransitionDistribution.getFirstFunction().getName(),
                         betaTransitionDistribution.getSecondFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void betdep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("betdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(betaTransitionDistribution.getFirstValue()),
                         formatDouble(betaTransitionDistribution.getSecondValue()),
@@ -52,7 +52,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (binomialTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void binoval(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("binoval(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         formatDouble(binomialTransitionDistribution.getNumberValue()),
                         formatDouble(binomialTransitionDistribution.getProbabilityValue()),
@@ -60,7 +60,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void binofun(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("binofun(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         binomialTransitionDistribution.getNumberValueFunction(),
                         binomialTransitionDistribution.getProbabilityValueFunction(),
@@ -68,7 +68,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void binodep(\"%s\", %s, %s, %s, \"%s\");",
+                stringBuilder.append(String.format("binodep(\"%s\", %s, %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(binomialTransitionDistribution.getNumberValue()),
                         formatDouble(binomialTransitionDistribution.getProbabilityValue()),
@@ -88,21 +88,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (cauchyTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void cauval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("cauval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(cauchyTransitionDistribution.getAlphaValue()),
                         formatDouble(cauchyTransitionDistribution.getBetaValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void caufun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("caufun(\"%s\", %s, %s);",
                         transition.getName(),
                         cauchyTransitionDistribution.getAlphaValueFunction(),
                         cauchyTransitionDistribution.getBetaValueFunction()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void cauval(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("cauval(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(cauchyTransitionDistribution.getAlphaValue()),
                         formatDouble(cauchyTransitionDistribution.getBetaValue()),
@@ -121,19 +121,19 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (constantTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void detval(\"%s\", %s);",
+                stringBuilder.append(String.format("detval(\"%s\", %s);",
                         transition.getName(),
                         formatDouble(constantTransitionDistribution.getValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void detfun(\"%s\", %s);",
+                stringBuilder.append(String.format("detfun(\"%s\", %s);",
                         transition.getName(),
                         constantTransitionDistribution.getFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void detdep(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("detdep(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(constantTransitionDistribution.getValue()),
                         constantTransitionDistribution.getDependentPlace().getName()));
@@ -151,21 +151,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (erlangTransitionDIstribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void erlval(\"%s\", %s, %d);",
+                stringBuilder.append(String.format("erlval(\"%s\", %s, %d);",
                         transition.getName(),
                         formatDouble(erlangTransitionDIstribution.getRate()),
                         erlangTransitionDIstribution.getNumberOfPhases()));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void erlfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("erlfun(\"%s\", %s, %s);",
                         transition.getName(),
                         erlangTransitionDIstribution.getRateFunction().getName(),
                         erlangTransitionDIstribution.getNumberOfPhasesFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void erldep(\"%s\", %s, %d, %s);",
+                stringBuilder.append(String.format("erldep(\"%s\", %s, %d, %s);",
                         transition.getName(),
                         formatDouble(erlangTransitionDIstribution.getRate()),
                         erlangTransitionDIstribution.getNumberOfPhases(),
@@ -184,19 +184,19 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (exponentialTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void rateval(\"%s\", %s);",
+                stringBuilder.append(String.format("rateval(\"%s\", %s);",
                         transition.getName(),
                         formatDouble(exponentialTransitionDistribution.getRate())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void ratefun(\"%s\", %s);",
+                stringBuilder.append(String.format("ratefun(\"%s\", %s);",
                         transition.getName(),
                         exponentialTransitionDistribution.getRateFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void ratedep(\"%s\", %s, \"%s\");",
+                stringBuilder.append(String.format("ratedep(\"%s\", %s, \"%s\");",
                         transition.getName(),
                         formatDouble(exponentialTransitionDistribution.getRate()),
                         exponentialTransitionDistribution.getDependentPlace().getName()));
@@ -214,21 +214,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (gammaTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void gamval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("gamval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(gammaTransitionDistribution.getFirstValue()),
                         formatDouble(gammaTransitionDistribution.getSecondValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void gamfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("gamfun(\"%s\", %s, %s);",
                         transition.getName(),
                         gammaTransitionDistribution.getFirstFunction().getName(),
                         gammaTransitionDistribution.getSecondFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void gamdep(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("gamdep(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         formatDouble(gammaTransitionDistribution.getFirstValue()),
                         formatDouble(gammaTransitionDistribution.getSecondValue()),
@@ -247,21 +247,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (geometricTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void geomval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("geomval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(geometricTransitionDistribution.getFirstValue()),
                         formatDouble(geometricTransitionDistribution.getSecondValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void geomfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("geomfun(\"%s\", %s, %s);",
                         transition.getName(),
                         geometricTransitionDistribution.getFirstFunction().getName(),
                         geometricTransitionDistribution.getSecondFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void geomdep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("geomdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(geometricTransitionDistribution.getFirstValue()),
                         formatDouble(geometricTransitionDistribution.getSecondValue()),
@@ -280,7 +280,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (hyperExponentialTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void hyperval(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("hyperval(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         formatDouble(hyperExponentialTransitionDistribution.getFirstLambdaRate()),
                         formatDouble(hyperExponentialTransitionDistribution.getSecondLambdaRate()),
@@ -288,7 +288,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void hyperfun(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("hyperfun(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         hyperExponentialTransitionDistribution.getFirstLambdaRateFunction().getName(),
                         hyperExponentialTransitionDistribution.getSecondLambdaRateFunction().getName(),
@@ -296,7 +296,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void hyperdep(\"%s\", %s, %s, %s, \"%s\");",
+                stringBuilder.append(String.format("hyperdep(\"%s\", %s, %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(hyperExponentialTransitionDistribution.getFirstLambdaRate()),
                         formatDouble(hyperExponentialTransitionDistribution.getSecondLambdaRate()),
@@ -316,7 +316,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (hypoExponentialTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void hypoval(\"%s\", %d, %s, %s, %s);",
+                stringBuilder.append(String.format("hypoval(\"%s\", %d, %s, %s, %s);",
                         transition.getName(),
                         hypoExponentialTransitionDistribution.getNumberOfStages(),
                         formatDouble(hypoExponentialTransitionDistribution.getFirstRateValue()),
@@ -325,7 +325,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void hypofun(\"%s\", %s, %s, %s, %s);",
+                stringBuilder.append(String.format("hypofun(\"%s\", %s, %s, %s, %s);",
                         transition.getName(),
                         hypoExponentialTransitionDistribution.getNumberOfStagesFunction().getName(),
                         hypoExponentialTransitionDistribution.getFirstRateValueFunction().getName(),
@@ -334,7 +334,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void hypodep(\"%s\", %d, %s, %s, %s, \"%s\");",
+                stringBuilder.append(String.format("hypodep(\"%s\", %d, %s, %s, %s, \"%s\");",
                         transition.getName(),
                         hypoExponentialTransitionDistribution.getNumberOfStages(),
                         formatDouble(hypoExponentialTransitionDistribution.getFirstRateValue()),
@@ -355,21 +355,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (logarithmicNormalTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void lognval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("lognval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(logarithmicNormalTransitionDistribution.getFirstValue()),
                         formatDouble(logarithmicNormalTransitionDistribution.getSecondValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void lognfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("lognfun(\"%s\", %s, %s);",
                         transition.getName(),
                         logarithmicNormalTransitionDistribution.getFirstFunction().getName(),
                         logarithmicNormalTransitionDistribution.getSecondFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void logndep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("logndep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(logarithmicNormalTransitionDistribution.getFirstValue()),
                         formatDouble(logarithmicNormalTransitionDistribution.getSecondValue()),
@@ -388,7 +388,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (negativeBinomialTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void negbval(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("negbval(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         formatDouble(negativeBinomialTransitionDistribution.getNumberValue()),
                         formatDouble(negativeBinomialTransitionDistribution.getProbabilityValue()),
@@ -396,7 +396,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void negbfun(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("negbfun(\"%s\", %s, %s, %s);",
                         transition.getName(),
                         negativeBinomialTransitionDistribution.getNumberValueFunction().getName(),
                         negativeBinomialTransitionDistribution.getProbabilityValueFunction().getName(),
@@ -404,7 +404,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void negbdep(\"%s\", %s, %s, %s, \"%s\");",
+                stringBuilder.append(String.format("negbdep(\"%s\", %s, %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(negativeBinomialTransitionDistribution.getNumberValue()),
                         formatDouble(negativeBinomialTransitionDistribution.getProbabilityValue()),
@@ -424,21 +424,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (paretoTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void parval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("parval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(paretoTransitionDistribution.getScale()),
                         formatDouble(paretoTransitionDistribution.getAlpha())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void parfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("parfun(\"%s\", %s, %s);",
                         transition.getName(),
                         paretoTransitionDistribution.getScaleFunction().getName(),
                         paretoTransitionDistribution.getAlphaFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void pardep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("pardep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(paretoTransitionDistribution.getScale()),
                         formatDouble(paretoTransitionDistribution.getAlpha()),
@@ -457,21 +457,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (poissonTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void poisval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("poisval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(poissonTransitionDistribution.getLambdaValue()),
                         formatDouble(poissonTransitionDistribution.getTValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void poisfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("poisfun(\"%s\", %s, %s);",
                         transition.getName(),
                         poissonTransitionDistribution.getLambdaValueFunction().getName(),
                         poissonTransitionDistribution.getTValueFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void poisdep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("poisdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(poissonTransitionDistribution.getLambdaValue()),
                         formatDouble(poissonTransitionDistribution.getTValue()),
@@ -490,21 +490,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (truncatedNormalTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void normval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("normval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(truncatedNormalTransitionDistribution.getExpectation()),
                         formatDouble(truncatedNormalTransitionDistribution.getVariance())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void normfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("normfun(\"%s\", %s, %s);",
                         transition.getName(),
                         truncatedNormalTransitionDistribution.getExpectationFunction().getName(),
                         truncatedNormalTransitionDistribution.getVarianceFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void normdep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("normdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(truncatedNormalTransitionDistribution.getExpectation()),
                         formatDouble(truncatedNormalTransitionDistribution.getVariance()),
@@ -523,21 +523,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (uniformTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void unifval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("unifval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(uniformTransitionDistribution.getLowerBound()),
                         formatDouble(uniformTransitionDistribution.getUpperBound())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void uniffun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("uniffun(\"%s\", %s, %s);",
                         transition.getName(),
                         uniformTransitionDistribution.getLowerBoundFunction().getName(),
                         uniformTransitionDistribution.getUpperBoundFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void unifdep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("unifdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(uniformTransitionDistribution.getLowerBound()),
                         formatDouble(uniformTransitionDistribution.getUpperBound()),
@@ -556,21 +556,21 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (weibullTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("void weibval(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("weibval(\"%s\", %s, %s);",
                         transition.getName(),
                         formatDouble(weibullTransitionDistribution.getAlphaValue()),
                         formatDouble(weibullTransitionDistribution.getLambdaValue())));
                 break;
 
             case Functional:
-                stringBuilder.append(String.format("void weibfun(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("weibfun(\"%s\", %s, %s);",
                         transition.getName(),
                         weibullTransitionDistribution.getAlphaValueFunction().getName(),
                         weibullTransitionDistribution.getLambdaValueFunction().getName()));
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("void weibdep(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("weibdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(weibullTransitionDistribution.getAlphaValue()),
                         formatDouble(weibullTransitionDistribution.getLambdaValue()),
