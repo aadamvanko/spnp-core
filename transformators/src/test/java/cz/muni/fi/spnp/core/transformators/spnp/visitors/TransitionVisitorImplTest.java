@@ -84,7 +84,7 @@ public class TransitionVisitorImplTest {
         testDistribution("weibval", new WeibullTransitionDistribution(1.0, 2.0), "1.0, 2.0");
         testDistribution("normval", new TruncatedNormalTransitionDistribution(1.0, 2.0), "1.0, 2.0");
         testDistribution("lognval", new LogarithmicNormalTransitionDistribution(1.0, 2.0), "1.0, 2.0");
-        testDistribution("erlval", new ErlangTransitionDIstribution(1.0, 2), "1.0, 2.0");
+        testDistribution("erlval", new ErlangTransitionDIstribution(1.0, 2), "1.0, 2");
         testDistribution("gamval", new GammaTransitionDistribution(1.0, 2.0), "1.0, 2.0");
         testDistribution("betval", new BetaTransitionDistribution(1.0, 2.0), "1.0, 2.0");
         testDistribution("cauval", new CauchyTransitionDistribution(1.0, 2.0), "1.0, 2.0");
@@ -92,13 +92,13 @@ public class TransitionVisitorImplTest {
         testDistribution("poisval", new PoissonTransitionDistribution(1.0, 2.0), "1.0, 2.0");
         testDistribution("parval", new ParetoTransitionDistribution(1.0, 2.0), "1.0, 2.0");
         testDistribution("hyperval", new HyperExponentialTransitionDistribution(1.0, 2.0, 3.0), "1.0, 2.0, 3.0");
-        testDistribution("hypoval", new HypoExponentialTransitionDistribution(1, 2.0, 3.0, 4.0), "1.0, 2.0, 3.0, 4.0");
+        testDistribution("hypoval", new HypoExponentialTransitionDistribution(1, 2.0, 3.0, 4.0), "1, 2.0, 3.0, 4.0");
 
         testDistribution("negbval", new NegativeBinomialTransitionDistribution(1.0, 2.0, 3.0), "1.0, 2.0, 3.0");
 
 
         reinitVisitor();
-        String expected = String.format("detval(\"TimedTransition789\", 1.000000);%n" +
+        String expected = String.format("detval(\"TimedTransition789\", 10000.00001);%n" +
                 "priority(\"TimedTransition789\", 999);%n" +
                 "guard(\"TimedTransition789\", TimedGuard);%n");
 
