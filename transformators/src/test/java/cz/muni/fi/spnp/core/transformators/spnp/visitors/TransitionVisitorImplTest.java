@@ -7,6 +7,7 @@ package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.transitions.distributions.*;
@@ -77,24 +78,81 @@ public class TransitionVisitorImplTest {
      */
     @Test
     public void testVisit_TimedTransition() {
+        Function<Double> guard1 = new Function<>("TimedGuard1", FunctionType.Distribution, "return 1.2;", Double.class);
+        Function<Double> guard2 = new Function<>("TimedGuard2", FunctionType.Distribution, "return 3.4;", Double.class);
+        Function<Double> guard3 = new Function<>("TimedGuard3", FunctionType.Distribution, "return 5.6;", Double.class);
+        
+        Function<Integer> guardInt = new Function<>("TimedGuardInteger", FunctionType.Distribution, "return 7;", Integer.class);
+        
+        var dependentPlace = new StandardPlace(0, "SampleDependentPlace");
+        
         testDistribution("rateval", new ExponentialTransitionDistribution(1.0), "1.0");
+        testDistribution("ratefun", new ExponentialTransitionDistribution(guard1), "TimedGuard1");
+        testDistribution("ratedep", new ExponentialTransitionDistribution(1.0, dependentPlace), "1.0, \"SampleDependentPlace\"");
+        
         testDistribution("detval", new ConstantTransitionDistribution(1.0), "1.0");
+        testDistribution("detfun", new ConstantTransitionDistribution(guard2), "TimedGuard2");
+        testDistribution("detdep", new ConstantTransitionDistribution(1.0, dependentPlace), "1.0, \"SampleDependentPlace\"");
+        
         testDistribution("unifval", new UniformTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("uniffun", new UniformTransitionDistribution(guard3, guard1), "TimedGuard3, TimedGuard1");
+        testDistribution("unifdep", new UniformTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("geomval", new GeometricTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("geomfun", new GeometricTransitionDistribution(guard2, guard3), "TimedGuard2, TimedGuard3");
+        testDistribution("geomdep", new GeometricTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+
         testDistribution("weibval", new WeibullTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("weibfun", new WeibullTransitionDistribution(guard1, guard2), "TimedGuard1, TimedGuard2");
+        testDistribution("weibdep", new WeibullTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("normval", new TruncatedNormalTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("normfun", new TruncatedNormalTransitionDistribution(guard3, guard1), "TimedGuard3, TimedGuard1");
+        testDistribution("normdep", new TruncatedNormalTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("lognval", new LogarithmicNormalTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("lognfun", new LogarithmicNormalTransitionDistribution(guard2, guard3), "TimedGuard2, TimedGuard3");
+        testDistribution("logndep", new LogarithmicNormalTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("erlval", new ErlangTransitionDIstribution(1.0, 2), "1.0, 2");
+        testDistribution("erlfun", new ErlangTransitionDIstribution(guard2, guardInt), "TimedGuard2, TimedGuardInteger");
+        testDistribution("erldep", new ErlangTransitionDIstribution(1.0, 2, dependentPlace), "1.0, 2, \"SampleDependentPlace\"");
+        
         testDistribution("gamval", new GammaTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("gamfun", new GammaTransitionDistribution(guard1, guard2), "TimedGuard1, TimedGuard2");
+        testDistribution("gamdep", new GammaTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("betval", new BetaTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("betfun", new BetaTransitionDistribution(guard3, guard1), "TimedGuard3, TimedGuard1");
+        testDistribution("betdep", new BetaTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("cauval", new CauchyTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("caufun", new CauchyTransitionDistribution(guard2, guard3), "TimedGuard2, TimedGuard3");
+        testDistribution("caudep", new CauchyTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("binoval", new BinomialTransitionDistribution(1.0, 2.0, 3.0), "1.0, 2.0, 3.0");
+        testDistribution("binofun", new BinomialTransitionDistribution(guard1, guard2, guard3), "TimedGuard1, TimedGuard2, TimedGuard3");
+        testDistribution("binodep", new BinomialTransitionDistribution(1.0, 2.0, 3.0, dependentPlace), "1.0, 2.0, 3.0, \"SampleDependentPlace\"");
+        
         testDistribution("poisval", new PoissonTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("poisfun", new PoissonTransitionDistribution(guard1, guard2), "TimedGuard1, TimedGuard2");
+        testDistribution("poisdep", new PoissonTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("parval", new ParetoTransitionDistribution(1.0, 2.0), "1.0, 2.0");
+        testDistribution("parfun", new ParetoTransitionDistribution(guard3, guard1), "TimedGuard3, TimedGuard1");
+        testDistribution("pardep", new ParetoTransitionDistribution(1.0, 2.0, dependentPlace), "1.0, 2.0, \"SampleDependentPlace\"");
+        
         testDistribution("hyperval", new HyperExponentialTransitionDistribution(1.0, 2.0, 3.0), "1.0, 2.0, 3.0");
+        testDistribution("hyperfun", new HyperExponentialTransitionDistribution(guard1, guard2, guard3), "TimedGuard1, TimedGuard2, TimedGuard3");
+        testDistribution("hyperdep", new HyperExponentialTransitionDistribution(1.0, 2.0, 3.0, dependentPlace), "1.0, 2.0, 3.0, \"SampleDependentPlace\"");
+        
         testDistribution("hypoval", new HypoExponentialTransitionDistribution(1, 2.0, 3.0, 4.0), "1, 2.0, 3.0, 4.0");
+        testDistribution("hypofun", new HypoExponentialTransitionDistribution(guardInt, guard1, guard2, guard3), "TimedGuardInteger, TimedGuard1, TimedGuard2, TimedGuard3");
+        testDistribution("hypodep", new HypoExponentialTransitionDistribution(1, 2.0, 3.0, 4.0, dependentPlace), "1, 2.0, 3.0, 4.0, \"SampleDependentPlace\"");
 
         testDistribution("negbval", new NegativeBinomialTransitionDistribution(1.0, 2.0, 3.0), "1.0, 2.0, 3.0");
+        testDistribution("negbfun", new NegativeBinomialTransitionDistribution(guard1, guard2, guard3), "TimedGuard1, TimedGuard2, TimedGuard3");
+        testDistribution("negbdep", new NegativeBinomialTransitionDistribution(1.0, 2.0, 3.0, dependentPlace), "1.0, 2.0, 3.0, \"SampleDependentPlace\"");
 
 
         reinitVisitor();
