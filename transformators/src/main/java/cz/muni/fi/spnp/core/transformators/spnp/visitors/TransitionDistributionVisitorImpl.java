@@ -102,7 +102,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("cauval(\"%s\", %s, %s, \"%s\");",
+                stringBuilder.append(String.format("caudep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(cauchyTransitionDistribution.getAlphaValue()),
                         formatDouble(cauchyTransitionDistribution.getBetaValue()),
