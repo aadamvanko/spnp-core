@@ -6,12 +6,7 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.transformators.spnp.options.*;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 
 /**
@@ -69,8 +64,7 @@ public class OptionVisitorTest {
     @Test
     public void testVisit_DoubleTypeOption() {
         DoubleTypeOption doubleTypeOption = new DoubleTypeOption(OptionKey.FOP_FLUID_EPSILON, 55.46);
-        // TODO: trailing zeroes
-        String expected = "fopt(FOP_FLUID_EPSILON, 55.460000);";
+        String expected = "fopt(FOP_FLUID_EPSILON, 55.46);";
         instance.visit(doubleTypeOption);
         Assert.assertEquals("DoubleTypeOption scenario 1", expected.strip(), instance.getResult().strip());
         

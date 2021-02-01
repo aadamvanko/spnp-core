@@ -14,16 +14,16 @@ public class PlaceVisitorImpl extends Visitor implements PlaceVisitor {
         definition.append(System.lineSeparator());
 
         if (fluidPlace.getInitialValue() > 0) {
-            definition.append(String.format("finit(\"%s\", %f);", fluidPlace.getName(), fluidPlace.getInitialValue()));
+            definition.append(String.format("finit(\"%s\", %s);", fluidPlace.getName(), formatDouble(fluidPlace.getInitialValue())));
             definition.append(System.lineSeparator());
         }
         if (fluidPlace.getBoundValue() > 0.0) {
-            definition.append(String.format("fbound(\"%s\", %f);", fluidPlace.getName(), fluidPlace.getBoundValue()));
+            definition.append(String.format("fbound(\"%s\", %s);", fluidPlace.getName(), formatDouble(fluidPlace.getBoundValue())));
             definition.append(System.lineSeparator());
         }
         if (!fluidPlace.getBreakValues().isEmpty()) {
             for (var breakValue : fluidPlace.getBreakValues()) {
-                definition.append(String.format("fbreak(\"%s\", %f);", fluidPlace.getName(), breakValue));
+                definition.append(String.format("fbreak(\"%s\", %s);", fluidPlace.getName(), formatDouble(breakValue)));
                 definition.append(System.lineSeparator());
             }
         }

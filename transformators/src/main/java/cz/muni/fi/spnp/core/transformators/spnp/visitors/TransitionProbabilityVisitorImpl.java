@@ -19,8 +19,8 @@ public class TransitionProbabilityVisitorImpl extends Visitor implements Transit
         if (transition == null)
             throw new IllegalArgumentException("Transition is not specified.");
 
-        String definition = String.format("probval(\"%s\", %f);",
-                transition.getName(), constantTransitionProbability.getValue());
+        String definition = String.format("probval(\"%s\", %s);",
+                transition.getName(), formatDouble(constantTransitionProbability.getValue()));
         stringBuilder.append(definition);
     }
 
@@ -39,8 +39,8 @@ public class TransitionProbabilityVisitorImpl extends Visitor implements Transit
         if (transition == null)
             throw new IllegalArgumentException("Transition is not specified.");
 
-        String definition = String.format("probdep(\"%s\", %f, \"%s\");",
-                transition.getName(), placeDependentTransitionProbability.getValue(), placeDependentTransitionProbability.getDependentPlace().getName());
+        String definition = String.format("probdep(\"%s\", %s, \"%s\");",
+                transition.getName(), formatDouble(placeDependentTransitionProbability.getValue()), placeDependentTransitionProbability.getDependentPlace().getName());
         stringBuilder.append(definition);
     }
 }

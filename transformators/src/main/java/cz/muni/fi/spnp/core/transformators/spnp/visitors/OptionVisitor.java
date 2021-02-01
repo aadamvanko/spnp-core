@@ -12,7 +12,7 @@ public class OptionVisitor extends Visitor {
     }
 
     public void visit(DoubleTypeOption doubleTypeOption) {
-        stringBuilder.append(String.format("fopt(%s, %f);%n", doubleTypeOption.getKey().toString(), doubleTypeOption.getValue()));
+        stringBuilder.append(String.format("fopt(%s, %s);%n", doubleTypeOption.getKey().toString(), formatDouble(doubleTypeOption.getValue())));
     }
 
     public void visit(IntegerTypeOption integerTypeOption) {

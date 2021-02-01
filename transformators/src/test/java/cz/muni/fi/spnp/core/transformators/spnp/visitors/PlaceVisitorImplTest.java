@@ -5,13 +5,9 @@
  */
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.places.*;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import cz.muni.fi.spnp.core.models.places.FluidPlace;
+import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import org.junit.*;
 
 /**
  *
@@ -43,7 +39,7 @@ public class PlaceVisitorImplTest {
     private void reinitVisitor(){
         instance = new PlaceVisitorImpl();
     }
-    
+
     /**
      * Test of visit method, of class PlaceVisitorImpl.
      */
@@ -53,22 +49,24 @@ public class PlaceVisitorImplTest {
         String expected = "fplace(\"FluidPlace123\");";
         instance.visit(fluidPlace);
         Assert.assertEquals("FluidPlace scenario simple", expected.strip(), instance.getResult().strip());
-        
-        reinitVisitor();
-        // TODO: trailing zeroes
-        expected = String.format("fplace(\"FluidPlace123\");%n" +
-                    "finit(\"FluidPlace123\", 9849.261500);%n" +
-                    "fbound(\"FluidPlace123\", 165.565400);%n" +
-                    "fbreak(\"FluidPlace123\", 1.000000);%n" +
-                    "fbreak(\"FluidPlace123\", 123.010000);%n" +
-                    "fbreak(\"FluidPlace123\", 10000.000010);%n");
+    }
 
+    @Test
+    public void test_FluidPlace_breakValues() {
+        FluidPlace fluidPlace = new FluidPlace(0, "FluidPlace123");
         fluidPlace.setInitialValue(9849.2615);
         fluidPlace.setBoundValue(165.5654);
         fluidPlace.addBreakValue(123.01);
         fluidPlace.addBreakValue(10000.00001);
         fluidPlace.addBreakValue(1);
-        
+
+        String expected = String.format("fplace(\"FluidPlace123\");%n" +
+                "finit(\"FluidPlace123\", 9849.2615);%n" +
+                "fbound(\"FluidPlace123\", 165.5654);%n" +
+                "fbreak(\"FluidPlace123\", 1.0);%n" +
+                "fbreak(\"FluidPlace123\", 123.01);%n" +
+                "fbreak(\"FluidPlace123\", 10000.00001);%n");
+
         instance.visit(fluidPlace);
         Assert.assertEquals("FluidPlace scenario extended", expected.strip(), instance.getResult().strip());
     }

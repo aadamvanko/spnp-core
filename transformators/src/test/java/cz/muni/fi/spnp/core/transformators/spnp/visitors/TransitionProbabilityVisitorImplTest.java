@@ -9,13 +9,10 @@ import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
-import cz.muni.fi.spnp.core.models.transitions.probabilities.*;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
+import cz.muni.fi.spnp.core.models.transitions.probabilities.FunctionalTransitionProbability;
+import cz.muni.fi.spnp.core.models.transitions.probabilities.PlaceDependentTransitionProbability;
+import org.junit.*;
 
 /**
  *
@@ -54,8 +51,7 @@ public class TransitionProbabilityVisitorImplTest {
     @Test
     public void testVisit_ConstantTransitionProbability() {
         ConstantTransitionProbability constantTransitionProbability = new ConstantTransitionProbability(123);
-        // TODO: trailing zeroes
-        String expected = "probval(\"SampleTransition\", 123.000000);";
+        String expected = "probval(\"SampleTransition\", 123.0);";
         instance.visit(constantTransitionProbability);
         
         Assert.assertEquals("ConstantTransitionProbability scenario", expected.strip(), instance.getResult().strip());
@@ -66,7 +62,7 @@ public class TransitionProbabilityVisitorImplTest {
      */
     @Test
     public void testVisit_FunctionalTransitionProbability() {
-        Function<Double> function = new Function("funcName", FunctionType.Probability, "return 5.1;", Double.class);
+        Function<Double> function = new Function<>("funcName", FunctionType.Probability, "return 5.1;", Double.class);
         FunctionalTransitionProbability functionalTransitionProbability = new FunctionalTransitionProbability(function);
         // TODO: trailing zeroes
         String expected = "probfun(\"SampleTransition\", funcName);";
@@ -83,7 +79,7 @@ public class TransitionProbabilityVisitorImplTest {
         var stdPlace = new StandardPlace(0, "StandardPlace", 3);
         PlaceDependentTransitionProbability placeDependentTransitionProbability = new PlaceDependentTransitionProbability(12.34, stdPlace);
         // TODO: trailing zeroes
-        String expected = "probdep(\"SampleTransition\", 12.340000, \"StandardPlace\");";
+        String expected = "probdep(\"SampleTransition\", 12.34, \"StandardPlace\");";
         instance.visit(placeDependentTransitionProbability);
         
         Assert.assertEquals("PlaceDependentTransitionProbability scenario", expected.strip(), instance.getResult().strip());
