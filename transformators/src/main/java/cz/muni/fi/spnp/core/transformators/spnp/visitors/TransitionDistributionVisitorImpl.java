@@ -133,7 +133,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("detdep(\"%s\", %s, %s);",
+                stringBuilder.append(String.format("detdep(\"%s\", %s, \"%s\");",
                         transition.getName(),
                         formatDouble(constantTransitionDistribution.getValue()),
                         constantTransitionDistribution.getDependentPlace().getName()));
@@ -165,7 +165,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("erldep(\"%s\", %s, %d, %s);",
+                stringBuilder.append(String.format("erldep(\"%s\", %s, %d, \"%s\");",
                         transition.getName(),
                         formatDouble(erlangTransitionDIstribution.getRate()),
                         erlangTransitionDIstribution.getNumberOfPhases(),
@@ -228,7 +228,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("gamdep(\"%s\", %s, %s, %s);",
+                stringBuilder.append(String.format("gamdep(\"%s\", %s, %s, \"%s\");",
                         transition.getName(),
                         formatDouble(gammaTransitionDistribution.getFirstValue()),
                         formatDouble(gammaTransitionDistribution.getSecondValue()),
