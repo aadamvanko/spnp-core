@@ -31,9 +31,9 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
 
     @Override
     public void visit(TimedTransition timedTransition) {
-        String definition = String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority())
+        String definition = timedTransition.getTransitionDistribution().getDefinition(timedTransition)
                 + System.lineSeparator()
-                + timedTransition.getTransitionDistribution().getDefinition(timedTransition);
+                + String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority());
         stringBuilder.append(definition);
     }
 
