@@ -64,7 +64,6 @@ public class TransitionProbabilityVisitorImplTest {
     public void testVisit_FunctionalTransitionProbability() {
         Function<Double> function = new Function<>("funcName", FunctionType.Probability, "return 5.1;", Double.class);
         FunctionalTransitionProbability functionalTransitionProbability = new FunctionalTransitionProbability(function);
-        // TODO: trailing zeroes
         String expected = "probfun(\"SampleTransition\", funcName);";
         instance.visit(functionalTransitionProbability);
         
@@ -78,7 +77,6 @@ public class TransitionProbabilityVisitorImplTest {
     public void testVisit_PlaceDependentTransitionProbability() {
         var stdPlace = new StandardPlace(0, "StandardPlace", 3);
         PlaceDependentTransitionProbability placeDependentTransitionProbability = new PlaceDependentTransitionProbability(12.34, stdPlace);
-        // TODO: trailing zeroes
         String expected = "probdep(\"SampleTransition\", 12.34, \"StandardPlace\");";
         instance.visit(placeDependentTransitionProbability);
         
