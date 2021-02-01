@@ -41,7 +41,7 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.secondValue = secondValue;
     }
 
-    protected TFirstValue getFirstValue() {
+    public TFirstValue getFirstValue() {
         return firstValue;
     }
 
@@ -52,7 +52,7 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.firstValue = firstValue;
     }
 
-    protected TSecondValue getSecondValue() {
+    public TSecondValue getSecondValue() {
         return secondValue;
     }
 
@@ -63,7 +63,7 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.secondValue = secondValue;
     }
 
-    protected Function<TFirstValue> getFirstFunction() {
+    public Function<TFirstValue> getFirstFunction() {
         return firstFunction;
     }
 
@@ -76,7 +76,7 @@ public abstract class TwoValuesTransitionDistributionBase<TFirstValue, TSecondVa
         this.firstFunction = firstFunction;
     }
 
-    protected Function<TSecondValue> getSecondFunction() {
+    public Function<TSecondValue> getSecondFunction() {
         return secondFunction;
     }
 

@@ -2,7 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public class HypoExponentialTransitionDistribution extends FourValuesTransitionDistributionBase<Integer, Double, Double, Double> {
 
@@ -143,45 +143,8 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
         this.setFourthFunction(thirdRateValueFunction);
     }
 
-    /**
-     * Gets the {@link String} representation of the timed transition distribution definition.
-     *
-     * @param transition {@link TimedTransition} on which the distribution is applied.
-     * @return representation of the timed transition distribution definition
-     */
     @Override
-    public String getDefinition(TimedTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
-
-        switch (this.getDistributionType()) {
-            case Constant:
-                return String.format("void hypoval(\"%s\", %d, %f, %f, %f);",
-                        transition.getName(),
-                        this.getNumberOfStages(),
-                        this.getFirstRateValue(),
-                        this.getSecondRateValue(),
-                        this.getThirdRateValue());
-
-            case Functional:
-                return String.format("void hypofun(\"%s\", %s, %s, %s, %s);",
-                        transition.getName(),
-                        this.getNumberOfStagesFunction().getName(),
-                        this.getFirstRateValueFunction().getName(),
-                        this.getSecondRateValueFunction().getName(),
-                        this.getThirdRateValueFunction().getName());
-
-            case PlaceDependent:
-                return String.format("void hypodep(\"%s\", %d, %f, %f, %f, \"%s\");",
-                        transition.getName(),
-                        this.getNumberOfStages(),
-                        this.getFirstRateValue(),
-                        this.getSecondRateValue(),
-                        this.getThirdRateValue(),
-                        this.getDependentPlace().getName());
-
-            default:
-                throw new IllegalStateException("Hypo-exponential transition distribution has unknown type.");
-        }
+    public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
+        transitionDistributionVisitor.visit(this);
     }
 }

@@ -2,8 +2,8 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.utils.Constants;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public class ExponentialTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
 
@@ -97,32 +97,8 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
         }
     }
 
-    /**
-     * Gets the {@link String} representation of the timed transition distribution definition.
-     *
-     * @param transition {@link TimedTransition} on which the distribution is applied.
-     * @return representation of the timed transition distribution definition
-     */
     @Override
-    public String getDefinition(TimedTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
-
-        switch (this.getDistributionType()) {
-            case Constant:
-                return String.format("void rateval(\"%s\", %f);",
-                        transition.getName(), this.getRate());
-
-            case Functional:
-                return String.format("void ratefun(\"%s\", %s);",
-                        transition.getName(), this.getRateFunction().getName());
-
-            case PlaceDependent:
-                return String.format("void ratedep(\"%s\", %f, \"%s\");",
-                        transition.getName(), this.getRate(), this.getDependentPlace().getName());
-
-            default:
-                throw new IllegalStateException("Exponential transition distribution has unknown type.");
-        }
+    public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
+        transitionDistributionVisitor.visit(this);
     }
 }

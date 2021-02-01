@@ -31,7 +31,7 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
 
     @Override
     public void visit(TimedTransition timedTransition) {
-        String definition = timedTransition.getTransitionDistribution().getDefinition(timedTransition)
+        String definition = getTransitionDistributionDefinition(timedTransition)
                 + System.lineSeparator()
                 + String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority());
         stringBuilder.append(definition);
@@ -41,5 +41,11 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
         TransitionProbabilityVisitorImpl transitionProbabilityVisitor = new TransitionProbabilityVisitorImpl(immediateTransition);
         immediateTransition.getTransitionProbability().accept(transitionProbabilityVisitor);
         return transitionProbabilityVisitor.getResult();
+    }
+
+    private String getTransitionDistributionDefinition(TimedTransition timedTransition) {
+        TransitionDistributionVisitorImpl transitionDistributionVisitorImpl = new TransitionDistributionVisitorImpl(timedTransition);
+        timedTransition.getTransitionDistribution().accept(transitionDistributionVisitorImpl);
+        return transitionDistributionVisitorImpl.getResult();
     }
 }

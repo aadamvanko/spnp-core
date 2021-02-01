@@ -2,7 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public class ErlangTransitionDIstribution extends TwoValuesTransitionDistributionBase<Double, Integer> {
 
@@ -81,32 +81,8 @@ public class ErlangTransitionDIstribution extends TwoValuesTransitionDistributio
         this.setSecondFunction(numberOfPhasesFunction);
     }
 
-    /**
-     * Gets the {@link String} representation of the timed transition distribution definition.
-     *
-     * @param transition {@link TimedTransition} on which the distribution is applied.
-     * @return representation of the timed transition distribution definition
-     */
     @Override
-    public String getDefinition(TimedTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
-
-        switch (this.getDistributionType()) {
-            case Constant:
-                return String.format("void erlval(\"%s\", %f, %d);",
-                        transition.getName(), this.getRate(), this.getNumberOfPhases());
-
-            case Functional:
-                return String.format("void erlfun(\"%s\", %s, %s);",
-                        transition.getName(), this.getRateFunction().getName(), this.getNumberOfPhasesFunction().getName());
-
-            case PlaceDependent:
-                return String.format("void erldep(\"%s\", %f, %d, %s);",
-                        transition.getName(), this.getRate(), this.getNumberOfPhases(), this.getDependentPlace().getName());
-
-            default:
-                throw new IllegalStateException("Erlang transition distribution has unknown type.");
-        }
+    public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
+        transitionDistributionVisitor.visit(this);
     }
 }

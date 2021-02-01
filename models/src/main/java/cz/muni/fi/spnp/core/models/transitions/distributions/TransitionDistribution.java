@@ -1,17 +1,9 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public interface TransitionDistribution {
-
-    /**
-     * Gets the {@link String} representation of the timed transition distribution definition.
-     *
-     * @param transition    {@link TimedTransition} on which the distribution is applied.
-     * @return representation of the timed transition distribution definition
-     */
-    String getDefinition(TimedTransition transition);
 
     /**
      * Gets the {@link String} declarations of the functions defined in this distribution
@@ -42,4 +34,6 @@ public interface TransitionDistribution {
      * @return dependent {@link StandardPlace} object
      */
     StandardPlace getDependentPlace();
+
+    void accept(TransitionDistributionVisitor transitionDistributionVisitor);
 }

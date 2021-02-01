@@ -2,8 +2,8 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.utils.Constants;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public class ConstantTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
 
@@ -95,32 +95,8 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
         }
     }
 
-    /**
-     * Gets the {@link String} representation of the timed transition distribution definition.
-     *
-     * @param transition {@link TimedTransition} on which the distribution is applied.
-     * @return representation of the timed transition distribution definition
-     */
     @Override
-    public String getDefinition(TimedTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
-
-        switch (this.getDistributionType()) {
-            case Constant:
-                return String.format("void detval(\"%s\", %f);",
-                        transition.getName(), this.getValue());
-
-            case Functional:
-                return String.format("void detfun(\"%s\", %s);",
-                        transition.getName(), this.getFunction().getName());
-
-            case PlaceDependent:
-                return String.format("void detdep(\"%s\", %f, %s);",
-                        transition.getName(), this.getValue(), this.getDependentPlace().getName());
-
-            default:
-                throw new IllegalStateException("Constant transition distribution has unknown type.");
-        }
+    public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
+        transitionDistributionVisitor.visit(this);
     }
 }

@@ -2,7 +2,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public class HyperExponentialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
 
@@ -113,39 +113,8 @@ public class HyperExponentialTransitionDistribution extends ThreeValuesTransitio
         this.setThirdFunction(probabilityValueFunction);
     }
 
-    /**
-     * Gets the {@link String} representation of the timed transition distribution definition.
-     *
-     * @param transition {@link TimedTransition} on which the distribution is applied.
-     * @return representation of the timed transition distribution definition
-     */
     @Override
-    public String getDefinition(TimedTransition transition) {
-        if (transition == null)
-            throw new IllegalArgumentException("Transition is not specified.");
-
-        switch (this.getDistributionType()) {
-            case Constant:
-                return String.format("void hyperval(\"%s\", %f, %f, %f);",
-                        transition.getName(), this.getFirstLambdaRate(), this.getSecondLambdaRate(), this.getProbabilityValue());
-
-            case Functional:
-                return String.format("void hyperfun(\"%s\", %s, %s, %s);",
-                        transition.getName(),
-                        this.getFirstLambdaRateFunction().getName(),
-                        this.getSecondLambdaRateFunction().getName(),
-                        this.getProbabilityValueFunction().getName());
-
-            case PlaceDependent:
-                return String.format("void hyperdep(\"%s\", %f, %f, %f, \"%s\");",
-                        transition.getName(),
-                        this.getFirstLambdaRate(),
-                        this.getSecondLambdaRate(),
-                        this.getProbabilityValue(),
-                        this.getDependentPlace().getName());
-
-            default:
-                throw new IllegalStateException("Hyper-exponential transition distribution has unknown type.");
-        }
+    public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
+        transitionDistributionVisitor.visit(this);
     }
 }
