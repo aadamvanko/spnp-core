@@ -62,9 +62,9 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
             case Functional:
                 stringBuilder.append(String.format("binofun(\"%s\", %s, %s, %s);",
                         transition.getName(),
-                        binomialTransitionDistribution.getNumberValueFunction(),
-                        binomialTransitionDistribution.getProbabilityValueFunction(),
-                        binomialTransitionDistribution.getTValueFunction()));
+                        binomialTransitionDistribution.getNumberValueFunction().getName(),
+                        binomialTransitionDistribution.getProbabilityValueFunction().getName(),
+                        binomialTransitionDistribution.getTValueFunction().getName()));
                 break;
 
             case PlaceDependent:
@@ -97,8 +97,8 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
             case Functional:
                 stringBuilder.append(String.format("caufun(\"%s\", %s, %s);",
                         transition.getName(),
-                        cauchyTransitionDistribution.getAlphaValueFunction(),
-                        cauchyTransitionDistribution.getBetaValueFunction()));
+                        cauchyTransitionDistribution.getAlphaValueFunction().getName(),
+                        cauchyTransitionDistribution.getBetaValueFunction().getName()));
                 break;
 
             case PlaceDependent:
