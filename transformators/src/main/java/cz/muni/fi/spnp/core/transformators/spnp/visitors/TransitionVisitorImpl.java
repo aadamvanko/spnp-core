@@ -34,6 +34,12 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
         String definition = getTransitionDistributionDefinition(timedTransition)
                 + System.lineSeparator()
                 + String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority());
+
+        if (timedTransition.getGuardFunction() != null) {
+            definition += System.lineSeparator()
+                    + String.format("guard(\"%s\", %s);", timedTransition.getName(), timedTransition.getGuardFunction().getName());
+        }
+
         stringBuilder.append(definition);
     }
 
