@@ -1,9 +1,6 @@
 package cz.muni.fi.spnp.core.models;
 
 import cz.muni.fi.spnp.core.models.arcs.Arc;
-import cz.muni.fi.spnp.core.models.arcs.ArcDirection;
-import cz.muni.fi.spnp.core.models.arcs.InhibitorArc;
-import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
@@ -48,6 +45,10 @@ public class PetriNet {
 
     public Set<Transition> getTransitions() {
         return transitions;
+    }
+
+    public Set<Arc> getArcs() {
+        return arcs;
     }
 
     public void addInclude(Include include) {
@@ -403,73 +404,73 @@ public class PetriNet {
 //        return definition.toString();
 //    }
 
-    private String getArcsDefinition() {
-        StringBuilder definition = new StringBuilder();
+//    private String getArcsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        definition.append(getInputArcsDefinition());
+//        definition.append(getOutputArcsDefinition());
+//        definition.append(getInhibitorArcsDefinition());
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* ==== ARCS ==== */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
-        definition.append(getInputArcsDefinition());
-        definition.append(getOutputArcsDefinition());
-        definition.append(getInhibitorArcsDefinition());
+//    private String getInputArcsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.arcs.stream()
+//                 .filter(arc -> arc instanceof StandardArc)
+//                 .filter(arc -> ((StandardArc) arc).getDirection() == ArcDirection.Input)
+//                 .forEach(arc -> definition.append(arc.getDefinition()));
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* Input arcs */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
-        if (definition.length() == 0)
-            return "";
+//    private String getOutputArcsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.arcs.stream()
+//                 .filter(arc -> arc instanceof StandardArc)
+//                 .filter(arc -> ((StandardArc) arc).getDirection() == ArcDirection.Output)
+//                 .forEach(arc -> definition.append(arc.getDefinition()));
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* Output arcs */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
-        definition.insert(0, "/* ==== ARCS ==== */" + System.lineSeparator());
-
-        return definition.toString();
-    }
-
-    private String getInputArcsDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.arcs.stream()
-                 .filter(arc -> arc instanceof StandardArc)
-                 .filter(arc -> ((StandardArc) arc).getDirection() == ArcDirection.Input)
-                 .forEach(arc -> definition.append(arc.getDefinition()));
-
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* Input arcs */" + System.lineSeparator());
-
-        return definition.toString();
-    }
-
-    private String getOutputArcsDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.arcs.stream()
-                 .filter(arc -> arc instanceof StandardArc)
-                 .filter(arc -> ((StandardArc) arc).getDirection() == ArcDirection.Output)
-                 .forEach(arc -> definition.append(arc.getDefinition()));
-
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* Output arcs */" + System.lineSeparator());
-
-        return definition.toString();
-    }
-
-    private String getInhibitorArcsDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.arcs.stream()
-                 .filter(arc -> arc instanceof InhibitorArc)
-                 .forEach(arc -> definition.append(arc.getDefinition()));
-
-        if (definition.length() == 0)
-            return "";
-
-        definition.insert(0, "/* Inhibitor arcs */" + System.lineSeparator());
-
-        return definition.toString();
-    }
+//    private String getInhibitorArcsDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.arcs.stream()
+//                 .filter(arc -> arc instanceof InhibitorArc)
+//                 .forEach(arc -> definition.append(arc.getDefinition()));
+//
+//        if (definition.length() == 0)
+//            return "";
+//
+//        definition.insert(0, "/* Inhibitor arcs */" + System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
     private String getParameterVariablesBindings() {
         // get parameter variables
         var parameterVariables = variables.stream()
-                                          .filter(variable -> variable.getType() == VariableType.Parameter)
-                                          .collect(Collectors.toSet());
+                .filter(variable -> variable.getType() == VariableType.Parameter)
+                .collect(Collectors.toSet());
 
         if (parameterVariables.isEmpty())
             return "";
@@ -524,17 +525,26 @@ public class PetriNet {
     }
 
     private String getSectionTitleCommentFor(FunctionType functionsType) {
-        return switch (functionsType) {
-            case Generic -> "/*  C functions  */";
-            case Guard -> "/*  Guard functions  */";
-            case Reward -> "/*  Reward functions  */";
-            case ArcCardinality -> "/*  Cardinality functions  */";
-            case Probability -> "/*  Probability functions  */";
-            case Distribution -> "/*  Distribution functions  */";
-            case Halting -> "/*  Halting functions  */";
-            case SPNP -> "/*  SPNP functions  */";
-            default -> throw new IllegalArgumentException("Function type is unknown or undefined.");
-        };
+        switch (functionsType) {
+            case Generic:
+                return "/*  C functions  */";
+            case Guard:
+                return "/*  Guard functions  */";
+            case Reward:
+                return "/*  Reward functions  */";
+            case ArcCardinality:
+                return "/*  Cardinality functions  */";
+            case Probability:
+                return "/*  Probability functions  */";
+            case Distribution:
+                return "/*  Distribution functions  */";
+            case Halting:
+                return "/*  Halting functions  */";
+            case SPNP:
+                return "/*  SPNP functions  */";
+            default:
+                throw new IllegalArgumentException("Function type is unknown or undefined.");
+        }
     }
 
     private void createDefaultRequiredFunctions() {

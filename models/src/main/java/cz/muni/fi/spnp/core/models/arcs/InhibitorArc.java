@@ -1,9 +1,9 @@
 package cz.muni.fi.spnp.core.models.arcs;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
+import cz.muni.fi.spnp.core.models.visitors.ArcVisitor;
 
 public class InhibitorArc extends Arc {
 
@@ -27,36 +27,8 @@ public class InhibitorArc extends Arc {
         super(id, place, transition, calculateMultiplicityFunction);
     }
 
-    /**
-     * Gets the {@link String} representation of the arc and its parameters.
-     *
-     * @return representation of the arc and its parameters
-     */
     @Override
-    public String getDefinition() {
-        String prefix = "";
-
-        if (this.getPlace() instanceof FluidPlace) {
-            prefix += "d";
-        }
-
-        if (this.getCalculateMultiplicityFunction() != null) {
-            return prefix + String.format("vharc(\"%s\", \"%s\", %s);%s",
-                                          this.getTransition().getName(),
-                                          this.getPlace().getName(),
-                                          this.getCalculateMultiplicityFunction().getName(),
-                                          System.lineSeparator());
-        } else if (this.getMultiplicity() > 1) {
-            return prefix + String.format("mharc(\"%s\", \"%s\", %d);%s",
-                                          this.getTransition().getName(),
-                                          this.getPlace().getName(),
-                                          this.getMultiplicity(),
-                                          System.lineSeparator());
-        } else {
-            return prefix + String.format("harc(\"%s\", \"%s\");%s",
-                                          this.getTransition().getName(),
-                                          this.getPlace().getName(),
-                                          System.lineSeparator());
-        }
+    public void accept(ArcVisitor arcVisitor) {
+        arcVisitor.visit(this);
     }
 }

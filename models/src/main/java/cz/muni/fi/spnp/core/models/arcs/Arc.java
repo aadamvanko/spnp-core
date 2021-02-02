@@ -5,10 +5,11 @@ import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
+import cz.muni.fi.spnp.core.models.visitors.ArcVisitor;
 
-public abstract class Arc {
+public abstract class Arc implements Comparable<Arc> {
 
-    private int id;
+    private final int id;
     private int multiplicity;
     private Place place;
     private Transition transition;
@@ -52,13 +53,6 @@ public abstract class Arc {
         this.place = place;
         this.transition = transition;
     }
-
-    /**
-     * Gets the {@link String} representation of the arc and its parameters.
-     *
-     * @return  representation of the arc and its parameters
-     */
-    public abstract String getDefinition();
 
     public int getId() {
         return id;
@@ -121,4 +115,10 @@ public abstract class Arc {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public int compareTo(Arc other) {
+        return Integer.compare(id, other.getId());
+    }
+
+    public abstract void accept(ArcVisitor arcVisitor);
 }

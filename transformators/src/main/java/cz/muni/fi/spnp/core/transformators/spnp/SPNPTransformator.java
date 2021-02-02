@@ -1,10 +1,12 @@
 package cz.muni.fi.spnp.core.transformators.spnp;
 
 import cz.muni.fi.spnp.core.models.PetriNet;
+import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.Transformator;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImpl;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImpl;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImpl;
@@ -12,6 +14,7 @@ import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 /∗ This example adapted from M.K. Molloy’s IEEE TC paper ∗/
@@ -107,15 +110,14 @@ public class SPNPTransformator implements Transformator {
     @Override
     public String transform(PetriNet petriNet) {
         // TODO add header files
-        StringBuilder source = new StringBuilder();
-        source.append(generateIncludes());
-        source.append(generateOptions() + System.lineSeparator());
-        source.append(generateNet(petriNet));
-        source.append(generateAssert());
-        source.append(generateAcInit());
-        source.append(generateAcReach());
-        source.append(generateAcFinal());
-        return source.toString();
+        String source = generateIncludes() +
+                generateOptions() + System.lineSeparator() +
+                generateNet(petriNet) +
+                generateAssert() +
+                generateAcInit() +
+                generateAcReach() +
+                generateAcFinal();
+        return source;
     }
 
     private String generateIncludes() {
@@ -133,13 +135,13 @@ public class SPNPTransformator implements Transformator {
     }
 
     private String generateNet(PetriNet petriNet) {
-        StringBuilder netDefinition = new StringBuilder();
-        netDefinition.append("void net() {" + System.lineSeparator());
-        netDefinition.append(tabify(placesDefinition(petriNet)));
-        netDefinition.append(tabify(transitionsDefinition(petriNet)));
-        // TODO arcs, ...
-        netDefinition.append("}");
-        return netDefinition.toString();
+        String netDefinition = "void net() {" + System.lineSeparator() +
+                tabify(placesDefinition(petriNet)) +
+                tabify(transitionsDefinition(petriNet)) +
+                tabify(arcsDefinition(petriNet)) +
+                // TODO arcs, ...
+                "}";
+        return netDefinition;
     }
 
     private String placesDefinition(PetriNet petriNet) {
@@ -162,6 +164,13 @@ public class SPNPTransformator implements Transformator {
         return transitionVisitor.getResult();
     }
 
+    private String arcsDefinition(PetriNet petriNet) {
+        ArcVisitorImpl arcVisitorImpl = new ArcVisitorImpl();
+        List<Arc> sortedArcs = petriNet.getArcs().stream().sorted().collect(Collectors.toList());
+        sortedArcs.forEach(arc -> arc.accept(arcVisitorImpl));
+        return arcVisitorImpl.getResult();
+    }
+
     private String generateAssert() {
         return "";
     }
@@ -182,7 +191,7 @@ public class SPNPTransformator implements Transformator {
         String[] lines = text.split(System.lineSeparator());
         StringBuilder textWithTabs = new StringBuilder();
         for (String line : lines) {
-            textWithTabs.append("\t" + line + System.lineSeparator());
+            textWithTabs.append("\t").append(line).append(System.lineSeparator());
         }
         return textWithTabs.toString();
     }

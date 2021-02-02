@@ -1,14 +1,13 @@
 package cz.muni.fi.spnp.core.models.arcs;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
-import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import cz.muni.fi.spnp.core.models.places.Place;
-import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
+import cz.muni.fi.spnp.core.models.visitors.ArcVisitor;
 
 public class StandardArc extends Arc {
 
-    private ArcDirection direction;
+    private final ArcDirection direction;
     private boolean isFluid;
 
     public StandardArc(int id,
@@ -52,70 +51,8 @@ public class StandardArc extends Arc {
         this.isFluid = isFluid;
     }
 
-    /**
-     * Gets the {@link String} representation of the arc and its parameters.
-     *
-     * @return representation of the arc and its parameters
-     */
     @Override
-    public String getDefinition() {
-        switch (this.getDirection()) {
-            case Input:
-                String prefix = "";
-                if (this.isFluid()) {
-                    prefix = "f";
-                } else if (this.getPlace() instanceof FluidPlace) {
-                    prefix = "d";
-                }
-
-                if (this.getCalculateMultiplicityFunction() != null) {
-                    return prefix + String.format("viarc(\"%s\", \"%s\", %s);%s",
-                                                  this.getTransition().getName(),
-                                                  this.getPlace().getName(),
-                                                  this.getCalculateMultiplicityFunction().getName(),
-                                                  System.lineSeparator());
-                } else if (this.getMultiplicity() > 1) {
-                    return prefix + String.format("miarc(\"%s\", \"%s\", %d);%s",
-                                                  this.getTransition().getName(),
-                                                  this.getPlace().getName(),
-                                                  this.getMultiplicity(),
-                                                  System.lineSeparator());
-                } else {
-                    return prefix + String.format("iarc(\"%s\", \"%s\");%s",
-                                                  this.getTransition().getName(),
-                                                  this.getPlace().getName(),
-                                                  System.lineSeparator());
-                }
-
-            case Output:
-                prefix = "";
-                if (this.isFluid()) {
-                    prefix = "f";
-                } else if (this.getPlace() instanceof FluidPlace) {
-                    prefix = "d";
-                }
-
-                if (this.getCalculateMultiplicityFunction() != null) {
-                    return prefix + String.format("voarc(\"%s\", \"%s\", %s);%s",
-                                                  this.getTransition().getName(),
-                                                  this.getPlace().getName(),
-                                                  this.getCalculateMultiplicityFunction().getName(),
-                                                  System.lineSeparator());
-                } else if (this.getMultiplicity() > 1) {
-                    return prefix + String.format("moarc(\"%s\", \"%s\", %d);%s",
-                                                  this.getTransition().getName(),
-                                                  this.getPlace().getName(),
-                                                  this.getMultiplicity(),
-                                                  System.lineSeparator());
-                } else {
-                    return prefix + String.format("oarc(\"%s\", \"%s\");%s",
-                                                  this.getTransition().getName(),
-                                                  this.getPlace().getName(),
-                                                  System.lineSeparator());
-                }
-
-            default:
-                throw new IllegalStateException("Unknown Arc direction.");
-        }
+    public void accept(ArcVisitor arcVisitor) {
+        arcVisitor.visit(this);
     }
 }
