@@ -11,8 +11,6 @@ import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImpl;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImpl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,11 +124,8 @@ public class SPNPTransformator implements Transformator {
 
     private String generateOptions() {
         OptionVisitor optionVisitor = new OptionVisitor();
-        List<Option> sortedOptions = new ArrayList<>(spnpOptions.getOptions());
-        Collections.sort(sortedOptions);
-        for (var option : sortedOptions) {
-            option.accept(optionVisitor);
-        }
+        List<Option> sortedOptions = spnpOptions.getOptions().stream().sorted().collect(Collectors.toList());
+        sortedOptions.forEach(option -> option.accept(optionVisitor));
         return String.format("void options() {%n%s}", tabify(optionVisitor.getResult()));
     }
 
@@ -146,22 +141,16 @@ public class SPNPTransformator implements Transformator {
 
     private String placesDefinition(PetriNet petriNet) {
         PlaceVisitorImpl placeVisitorImpl = new PlaceVisitorImpl();
-        List<Place> sortedPlaces = new ArrayList<>(petriNet.getPlaces());
-        Collections.sort(sortedPlaces);
-        for (var option : sortedPlaces) {
-            option.accept(placeVisitorImpl);
-        }
+        List<Place> sortedPlaces = petriNet.getPlaces().stream().sorted().collect(Collectors.toList());
+        sortedPlaces.forEach(place -> place.accept(placeVisitorImpl));
         return placeVisitorImpl.getResult();
     }
 
     private String transitionsDefinition(PetriNet petriNet) {
-        TransitionVisitorImpl transitionVisitor = new TransitionVisitorImpl();
-        List<Transition> sortedTransitions = new ArrayList<>(petriNet.getTransitions());
-        Collections.sort(sortedTransitions);
-        for (var transition : sortedTransitions) {
-            transition.accept(transitionVisitor);
-        }
-        return transitionVisitor.getResult();
+        TransitionVisitorImpl transitionVisitorImpl = new TransitionVisitorImpl();
+        List<Transition> sortedTransitions = petriNet.getTransitions().stream().sorted().collect(Collectors.toList());
+        sortedTransitions.forEach(transition -> transition.accept(transitionVisitorImpl));
+        return transitionVisitorImpl.getResult();
     }
 
     private String arcsDefinition(PetriNet petriNet) {
