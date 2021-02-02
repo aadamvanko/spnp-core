@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.muni.fi.spnp.core.tests;
+package cz.muni.fi.spnp.core.transformators.spnp.extended;
 
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import java.util.HashMap;

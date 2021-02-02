@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.tests;
+package cz.muni.fi.spnp.core.transformators.spnp.extended;
 
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 

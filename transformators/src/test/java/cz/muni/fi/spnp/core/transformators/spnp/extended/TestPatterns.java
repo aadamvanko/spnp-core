@@ -1,4 +1,4 @@
-package cz.muni.fi.spnp.core.tests;
+package cz.muni.fi.spnp.core.transformators.spnp.extended;
 
 import cz.muni.fi.spnp.core.transformators.spnp.options.OptionKey;
 import java.util.regex.Pattern;
