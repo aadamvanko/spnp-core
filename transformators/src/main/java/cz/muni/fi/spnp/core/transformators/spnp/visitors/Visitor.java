@@ -11,6 +11,10 @@ public class Visitor {
         return stringBuilder.toString();
     }
 
+    protected String formatIntAsDouble(int d) {
+        return d + ".0";
+    }
+
     protected String formatDouble(Double d) {
         String localizedNumber = String.format(Locale.US, "%f", d);
         String withoutTrailingZeros = new BigDecimal(localizedNumber).stripTrailingZeros().toPlainString();

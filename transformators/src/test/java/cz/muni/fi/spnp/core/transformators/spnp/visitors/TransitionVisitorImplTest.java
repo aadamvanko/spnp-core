@@ -146,9 +146,9 @@ public class TransitionVisitorImplTest {
         testDistribution("hyperfun", new HyperExponentialTransitionDistribution(guard1, guard2, guard3), "TimedGuard1, TimedGuard2, TimedGuard3");
         testDistribution("hyperdep", new HyperExponentialTransitionDistribution(1.0, 2.0, 3.0, dependentPlace), "1.0, 2.0, 3.0, \"SampleDependentPlace\"");
         
-        testDistribution("hypoval", new HypoExponentialTransitionDistribution(1, 2.0, 3.0, 4.0), "1, 2.0, 3.0, 4.0");
+        testDistribution("hypoval", new HypoExponentialTransitionDistribution(2, 2.0, 3.0, 4.0), "2.0, 2.0, 3.0, 4.0");
         testDistribution("hypofun", new HypoExponentialTransitionDistribution(guardInt, guard1, guard2, guard3), "TimedGuardInteger, TimedGuard1, TimedGuard2, TimedGuard3");
-        testDistribution("hypodep", new HypoExponentialTransitionDistribution(1, 2.0, 3.0, 4.0, dependentPlace), "1, 2.0, 3.0, 4.0, \"SampleDependentPlace\"");
+        testDistribution("hypodep", new HypoExponentialTransitionDistribution(3, 2.0, 3.0, 4.0, dependentPlace), "3.0, 2.0, 3.0, 4.0, \"SampleDependentPlace\"");
 
         testDistribution("negbval", new NegativeBinomialTransitionDistribution(1.0, 2.0, 3.0), "1.0, 2.0, 3.0");
         testDistribution("negbfun", new NegativeBinomialTransitionDistribution(guard1, guard2, guard3), "TimedGuard1, TimedGuard2, TimedGuard3");

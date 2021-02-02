@@ -316,9 +316,9 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
 
         switch (hypoExponentialTransitionDistribution.getDistributionType()) {
             case Constant:
-                stringBuilder.append(String.format("hypoval(\"%s\", %d, %s, %s, %s);",
+                stringBuilder.append(String.format("hypoval(\"%s\", %s, %s, %s, %s);",
                         transition.getName(),
-                        hypoExponentialTransitionDistribution.getNumberOfStages(),
+                        formatIntAsDouble(hypoExponentialTransitionDistribution.getNumberOfStages()),
                         formatDouble(hypoExponentialTransitionDistribution.getFirstRateValue()),
                         formatDouble(hypoExponentialTransitionDistribution.getSecondRateValue()),
                         formatDouble(hypoExponentialTransitionDistribution.getThirdRateValue())));
@@ -334,9 +334,9 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
                 break;
 
             case PlaceDependent:
-                stringBuilder.append(String.format("hypodep(\"%s\", %d, %s, %s, %s, \"%s\");",
+                stringBuilder.append(String.format("hypodep(\"%s\", %s, %s, %s, %s, \"%s\");",
                         transition.getName(),
-                        hypoExponentialTransitionDistribution.getNumberOfStages(),
+                        formatIntAsDouble(hypoExponentialTransitionDistribution.getNumberOfStages()),
                         formatDouble(hypoExponentialTransitionDistribution.getFirstRateValue()),
                         formatDouble(hypoExponentialTransitionDistribution.getSecondRateValue()),
                         formatDouble(hypoExponentialTransitionDistribution.getThirdRateValue()),

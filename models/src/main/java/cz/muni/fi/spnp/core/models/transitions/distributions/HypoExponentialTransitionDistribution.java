@@ -19,6 +19,7 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
                                                  double secondRateValue,
                                                  double thirdRateValue) {
         super(numberOfStages, firstRateValue, secondRateValue, thirdRateValue);
+        setNumberOfStages(numberOfStages);
     }
 
     /**
@@ -51,6 +52,7 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
                                                  double thirdRateValue,
                                                  StandardPlace dependentPlace) {
         super(numberOfStages, firstRateValue, secondRateValue, thirdRateValue, dependentPlace);
+        setNumberOfStages(numberOfStages);
     }
 
     public int getNumberOfStages() {
