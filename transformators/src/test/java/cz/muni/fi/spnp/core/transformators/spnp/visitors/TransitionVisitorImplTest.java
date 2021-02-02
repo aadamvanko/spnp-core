@@ -54,7 +54,7 @@ public class TransitionVisitorImplTest {
 
         String expected = String.format("imm(\"ImmediateTransition123\");%n" +
                 "priority(\"ImmediateTransition123\", 0);%n" +
-                "probval(\"ImmediateTransition123\", 0.0);%n");
+                "probval(\"ImmediateTransition123\", 1.0);%n");
         instance.visit(immediateTransition);
 
         Assert.assertEquals("ImmediateTransition scenario simple", expected.strip(), instance.getResult().strip());

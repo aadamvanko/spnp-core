@@ -11,7 +11,7 @@ public class ImmediateTransition extends Transition {
 
     public ImmediateTransition(int id,
                                String name) {
-        this(id, name, 0, null, new ConstantTransitionProbability());
+        this(id, name, 0, null, new ConstantTransitionProbability(1.0));
     }
 
     public ImmediateTransition(int id,
