@@ -20,7 +20,6 @@
     <modules>
         <module>transformators</module>
         <module>models</module>
-        <module>core.tests</module>
     </modules>
 
     <build>
