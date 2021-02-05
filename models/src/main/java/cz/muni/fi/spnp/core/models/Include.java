@@ -1,10 +1,12 @@
 package cz.muni.fi.spnp.core.models;
 
+import cz.muni.fi.spnp.core.models.visitors.IncludeVisitor;
+
 import java.util.Objects;
 
 public class Include {
 
-    private String path;
+    private final String path;
 
     public Include(String path) {
         if (path == null)
@@ -15,10 +17,6 @@ public class Include {
 
     public String getPath() {
         return this.path;
-    }
-
-    public String getDefinition() {
-        return String.format("#include %s%n", this.getPath());
     }
 
     @Override
@@ -36,5 +34,9 @@ public class Include {
     @Override
     public int hashCode() {
         return Objects.hash(path);
+    }
+
+    public void accept(IncludeVisitor includeVisitor) {
+        includeVisitor.visit(this);
     }
 }

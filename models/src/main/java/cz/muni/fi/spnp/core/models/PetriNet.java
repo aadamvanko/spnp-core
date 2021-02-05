@@ -255,16 +255,16 @@ public class PetriNet {
 //                getParameterVariablesBindings());
 //    }
 
-    public String getIncludesDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.includes.forEach(include -> definition.append(include.getDefinition()));
-
-        if (definition.length() > 0)
-            definition.append(System.lineSeparator());
-
-        return definition.toString();
-    }
+//    public String getIncludesDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.includes.forEach(include -> definition.append(include.getDefinition()));
+//
+//        if (definition.length() > 0)
+//            definition.append(System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
 //    public String getDefinesDefinition() {
 //        StringBuilder definition = new StringBuilder();
