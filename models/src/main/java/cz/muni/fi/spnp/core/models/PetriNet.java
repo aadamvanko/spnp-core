@@ -266,16 +266,16 @@ public class PetriNet {
         return definition.toString();
     }
 
-    public String getDefinesDefinition() {
-        StringBuilder definition = new StringBuilder();
-
-        this.defines.forEach(define -> definition.append(define.getDefinition()));
-
-        if (definition.length() > 0)
-            definition.append(System.lineSeparator());
-
-        return definition.toString();
-    }
+//    public String getDefinesDefinition() {
+//        StringBuilder definition = new StringBuilder();
+//
+//        this.defines.forEach(define -> definition.append(define.getDefinition()));
+//
+//        if (definition.length() > 0)
+//            definition.append(System.lineSeparator());
+//
+//        return definition.toString();
+//    }
 
 //    public String getVariablesDefinition() {
 //        StringBuilder definitions = new StringBuilder();

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Define {
 
-    private String name;
+    private final String name;
     private Number numberValue;
     private String stringValue;
 
@@ -31,17 +31,6 @@ public class Define {
             throw new IllegalArgumentException("Name is not defined");
 
         this.name = name;
-    }
-
-    public String getDefinition() {
-        if (numberValue != null) {
-            return String.format("#define %s %s%n", this.getName(), this.getNumberValue());
-        }
-        if (stringValue != null) {
-            return String.format("#define %s %s%n", this.getName(), this.getStringValue());
-        }
-
-        return "";
     }
 
     public String getName() {
