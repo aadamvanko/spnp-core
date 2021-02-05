@@ -5,7 +5,7 @@ import cz.muni.fi.spnp.core.models.visitors.DefineVisitor;
 
 public class DefineVisitorImpl extends Visitor implements DefineVisitor {
     @Override
-    public void accept(Define define) {
+    public void visit(Define define) {
         if (define.getNumberValue() != null) {
             stringBuilder.append(String.format("#define %s %s%n", define.getName(), define.getNumberValue()));
         }

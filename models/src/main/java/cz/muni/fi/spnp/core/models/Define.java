@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.models;
 
+import cz.muni.fi.spnp.core.models.visitors.DefineVisitor;
+
 import java.util.Objects;
 
 public class Define {
@@ -59,5 +61,9 @@ public class Define {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    public void accept(DefineVisitor defineVisitor) {
+        defineVisitor.visit(this);
     }
 }
