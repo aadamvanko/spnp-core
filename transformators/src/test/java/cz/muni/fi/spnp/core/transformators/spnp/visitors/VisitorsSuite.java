@@ -17,7 +17,13 @@ import org.junit.runners.Suite;
  * @author 10ondr
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImplTest.class, cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionProbabilityVisitorImplTest.class, cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitorTest.class, cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImplTest.class})
+@Suite.SuiteClasses({
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImplTest.class,
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionProbabilityVisitorImplTest.class,
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitorTest.class,
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImplTest.class,
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImplTest.class
+})
 public class VisitorsSuite {
 
     @BeforeClass
