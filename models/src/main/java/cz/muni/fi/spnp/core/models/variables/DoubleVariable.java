@@ -1,8 +1,10 @@
 package cz.muni.fi.spnp.core.models.variables;
 
+import cz.muni.fi.spnp.core.models.visitors.VariableVisitor;
+
 public class DoubleVariable extends Variable {
 
-    private double value;
+    private final double value;
 
     public DoubleVariable(String name, VariableType type, double value) {
         super(name, type);
@@ -15,7 +17,7 @@ public class DoubleVariable extends Variable {
     }
 
     @Override
-    public String getDefinition() {
-        return String.format("double %s = %f;%n", this.getName(), this.getValue());
+    public void accept(VariableVisitor variableVisitor) {
+        variableVisitor.visit(this);
     }
 }

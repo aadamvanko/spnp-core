@@ -1,11 +1,13 @@
 package cz.muni.fi.spnp.core.models.variables;
 
+import cz.muni.fi.spnp.core.models.visitors.VariableVisitor;
+
 import java.util.Objects;
 
 public abstract class Variable {
 
-    private String name;
-    private VariableType type;
+    private final String name;
+    private final VariableType type;
 
     protected Variable(String name, VariableType type) {
         if (name == null)
@@ -16,8 +18,6 @@ public abstract class Variable {
         this.name = name;
         this.type = type;
     }
-
-    public abstract String getDefinition();
 
     public String getName() {
         return name;
@@ -43,4 +43,6 @@ public abstract class Variable {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    public abstract void accept(VariableVisitor variableVisitor);
 }

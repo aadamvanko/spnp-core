@@ -1,8 +1,10 @@
 package cz.muni.fi.spnp.core.models.variables;
 
+import cz.muni.fi.spnp.core.models.visitors.VariableVisitor;
+
 public class IntegerVariable extends Variable {
 
-    private int value;
+    private final int value;
 
     protected IntegerVariable(String name, VariableType type, int value) {
         super(name, type);
@@ -15,7 +17,7 @@ public class IntegerVariable extends Variable {
     }
 
     @Override
-    public String getDefinition() {
-        return String.format("int %s = %d;%n", this.getName(), this.getValue());
+    public void accept(VariableVisitor variableVisitor) {
+        variableVisitor.visit(this);
     }
 }
