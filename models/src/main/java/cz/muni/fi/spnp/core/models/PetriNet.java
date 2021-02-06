@@ -306,33 +306,33 @@ public class PetriNet {
 //        return definitions.toString();
 //    }
 
-    public String getUserFunctionsDeclarations(FunctionType functionsType) {
-        if (functionsType == null)
-            throw new IllegalArgumentException("Functions type is not defined.");
+//    public String getUserFunctionsDeclarations(FunctionType functionsType) {
+//        if (functionsType == null)
+//            throw new IllegalArgumentException("Functions type is not defined.");
+//
+//        return buildFunctionsDeclarations(functionsType);
+//    }
+//
+//    public String getUserFunctionsDefinitions(FunctionType functionsType) {
+//        if (functionsType == null)
+//            throw new IllegalArgumentException("Functions type is not defined.");
+//
+//        return buildFunctionsDefinitions(functionsType);
+//    }
 
-        return buildFunctionsDeclarations(functionsType);
-    }
-
-    public String getUserFunctionsDefinitions(FunctionType functionsType) {
-        if (functionsType == null)
-            throw new IllegalArgumentException("Functions type is not defined.");
-
-        return buildFunctionsDefinitions(functionsType);
-    }
-
-    public String getRequiredFunctionsDefinitions() {
-        return String.format("%s%n%s%n%s%n%s%n",
-                             assertFunction.getDefinition(),
-                             acInitFunction.getDefinition(),
-                             acReachFunction.getDefinition(),
-                             acFinalFunction.getDefinition());
-    }
+//    public String getRequiredFunctionsDefinitions() {
+//        return String.format("%s%n%s%n%s%n%s%n",
+//                             assertFunction.getDefinition(),
+//                             acInitFunction.getDefinition(),
+//                             acReachFunction.getDefinition(),
+//                             acFinalFunction.getDefinition());
+//    }
 
     private String getParameterVariablesDefinition() {
         // get parameter variables
         var parameterVariables = variables.stream()
-                                          .filter(variable -> variable.getType() == VariableType.Parameter)
-                                          .collect(Collectors.toSet());
+                .filter(variable -> variable.getType() == VariableType.Parameter)
+                .collect(Collectors.toSet());
 
         if (parameterVariables.isEmpty())
             return "";
@@ -479,50 +479,50 @@ public class PetriNet {
 
         // create common string with all definitions
         parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n",
-                                                                            variable.getName(), variable.getName())));
+                variable.getName(), variable.getName())));
 
         definitions.append(System.lineSeparator());
 
         return definitions.toString();
     }
 
-    private String buildFunctionsDeclarations(FunctionType functionsType) {
-        // get functions of specified type
-        var filteredFunctions = functions.stream()
-                                         .filter(function -> function.getFunctionType() == functionsType)
-                                         .collect(Collectors.toSet());
+//    private String buildFunctionsDeclarations(FunctionType functionsType) {
+//        // get functions of specified type
+//        var filteredFunctions = functions.stream()
+//                                         .filter(function -> function.getFunctionType() == functionsType)
+//                                         .collect(Collectors.toSet());
+//
+//        if (filteredFunctions.isEmpty())
+//            return "";
+//
+//        StringBuilder declarations = new StringBuilder();
+//
+//        // create common string from all filtered functions
+//        filteredFunctions.forEach(function -> declarations.append(function.getDeclaration()));
+//
+//        return declarations.toString();
+//    }
 
-        if (filteredFunctions.isEmpty())
-            return "";
-
-        StringBuilder declarations = new StringBuilder();
-
-        // create common string from all filtered functions
-        filteredFunctions.forEach(function -> declarations.append(function.getDeclaration()));
-
-        return declarations.toString();
-    }
-
-    private String buildFunctionsDefinitions(FunctionType functionsType) {
-        // get functions of specified type
-        var filteredFunctions = functions.stream()
-                                         .filter(function -> function.getFunctionType() == functionsType)
-                                         .collect(Collectors.toSet());
-
-        if (filteredFunctions.isEmpty())
-            return "";
-
-        StringBuilder definitions = new StringBuilder();
-
-        // add section title
-        definitions.append(getSectionTitleCommentFor(functionsType))
-                   .append(System.lineSeparator()).append(System.lineSeparator());
-
-        // create common string from all filtered functions
-        filteredFunctions.forEach(function -> definitions.append(function.getDefinition()));
-
-        return definitions.toString();
-    }
+//    private String buildFunctionsDefinitions(FunctionType functionsType) {
+//        // get functions of specified type
+//        var filteredFunctions = functions.stream()
+//                                         .filter(function -> function.getFunctionType() == functionsType)
+//                                         .collect(Collectors.toSet());
+//
+//        if (filteredFunctions.isEmpty())
+//            return "";
+//
+//        StringBuilder definitions = new StringBuilder();
+//
+//        // add section title
+//        definitions.append(getSectionTitleCommentFor(functionsType))
+//                   .append(System.lineSeparator()).append(System.lineSeparator());
+//
+//        // create common string from all filtered functions
+//        filteredFunctions.forEach(function -> definitions.append(function.getDefinition()));
+//
+//        return definitions.toString();
+//    }
 
     private String getSectionTitleCommentFor(FunctionType functionsType) {
         switch (functionsType) {

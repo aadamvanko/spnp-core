@@ -1,21 +1,24 @@
 package cz.muni.fi.spnp.core.models.functions;
 
+import cz.muni.fi.spnp.core.models.visitors.FunctionDeclarationVisitor;
+import cz.muni.fi.spnp.core.models.visitors.FunctionDefinitionVisitor;
+
 import java.util.Objects;
 
 public class Function<TReturnType> {
 
-    private String name;
-    private FunctionType functionType;
-    private Class<TReturnType> returnType;
-    private String body;
+    private final String name;
+    private final FunctionType functionType;
+    private final Class<TReturnType> returnType;
+    private final String body;
 
     /**
      * Creates function definition with specified body and return value.
      *
-     * @param name          function name
-     * @param type          type of the function
-     * @param body          function body definition
-     * @param returnType    type of function's return value
+     * @param name       function name
+     * @param type       type of the function
+     * @param body       function body definition
+     * @param returnType type of function's return value
      */
     public Function(String name, FunctionType type, String body, Class<TReturnType> returnType) {
         if (name == null)
@@ -49,20 +52,6 @@ public class Function<TReturnType> {
         return body;
     }
 
-    public String getDeclaration() {
-        return String.format("%s %s();%n",
-                             this.getReturnTypeString(),
-                             this.getName());
-    }
-
-    public String getDefinition() {
-        return String.format(
-                "%s %s() {%n%s%n}%n",
-                this.getReturnTypeString(),
-                this.getName(),
-                this.getBody());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -81,7 +70,7 @@ public class Function<TReturnType> {
     }
 
 
-    private String getReturnTypeString() {
+    public String getReturnTypeString() {
         if (returnType == double.class) {
             return "double";
         } else if (returnType == int.class) {
@@ -95,5 +84,13 @@ public class Function<TReturnType> {
         } else {
             throw new IllegalStateException("Unsupported function return type.");
         }
+    }
+
+    public void accept(FunctionDefinitionVisitor functionDefinitionVisitor) {
+        functionDefinitionVisitor.visit(this);
+    }
+
+    public void accept(FunctionDeclarationVisitor functionDeclarationVisitor) {
+        functionDeclarationVisitor.visit(this);
     }
 }

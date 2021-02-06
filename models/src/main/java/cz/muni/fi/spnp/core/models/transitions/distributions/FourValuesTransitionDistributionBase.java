@@ -3,6 +3,8 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDeclarationsVisitor;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDefinitionsVisitor;
 
 public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondValue, TThirdValue, TFourthValue>
         extends TransitionDistributionBase {
@@ -167,24 +169,12 @@ public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondV
     }
 
     @Override
-    protected String getFunctionsFullDefinitions() {
-        return this.getFirstFunction().getDefinition()
-                + System.lineSeparator()
-                + this.getSecondFunction().getDefinition()
-                + System.lineSeparator()
-                + this.getThirdFunction().getDefinition()
-                + System.lineSeparator()
-                + this.getFourthFunction().getDefinition();
+    public void accept(TransitionDistributionFunctionsDefinitionsVisitor transitionDistributionFunctionsDefinitionsVisitor) {
+        transitionDistributionFunctionsDefinitionsVisitor.visit(this);
     }
 
     @Override
-    protected String getFunctionsFullDeclarations() {
-        return this.getFirstFunction().getDeclaration()
-                + System.lineSeparator()
-                + this.getSecondFunction().getDeclaration()
-                + System.lineSeparator()
-                + this.getThirdFunction().getDeclaration()
-                + System.lineSeparator()
-                + this.getFourthFunction().getDeclaration();
+    public void accept(TransitionDistributionFunctionsDeclarationsVisitor transitionDistributionFunctionsDeclarationsVisitor) {
+        transitionDistributionFunctionsDeclarationsVisitor.visit(this);
     }
 }

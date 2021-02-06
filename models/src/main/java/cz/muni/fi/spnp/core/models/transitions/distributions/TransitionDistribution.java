@@ -1,26 +1,11 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDeclarationsVisitor;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDefinitionsVisitor;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public interface TransitionDistribution {
-
-    /**
-     * Gets the {@link String} declarations of the functions defined in this distribution
-     * in case of {@link TransitionDistributionType#Functional} distribution type.
-     *
-     * @return  functions declarations
-     */
-    String getFunctionsDeclarations();
-
-    /**
-     * Gets the {@link String} definitions of the functions defined in this distribution
-     * in case of {@link TransitionDistributionType#Functional} distribution type.
-     *
-     * @return  functions definitions
-     */
-    String getFunctionsDefinitions();
-
     /**
      * Gets the type of this transition distribution.
      *
@@ -36,4 +21,8 @@ public interface TransitionDistribution {
     StandardPlace getDependentPlace();
 
     void accept(TransitionDistributionVisitor transitionDistributionVisitor);
+
+    void accept(TransitionDistributionFunctionsDefinitionsVisitor transitionDistributionFunctionsDefinitionsVisitor);
+
+    void accept(TransitionDistributionFunctionsDeclarationsVisitor transitionDistributionFunctionsDeclarationsVisitor);
 }

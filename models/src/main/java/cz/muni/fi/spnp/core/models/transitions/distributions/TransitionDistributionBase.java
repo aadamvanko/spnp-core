@@ -4,8 +4,8 @@ import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class TransitionDistributionBase implements TransitionDistribution {
 
-    private TransitionDistributionType distributionType;
-    private StandardPlace dependentPlace;
+    private final TransitionDistributionType distributionType;
+    private final StandardPlace dependentPlace;
 
     public TransitionDistributionBase(TransitionDistributionType distributionType, StandardPlace dependentPlace) {
         this.distributionType = distributionType;
@@ -35,37 +35,4 @@ public abstract class TransitionDistributionBase implements TransitionDistributi
     public StandardPlace getDependentPlace() {
         return this.dependentPlace;
     }
-
-    /**
-     * Gets the {@link String} representation of the functions definitions in case of
-     * {@link TransitionDistributionType#Functional} distribution type.
-     *
-     * @return representation of functions definitions
-     */
-    @Override
-    public final String getFunctionsDefinitions() {
-        if (this.getDistributionType() != TransitionDistributionType.Functional)
-            throw new IllegalStateException("Functions definitions are available ONLY on Functional Transition Distribution type.");
-
-        return this.getFunctionsFullDefinitions();
-    }
-
-    /**
-     * Gets the {@link String} declarations of the functions defined in this distribution
-     * in case of {@link TransitionDistributionType#Functional} distribution type.
-     *
-     * @return functions declarations
-     */
-    @Override
-    public String getFunctionsDeclarations() {
-        if (this.getDistributionType() != TransitionDistributionType.Functional)
-            throw new IllegalStateException("Functions declarations are available ONLY on Functional Transition Distribution type.");
-
-        return this.getFunctionsFullDeclarations();
-    }
-
-
-    protected abstract String getFunctionsFullDefinitions();
-
-    protected abstract String getFunctionsFullDeclarations();
 }

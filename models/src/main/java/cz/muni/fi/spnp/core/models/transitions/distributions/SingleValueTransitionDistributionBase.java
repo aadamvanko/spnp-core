@@ -3,6 +3,8 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDeclarationsVisitor;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDefinitionsVisitor;
 
 public abstract class SingleValueTransitionDistributionBase<TValue> extends TransitionDistributionBase {
 
@@ -43,7 +45,7 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
         this.value = value;
     }
 
-    protected Function<TValue> getFunction() {
+    public Function<TValue> getFunction() {
         return function;
     }
 
@@ -57,12 +59,12 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
     }
 
     @Override
-    protected String getFunctionsFullDefinitions() {
-        return this.getFunction().getDefinition();
+    public void accept(TransitionDistributionFunctionsDefinitionsVisitor transitionDistributionFunctionsDefinitionsVisitor) {
+        transitionDistributionFunctionsDefinitionsVisitor.visit(this);
     }
 
     @Override
-    protected String getFunctionsFullDeclarations() {
-        return this.getFunction().getDeclaration();
+    public void accept(TransitionDistributionFunctionsDeclarationsVisitor transitionDistributionFunctionsDeclarationsVisitor) {
+        transitionDistributionFunctionsDeclarationsVisitor.visit(this);
     }
 }
