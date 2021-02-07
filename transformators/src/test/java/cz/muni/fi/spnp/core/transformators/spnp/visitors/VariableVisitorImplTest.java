@@ -5,7 +5,9 @@
  */
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.variables.*;
+import cz.muni.fi.spnp.core.models.variables.DoubleVariable;
+import cz.muni.fi.spnp.core.models.variables.IntegerVariable;
+import cz.muni.fi.spnp.core.models.variables.VariableType;
 import org.junit.*;
 
 
@@ -45,8 +47,8 @@ public class VariableVisitorImplTest {
      */
     @Test
     public void testVisit_DoubleVariable() {
-        String expected = "double SampleDoubleVar123 = 100000.000001;";
-        DoubleVariable doubleVariable = new DoubleVariable("SampleDoubleVar123", VariableType.Global, 100000.000001);
+        String expected = "double SampleDoubleVar123 = 100000.0012;";
+        DoubleVariable doubleVariable = new DoubleVariable("SampleDoubleVar123", VariableType.Global, 100000.001200);
         instance.visit(doubleVariable);
         Assert.assertEquals("DoubleVariable scenario simple", expected.strip(), instance.getResult().strip());
     }

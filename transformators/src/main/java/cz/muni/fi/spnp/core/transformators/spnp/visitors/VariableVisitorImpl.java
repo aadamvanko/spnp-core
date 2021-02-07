@@ -7,7 +7,7 @@ import cz.muni.fi.spnp.core.models.visitors.VariableVisitor;
 public class VariableVisitorImpl extends Visitor implements VariableVisitor {
     @Override
     public void visit(DoubleVariable doubleVariable) {
-        stringBuilder.append(String.format("double %s = %f;%n", doubleVariable.getName(), doubleVariable.getValue()));
+        stringBuilder.append(String.format("double %s = %s;%n", doubleVariable.getName(), formatDouble(doubleVariable.getValue())));
     }
 
     @Override
