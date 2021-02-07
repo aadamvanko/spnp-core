@@ -11,7 +11,7 @@ public class DefineVisitorImpl extends Visitor implements DefineVisitor {
         }
 
         if (define.getStringValue() != null) {
-            stringBuilder.append(String.format("#define %s %s%n", define.getName(), define.getStringValue()));
+            stringBuilder.append(String.format("#define %s \"%s\"%n", define.getName(), define.getStringValue()));
         }
     }
 }
