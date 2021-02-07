@@ -26,7 +26,8 @@ import org.junit.runners.Suite;
         cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImplTest.class,
         cz.muni.fi.spnp.core.transformators.spnp.visitors.VariableVisitorImplTest.class,
         cz.muni.fi.spnp.core.transformators.spnp.visitors.DefineVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.IncludeVisitorImplTest.class
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.IncludeVisitorImplTest.class,
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.FunctionDeclarationVisitorImplTest.class
 })
 public class VisitorsSuite {
 
