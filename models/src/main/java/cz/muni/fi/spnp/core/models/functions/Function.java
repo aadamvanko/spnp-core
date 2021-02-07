@@ -71,9 +71,9 @@ public class Function<TReturnType> {
 
 
     public String getReturnTypeString() {
-        if (returnType == double.class) {
+        if (returnType == double.class || returnType == Double.class) {
             return "double";
-        } else if (returnType == int.class) {
+        } else if (returnType == int.class || returnType == Integer.class) {
             return "int";
         } else if (returnType == Void.class) {
             return "void";
