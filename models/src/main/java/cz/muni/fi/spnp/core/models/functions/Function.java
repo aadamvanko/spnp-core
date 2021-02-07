@@ -78,7 +78,7 @@ public class Function<TReturnType> {
         } else if (returnType == Void.class) {
             return "void";
         } else if (returnType == String.class) {
-            return "string";
+            return "char *";
         } else if (returnType == Character.class) {
             return "char";
         } else {
