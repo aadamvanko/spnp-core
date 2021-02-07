@@ -22,7 +22,8 @@ import org.junit.runners.Suite;
         cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionProbabilityVisitorImplTest.class,
         cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitorTest.class,
         cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImplTest.class
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImplTest.class,
+        cz.muni.fi.spnp.core.transformators.spnp.visitors.VariableVisitorImplTest.class
 })
 public class VisitorsSuite {
 
