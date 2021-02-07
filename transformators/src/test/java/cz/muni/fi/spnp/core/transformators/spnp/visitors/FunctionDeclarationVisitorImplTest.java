@@ -63,7 +63,7 @@ public class FunctionDeclarationVisitorImplTest {
         Assert.assertEquals("FunctionDeclaration scenario double", expected.strip(), instance.getResult().strip());
         
         reinitVisitor();
-        expected = "string stringFunc();";
+        expected = "char * stringFunc();";
         Function<String> stringFunction = new Function<>("stringFunc", FunctionType.SPNP, "{return \"test\";}", String.class);
         instance.visit(stringFunction);
         Assert.assertEquals("FunctionDeclaration scenario string", expected.strip(), instance.getResult().strip());
