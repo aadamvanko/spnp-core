@@ -18,7 +18,6 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
         checkPreconditions(twoValuesTransitionDistributionBase);
 
         String definition = getFunctionDeclaration(twoValuesTransitionDistributionBase.getFirstFunction())
-                + System.lineSeparator()
                 + getFunctionDeclaration(twoValuesTransitionDistributionBase.getSecondFunction());
         stringBuilder.append(definition);
     }
@@ -28,9 +27,7 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
         checkPreconditions(threeValuesTransitionDistributionBase);
 
         String definition = getFunctionDeclaration(threeValuesTransitionDistributionBase.getFirstFunction())
-                + System.lineSeparator()
                 + getFunctionDeclaration(threeValuesTransitionDistributionBase.getSecondFunction())
-                + System.lineSeparator()
                 + getFunctionDeclaration(threeValuesTransitionDistributionBase.getThirdFunction());
         stringBuilder.append(definition);
     }
@@ -40,11 +37,8 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
         checkPreconditions(fourValuesTransitionDistributionBase);
 
         String definition = getFunctionDeclaration(fourValuesTransitionDistributionBase.getFirstFunction())
-                + System.lineSeparator()
                 + getFunctionDeclaration(fourValuesTransitionDistributionBase.getSecondFunction())
-                + System.lineSeparator()
                 + getFunctionDeclaration(fourValuesTransitionDistributionBase.getThirdFunction())
-                + System.lineSeparator()
                 + getFunctionDeclaration(fourValuesTransitionDistributionBase.getFourthFunction());
         stringBuilder.append(definition);
     }
