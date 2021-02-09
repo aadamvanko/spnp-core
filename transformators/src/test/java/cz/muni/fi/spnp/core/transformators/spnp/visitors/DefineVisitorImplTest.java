@@ -5,7 +5,7 @@
  */
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.Define;
+import cz.muni.fi.spnp.core.transformators.spnp.code.Define;
 import org.junit.*;
 
 /**

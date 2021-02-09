@@ -7,6 +7,7 @@ import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
+import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.extended.TransformatorTest;
 import cz.muni.fi.spnp.core.transformators.spnp.options.*;
 import cz.muni.fi.spnp.core.transformators.spnp.parameters.DoubleInputParameter;

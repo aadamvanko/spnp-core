@@ -1,6 +1,5 @@
-package cz.muni.fi.spnp.core.transformators.spnp;
+package cz.muni.fi.spnp.core.transformators.spnp.options;
 
-import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.parameters.InputParameter;
 
 import java.util.Set;

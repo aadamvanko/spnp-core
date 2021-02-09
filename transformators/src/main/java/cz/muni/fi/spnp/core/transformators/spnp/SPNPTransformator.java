@@ -5,7 +5,9 @@ import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.Transformator;
+import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
+import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImpl;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImpl;
@@ -99,9 +101,11 @@ void ac_final() {
 
 public class SPNPTransformator implements Transformator {
 
+    private final SPNPCode spnpCode;
     private final SPNPOptions spnpOptions;
 
     public SPNPTransformator(SPNPCode spnpCode, SPNPOptions spnpOptions) {
+        this.spnpCode = spnpCode;
         this.spnpOptions = spnpOptions;
     }
 

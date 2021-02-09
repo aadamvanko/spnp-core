@@ -1,7 +1,6 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.Include;
-import cz.muni.fi.spnp.core.models.visitors.IncludeVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.Include;
 
 public class IncludeVisitorImpl extends Visitor implements IncludeVisitor {
     @Override

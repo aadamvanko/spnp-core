@@ -1,6 +1,6 @@
-package cz.muni.fi.spnp.core.models;
+package cz.muni.fi.spnp.core.transformators.spnp.code;
 
-import cz.muni.fi.spnp.core.models.visitors.DefineVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.DefineVisitor;
 
 import java.util.Objects;
 

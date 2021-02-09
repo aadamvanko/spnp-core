@@ -6,6 +6,7 @@
 package cz.muni.fi.spnp.core.transformators.spnp.extended;
 
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
+
 import java.util.HashMap;
 
 /**
@@ -17,7 +18,7 @@ public class FluidPlaceTestWrapper extends FluidPlace {
     private boolean wasDeclared = false;
     private boolean defaultValueInited = false;
     private boolean boundValueInited = false;
-    private final HashMap<Double, Boolean> breakValuesInited = new HashMap();
+    private final HashMap<Double, Boolean> breakValuesInited = new HashMap<>();
     
     public FluidPlaceTestWrapper(int id, String name) {
         super(id, name);
@@ -50,16 +51,16 @@ public class FluidPlaceTestWrapper extends FluidPlace {
     public void setBoundValueInited(boolean value){
         boundValueInited = value;
     }
-    
-    public boolean getBoundValueInited(){
+
+    public boolean getBoundValueInited() {
         return boundValueInited;
     }
-    
-    public void setBreakValueInited(double breakVal, boolean initedVal){
+
+    public void setBreakValueInited(double breakVal, boolean initedVal) {
         breakValuesInited.replace(breakVal, initedVal);
     }
-    
-    public HashMap getBreakValuesInited(){
+
+    public HashMap<Double, Boolean> getBreakValuesInited() {
         return breakValuesInited;
     }
 }

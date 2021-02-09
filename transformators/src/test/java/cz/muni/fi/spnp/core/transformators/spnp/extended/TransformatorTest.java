@@ -3,9 +3,10 @@ package cz.muni.fi.spnp.core.transformators.spnp.extended;
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.transformators.spnp.SPNPCode;
-import cz.muni.fi.spnp.core.transformators.spnp.SPNPOptions;
 import cz.muni.fi.spnp.core.transformators.spnp.SPNPTransformator;
+import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
+import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
+
 import java.util.HashSet;
 import java.util.regex.Matcher;
 
@@ -27,23 +28,17 @@ public abstract class TransformatorTest {
     private StandardPlaceTestWrapper createStandardPlaceWrapper(StandardPlace place){
         var placeWrapper = new StandardPlaceTestWrapper(place.getId(), place.getName());
         placeWrapper.setNumberOfTokens(place.getNumberOfTokens());
-        place.getArcs().forEach(arc -> {
-            placeWrapper.addArc(arc);
-        });
+        place.getArcs().forEach(placeWrapper::addArc);
         return placeWrapper;
     }
     
-    private FluidPlaceTestWrapper createFluidPlaceWrapper(FluidPlace place){
+    private FluidPlaceTestWrapper createFluidPlaceWrapper(FluidPlace place) {
         var placeWrapper = new FluidPlaceTestWrapper(place.getId(), place.getName());
         placeWrapper.setInitialValue(place.getInitialValue());
-        place.getArcs().forEach(arc -> {
-            placeWrapper.addArc(arc);
-        });
-        
+        place.getArcs().forEach(placeWrapper::addArc);
+
         placeWrapper.setBoundValue(place.getBoundValue());
-        place.getBreakValues().forEach(breakValue -> {
-            placeWrapper.addBreakValue(breakValue);
-        });
+        place.getBreakValues().forEach(placeWrapper::addBreakValue);
         return placeWrapper;
     }
     
@@ -83,14 +78,10 @@ public abstract class TransformatorTest {
         var lines = output.split(System.lineSeparator());
         
         var tmpOptionKeys = new HashSet<String>();
-        options.getOptions().forEach(option -> {
-            tmpOptionKeys.add(option.getKey().toString());
-        });
+        options.getOptions().forEach(option -> tmpOptionKeys.add(option.getKey().toString()));
         
         var tmpInputParameters = new HashSet<String>();
-        options.getInputParameters().forEach(parameter -> {
-            tmpInputParameters.add(parameter.getParameterName());
-        });
+        options.getInputParameters().forEach(parameter -> tmpInputParameters.add(parameter.getParameterName()));
         
         boolean optionsStarted = false;
         boolean optionsClosed = false;
@@ -364,7 +355,7 @@ public abstract class TransformatorTest {
             
             var breakValues = place.getBreakValuesInited();
             for(var breakValueKey : breakValues.keySet()){
-                if((Boolean) breakValues.get(breakValueKey) == false){
+                if (!((Boolean) breakValues.get(breakValueKey))) {
                     System.out.println("Fluid place break value was not initialized: " + place.getName() + " break value: " + breakValueKey);
                     success = false;
                 }

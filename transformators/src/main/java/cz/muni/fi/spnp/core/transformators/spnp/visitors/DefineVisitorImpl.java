@@ -1,7 +1,6 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.Define;
-import cz.muni.fi.spnp.core.models.visitors.DefineVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.Define;
 
 public class DefineVisitorImpl extends Visitor implements DefineVisitor {
     @Override
