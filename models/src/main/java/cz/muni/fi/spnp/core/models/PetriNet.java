@@ -5,23 +5,18 @@ import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
-import cz.muni.fi.spnp.core.models.variables.Variable;
-import cz.muni.fi.spnp.core.models.variables.VariableType;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PetriNet {
 
-    private final Set<Variable> variables;
     private final Set<Arc> arcs;
     private final Set<Place> places;
     private final Set<Transition> transitions;
     private final Set<Function> functions;
 
     public PetriNet() {
-        variables = new HashSet<>();
         arcs = new HashSet<>();
         places = new HashSet<>();
         transitions = new HashSet<>();
@@ -38,24 +33,6 @@ public class PetriNet {
 
     public Set<Arc> getArcs() {
         return arcs;
-    }
-
-    public void addVariable(Variable variable) {
-        if (variable == null)
-            throw new IllegalArgumentException("Variable is null.");
-        if (this.variables.contains(variable))
-            throw new IllegalArgumentException("Variable is already present in this Petri net.");
-
-        this.variables.add(variable);
-    }
-
-    public void removeVariable(Variable variable) {
-        if (variable == null)
-            throw new IllegalArgumentException("Variable is null.");
-        if (!this.variables.contains(variable))
-            throw new IllegalArgumentException("Variable is not present in this Petri net.");
-
-        this.variables.remove(variable);
     }
 
     public void addArc(Arc arc) {
@@ -214,25 +191,6 @@ public class PetriNet {
 //                             acFinalFunction.getDefinition());
 //    }
 
-    private String getParameterVariablesDefinition() {
-        // get parameter variables
-        var parameterVariables = variables.stream()
-                .filter(variable -> variable.getType() == VariableType.Parameter)
-                .collect(Collectors.toSet());
-
-        if (parameterVariables.isEmpty())
-            return "";
-
-        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES ==== */" + System.lineSeparator());
-
-        // create common string with all definitions
-        parameterVariables.forEach(variable -> definitions.append(String.format("parm(\"%s\");%n", variable.getName())));
-
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
-    }
-
 //    private String getPlacesDefinition() {
 //        StringBuilder definition = new StringBuilder();
 //
@@ -351,26 +309,6 @@ public class PetriNet {
 //
 //        return definition.toString();
 //    }
-
-    private String getParameterVariablesBindings() {
-        // get parameter variables
-        var parameterVariables = variables.stream()
-                .filter(variable -> variable.getType() == VariableType.Parameter)
-                .collect(Collectors.toSet());
-
-        if (parameterVariables.isEmpty())
-            return "";
-
-        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES BINDINGS ==== */" + System.lineSeparator());
-
-        // create common string with all definitions
-        parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n",
-                variable.getName(), variable.getName())));
-
-        definitions.append(System.lineSeparator());
-
-        return definitions.toString();
-    }
 
 //    private String buildFunctionsDeclarations(FunctionType functionsType) {
 //        // get functions of specified type

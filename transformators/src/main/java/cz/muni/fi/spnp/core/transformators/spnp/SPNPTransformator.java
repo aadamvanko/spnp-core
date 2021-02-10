@@ -8,10 +8,7 @@ import cz.muni.fi.spnp.core.transformators.Transformator;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
-import cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImpl;
-import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
-import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImpl;
-import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImpl;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -135,9 +132,11 @@ public class SPNPTransformator implements Transformator {
 
     private String generateNet(PetriNet petriNet) {
         String netDefinition = "void net() {" + System.lineSeparator() +
+                tabify(parameterVariablesDefinition()) +
                 tabify(placesDefinition(petriNet)) +
                 tabify(transitionsDefinition(petriNet)) +
                 tabify(arcsDefinition(petriNet)) +
+                tabify(parameterVariablesBindings()) +
                 // TODO arcs, ...
                 "}";
         return netDefinition;
@@ -178,6 +177,31 @@ public class SPNPTransformator implements Transformator {
 
     private String generateAcFinal() {
         return "";
+    }
+
+    private String parameterVariablesDefinition() {
+        var parameterVariables = spnpCode.getParameterVariables();
+        if (parameterVariables.isEmpty())
+            return "";
+
+        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES ==== */" + System.lineSeparator());
+        parameterVariables.forEach(variable -> definitions.append(String.format("parm(\"%s\");%n", variable.getName())));
+
+        definitions.append(System.lineSeparator());
+        return definitions.toString();
+    }
+
+    private String parameterVariablesBindings() {
+        var parameterVariables = spnpCode.getParameterVariables();
+        if (parameterVariables.isEmpty())
+            return "";
+
+        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES BINDINGS ==== */" + System.lineSeparator());
+        parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n",
+                variable.getName(), variable.getName())));
+
+        definitions.append(System.lineSeparator());
+        return definitions.toString();
     }
 
     private String tabify(String text) {

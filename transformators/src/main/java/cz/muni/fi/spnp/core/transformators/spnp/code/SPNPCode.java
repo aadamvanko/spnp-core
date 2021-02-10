@@ -2,14 +2,18 @@ package cz.muni.fi.spnp.core.transformators.spnp.code;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
+import cz.muni.fi.spnp.core.models.variables.Variable;
+import cz.muni.fi.spnp.core.models.variables.VariableType;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SPNPCode {
 
     private final Set<Include> includes;
     private final Set<Define> defines;
+    private final Set<Variable> variables;
 
     private Function<Integer> assertFunction;
     private Function<Void> acInitFunction;
@@ -19,6 +23,8 @@ public class SPNPCode {
     public SPNPCode() {
         includes = new HashSet<>();
         defines = new HashSet<>();
+        variables = new HashSet<>();
+
         createDefaultRequiredFunctions();
     }
 
@@ -56,6 +62,24 @@ public class SPNPCode {
             throw new IllegalArgumentException("Define is not present in this Petri net.");
 
         this.defines.remove(define);
+    }
+
+    public void addVariable(Variable variable) {
+        if (variable == null)
+            throw new IllegalArgumentException("Variable is null.");
+        if (this.variables.contains(variable))
+            throw new IllegalArgumentException("Variable is already present in this Petri net.");
+
+        this.variables.add(variable);
+    }
+
+    public void removeVariable(Variable variable) {
+        if (variable == null)
+            throw new IllegalArgumentException("Variable is null.");
+        if (!this.variables.contains(variable))
+            throw new IllegalArgumentException("Variable is not present in this Petri net.");
+
+        this.variables.remove(variable);
     }
 
     public Function<Void> getAcInitFunction() {
@@ -135,5 +159,17 @@ public class SPNPCode {
                 "/* Information on the reachability graph */" + System.lineSeparator() + "pr_rg_info();",
                 Void.class);
         acFinalFunction = new Function<>("ac_final", FunctionType.SPNP, "", Void.class);
+    }
+
+    public Set<Variable> getVariables() {
+        return variables;
+    }
+
+    public Set<Variable> getGlobalVariables() {
+        return variables.stream().filter(v -> v.getType() == VariableType.Global).collect(Collectors.toSet());
+    }
+
+    public Set<Variable> getParameterVariables() {
+        return variables.stream().filter(v -> v.getType() == VariableType.Parameter).collect(Collectors.toSet());
     }
 }
