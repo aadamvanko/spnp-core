@@ -5,6 +5,7 @@ import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.Transformator;
+import cz.muni.fi.spnp.core.transformators.spnp.code.Include;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
@@ -120,7 +121,10 @@ public class SPNPTransformator implements Transformator {
     }
 
     private String generateIncludes() {
-        return "";
+        IncludeVisitorImpl includeVisitorImpl = new IncludeVisitorImpl();
+        List<Include> sortedIncludes = spnpCode.getIncludes().stream().sorted().collect(Collectors.toList());
+        sortedIncludes.forEach(include -> include.accept(includeVisitorImpl));
+        return includeVisitorImpl.getResult();
     }
 
     private String generateOptions() {

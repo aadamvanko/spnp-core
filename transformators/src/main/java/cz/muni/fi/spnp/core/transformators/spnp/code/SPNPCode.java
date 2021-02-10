@@ -46,6 +46,10 @@ public class SPNPCode {
         this.includes.remove(include);
     }
 
+    public Set<Include> getIncludes() {
+        return includes;
+    }
+
     public void addDefine(Define define) {
         if (define == null)
             throw new IllegalArgumentException("Define is null.");
