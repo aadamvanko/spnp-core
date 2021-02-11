@@ -2,8 +2,8 @@ package cz.muni.fi.spnp.core.transformators.spnp.code;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
-import cz.muni.fi.spnp.core.models.variables.Variable;
-import cz.muni.fi.spnp.core.models.variables.VariableType;
+import cz.muni.fi.spnp.core.transformators.spnp.variables.Variable;
+import cz.muni.fi.spnp.core.transformators.spnp.variables.VariableType;
 
 import java.util.HashSet;
 import java.util.Set;

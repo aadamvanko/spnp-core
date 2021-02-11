@@ -1,6 +1,6 @@
-package cz.muni.fi.spnp.core.models.variables;
+package cz.muni.fi.spnp.core.transformators.spnp.variables;
 
-import cz.muni.fi.spnp.core.models.visitors.VariableVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.VariableVisitor;
 
 public class IntegerVariable extends Variable {
 

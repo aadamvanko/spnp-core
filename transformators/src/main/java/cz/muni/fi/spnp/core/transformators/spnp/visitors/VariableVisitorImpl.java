@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.variables.DoubleVariable;
-import cz.muni.fi.spnp.core.models.variables.IntegerVariable;
-import cz.muni.fi.spnp.core.models.visitors.VariableVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.variables.DoubleVariable;
+import cz.muni.fi.spnp.core.transformators.spnp.variables.IntegerVariable;
 
 public class VariableVisitorImpl extends Visitor implements VariableVisitor {
     @Override
