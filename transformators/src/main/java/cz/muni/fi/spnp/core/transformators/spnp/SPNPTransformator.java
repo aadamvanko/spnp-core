@@ -9,6 +9,8 @@ import cz.muni.fi.spnp.core.transformators.spnp.code.Include;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
+import cz.muni.fi.spnp.core.transformators.spnp.parameters.InputParameter;
+import cz.muni.fi.spnp.core.transformators.spnp.variables.Variable;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.*;
 
 import java.util.List;
@@ -110,9 +112,11 @@ public class SPNPTransformator implements Transformator {
     @Override
     public String transform(PetriNet petriNet) {
         // TODO add header files
-        String source = generateIncludes() +
-                generateOptions() + System.lineSeparator() +
-                generateNet(petriNet) +
+        String source = generateIncludes() + newlines(1) +
+                generateGlobalVariables() + newlines(1) +
+                //TODO generateGlobalFunctions() + newlines(1) +
+                generateOptions() + newlines(2) +
+                generateNet(petriNet) + newlines(2) +
                 generateAssert() +
                 generateAcInit() +
                 generateAcReach() +
@@ -124,24 +128,61 @@ public class SPNPTransformator implements Transformator {
         IncludeVisitorImpl includeVisitorImpl = new IncludeVisitorImpl();
         List<Include> sortedIncludes = spnpCode.getIncludes().stream().sorted().collect(Collectors.toList());
         sortedIncludes.forEach(include -> include.accept(includeVisitorImpl));
-        return includeVisitorImpl.getResult();
+        return String.format("/* Includes */%n%s", includeVisitorImpl.getResult());
+    }
+
+    private String generateGlobalVariables() {
+        return String.format("/* Global variables for general use */%n%s%n", globalVariablesDefinition()) +
+                String.format("/* Global variables for SPNP parameters */%n%s%n", SPNPParametersVariablesDefinition()) +
+                String.format("/* Global variables for input parameters */%n%s", inputParametersDeclaration());
+    }
+
+    private String globalVariablesDefinition() {
+        VariableVisitorImpl variableVisitorImpl = new VariableVisitorImpl();
+        List<Variable> sortedVariables = spnpCode.getGlobalVariables().stream().sorted().collect(Collectors.toList());
+        sortedVariables.forEach(variable -> variable.accept(variableVisitorImpl));
+        return variableVisitorImpl.getResult();
+    }
+
+    private String SPNPParametersVariablesDefinition() {
+        VariableVisitorImpl variableVisitorImpl = new VariableVisitorImpl();
+        List<Variable> sortedVariables = spnpCode.getParameterVariables().stream().sorted().collect(Collectors.toList());
+        sortedVariables.forEach(variable -> variable.accept(variableVisitorImpl));
+        return variableVisitorImpl.getResult();
+    }
+
+    private String inputParametersDeclaration() {
+        InputParamaterDeclarationVisitorImpl inputParamaterDeclarationVisitor = new InputParamaterDeclarationVisitorImpl();
+        List<InputParameter> sortedInputParameters = spnpOptions.getInputParameters().stream().sorted().collect(Collectors.toList());
+        sortedInputParameters.forEach(inputParameter -> inputParameter.accept(inputParamaterDeclarationVisitor));
+        return inputParamaterDeclarationVisitor.getResult();
+    }
+
+    private String generateGlobalFunctions() {
+        return "";
     }
 
     private String generateOptions() {
         OptionVisitor optionVisitor = new OptionVisitor();
         List<Option> sortedOptions = spnpOptions.getOptions().stream().sorted().collect(Collectors.toList());
         sortedOptions.forEach(option -> option.accept(optionVisitor));
-        return String.format("void options() {%n%s}", tabify(optionVisitor.getResult()));
+        return String.format("void options() {%n%s%n%s}", tabify(optionVisitor.getResult()), tabify(inputParametersDefinition()));
+    }
+
+    private String inputParametersDefinition() {
+        InputParameterDefinitionVisitorImpl inputParameterDefinitionVisitor = new InputParameterDefinitionVisitorImpl();
+        List<InputParameter> sortedInputParameters = spnpOptions.getInputParameters().stream().sorted().collect(Collectors.toList());
+        sortedInputParameters.forEach(inputParameter -> inputParameter.accept(inputParameterDefinitionVisitor));
+        return inputParameterDefinitionVisitor.getResult();
     }
 
     private String generateNet(PetriNet petriNet) {
         String netDefinition = "void net() {" + System.lineSeparator() +
-                tabify(parameterVariablesDefinition()) +
+                tabify(SPNPParametersCreation()) +
                 tabify(placesDefinition(petriNet)) +
                 tabify(transitionsDefinition(petriNet)) +
                 tabify(arcsDefinition(petriNet)) +
-                tabify(parameterVariablesBindings()) +
-                // TODO arcs, ...
+                tabify(SPNPParametersBindings()) +
                 "}";
         return netDefinition;
     }
@@ -183,24 +224,24 @@ public class SPNPTransformator implements Transformator {
         return "";
     }
 
-    private String parameterVariablesDefinition() {
+    private String SPNPParametersCreation() {
         var parameterVariables = spnpCode.getParameterVariables();
         if (parameterVariables.isEmpty())
             return "";
 
-        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES ==== */" + System.lineSeparator());
+        StringBuilder definitions = new StringBuilder("/* SPNP parameters creation */" + System.lineSeparator());
         parameterVariables.forEach(variable -> definitions.append(String.format("parm(\"%s\");%n", variable.getName())));
 
         definitions.append(System.lineSeparator());
         return definitions.toString();
     }
 
-    private String parameterVariablesBindings() {
+    private String SPNPParametersBindings() {
         var parameterVariables = spnpCode.getParameterVariables();
         if (parameterVariables.isEmpty())
             return "";
 
-        StringBuilder definitions = new StringBuilder("/* ==== PARAMETER VARIABLES BINDINGS ==== */" + System.lineSeparator());
+        StringBuilder definitions = new StringBuilder("/* SPNP parameters bindings */" + System.lineSeparator());
         parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n",
                 variable.getName(), variable.getName())));
 
@@ -217,4 +258,7 @@ public class SPNPTransformator implements Transformator {
         return textWithTabs.toString();
     }
 
+    private String newlines(int count) {
+        return System.lineSeparator().repeat(count);
+    }
 }
