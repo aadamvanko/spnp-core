@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.transformators.spnp.parameters;
 
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.InputParameterVisitor;
+
 public class DoubleInputParameter extends InputParameter {
 
     public DoubleInputParameter(String parameterName, String userPromptText) {
@@ -7,13 +9,7 @@ public class DoubleInputParameter extends InputParameter {
     }
 
     @Override
-    public String getDeclaration() {
-        return String.format("double %s;%n", this.getParameterName());
-    }
-
-    @Override
-    public String getDefinition() {
-        return String.format("%s = finput(\"%s\");%n", this.getParameterName(),
-                                                       this.getUserPromptText());
+    public void accept(InputParameterVisitor inputParameterVisitor) {
+        inputParameterVisitor.visit(this);
     }
 }

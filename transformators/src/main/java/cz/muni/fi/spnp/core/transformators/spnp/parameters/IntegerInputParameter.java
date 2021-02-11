@@ -1,5 +1,7 @@
 package cz.muni.fi.spnp.core.transformators.spnp.parameters;
 
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.InputParameterVisitor;
+
 public class IntegerInputParameter extends InputParameter {
 
     public IntegerInputParameter(String parameterName, String userPromptText) {
@@ -7,13 +9,7 @@ public class IntegerInputParameter extends InputParameter {
     }
 
     @Override
-    public String getDeclaration() {
-        return String.format("int %s;%n", this.getParameterName());
-    }
-
-    @Override
-    public String getDefinition() {
-        return String.format("%s = input(\"%s\");%n", this.getParameterName(),
-                                                      this.getUserPromptText());
+    public void accept(InputParameterVisitor inputParameterVisitor) {
+        inputParameterVisitor.visit(this);
     }
 }

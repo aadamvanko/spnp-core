@@ -1,8 +1,10 @@
 package cz.muni.fi.spnp.core.transformators.spnp.parameters;
 
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.InputParameterVisitor;
+
 import java.util.Objects;
 
-public abstract class InputParameter {
+public abstract class InputParameter implements Comparable<InputParameter> {
 
     private final String parameterName;
     private final String userPromptText;
@@ -16,10 +18,6 @@ public abstract class InputParameter {
         this.parameterName = parameterName;
         this.userPromptText = userPromptText;
     }
-
-    public abstract String getDeclaration();
-
-    public abstract String getDefinition();
 
     public String getParameterName() {
         return parameterName;
@@ -45,4 +43,11 @@ public abstract class InputParameter {
     public int hashCode() {
         return Objects.hash(parameterName);
     }
+
+    @Override
+    public int compareTo(InputParameter other) {
+        return parameterName.compareTo(other.parameterName);
+    }
+
+    public abstract void accept(InputParameterVisitor inputParameterVisitor);
 }
