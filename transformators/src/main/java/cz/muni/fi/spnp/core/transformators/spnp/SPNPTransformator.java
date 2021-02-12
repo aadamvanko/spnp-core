@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.transformators.spnp;
 
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
+import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.Transformator;
@@ -10,6 +11,7 @@ import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
 import cz.muni.fi.spnp.core.transformators.spnp.parameters.InputParameter;
+import cz.muni.fi.spnp.core.transformators.spnp.utility.Utils;
 import cz.muni.fi.spnp.core.transformators.spnp.variables.Variable;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.*;
 
@@ -111,15 +113,14 @@ public class SPNPTransformator implements Transformator {
 
     @Override
     public String transform(PetriNet petriNet) {
-        // TODO add header files
-        String source = generateIncludes() + newlines(1) +
-                generateGlobalVariables() + newlines(1) +
-                //TODO generateGlobalFunctions() + newlines(1) +
-                generateOptions() + newlines(2) +
-                generateNet(petriNet) + newlines(2) +
-                generateAssert() +
-                generateAcInit() +
-                generateAcReach() +
+        String source = generateIncludes() + Utils.newlines(1) +
+                generateGlobalVariables() + Utils.newlines(1) +
+                // generateGlobalFunctions() + newlines(1) +
+                generateOptions() + Utils.newlines(2) +
+                generateNet(petriNet) + Utils.newlines(2) +
+                generateAssert() + Utils.newlines(1) +
+                generateAcInit() + Utils.newlines(1) +
+                generateAcReach() + Utils.newlines(1) +
                 generateAcFinal();
         return source;
     }
@@ -166,23 +167,24 @@ public class SPNPTransformator implements Transformator {
         OptionVisitor optionVisitor = new OptionVisitor();
         List<Option> sortedOptions = spnpOptions.getOptions().stream().sorted().collect(Collectors.toList());
         sortedOptions.forEach(option -> option.accept(optionVisitor));
-        return String.format("void options() {%n%s%n%s}", tabify(optionVisitor.getResult()), tabify(inputParametersDefinition()));
+        String optionsDefinition = String.format("/* Options */%n%s", optionVisitor.getResult());
+        return String.format("void options() {%n%s%n%s}", Utils.tabify(optionsDefinition), Utils.tabify(inputParametersInitialization()));
     }
 
-    private String inputParametersDefinition() {
-        InputParameterDefinitionVisitorImpl inputParameterDefinitionVisitor = new InputParameterDefinitionVisitorImpl();
+    private String inputParametersInitialization() {
+        InputParameterInitializationVisitorImpl inputParameterInitializationVisitor = new InputParameterInitializationVisitorImpl();
         List<InputParameter> sortedInputParameters = spnpOptions.getInputParameters().stream().sorted().collect(Collectors.toList());
-        sortedInputParameters.forEach(inputParameter -> inputParameter.accept(inputParameterDefinitionVisitor));
-        return inputParameterDefinitionVisitor.getResult();
+        sortedInputParameters.forEach(inputParameter -> inputParameter.accept(inputParameterInitializationVisitor));
+        return String.format("/* Input parameters initialization */%n%s", inputParameterInitializationVisitor.getResult());
     }
 
     private String generateNet(PetriNet petriNet) {
         String netDefinition = "void net() {" + System.lineSeparator() +
-                tabify(SPNPParametersCreation()) +
-                tabify(placesDefinition(petriNet)) +
-                tabify(transitionsDefinition(petriNet)) +
-                tabify(arcsDefinition(petriNet)) +
-                tabify(SPNPParametersBindings()) +
+                Utils.tabify(SPNPParametersCreation()) + Utils.newlines(1) +
+                Utils.tabify(placesDefinition(petriNet)) + Utils.newlines(1) +
+                Utils.tabify(transitionsDefinition(petriNet)) + Utils.newlines(1) +
+                Utils.tabify(arcsDefinition(petriNet)) + Utils.newlines(1) +
+                Utils.tabify(SPNPParametersBindings()) +
                 "}";
         return netDefinition;
     }
@@ -191,74 +193,57 @@ public class SPNPTransformator implements Transformator {
         PlaceVisitorImpl placeVisitorImpl = new PlaceVisitorImpl();
         List<Place> sortedPlaces = petriNet.getPlaces().stream().sorted().collect(Collectors.toList());
         sortedPlaces.forEach(place -> place.accept(placeVisitorImpl));
-        return placeVisitorImpl.getResult();
+        return String.format("/* Places */%n%s", placeVisitorImpl.getResult());
     }
 
     private String transitionsDefinition(PetriNet petriNet) {
         TransitionVisitorImpl transitionVisitorImpl = new TransitionVisitorImpl();
         List<Transition> sortedTransitions = petriNet.getTransitions().stream().sorted().collect(Collectors.toList());
         sortedTransitions.forEach(transition -> transition.accept(transitionVisitorImpl));
-        return transitionVisitorImpl.getResult();
+        return String.format("/* Transitions */%n%s", transitionVisitorImpl.getResult());
     }
 
     private String arcsDefinition(PetriNet petriNet) {
         ArcVisitorImpl arcVisitorImpl = new ArcVisitorImpl();
         List<Arc> sortedArcs = petriNet.getArcs().stream().sorted().collect(Collectors.toList());
         sortedArcs.forEach(arc -> arc.accept(arcVisitorImpl));
-        return arcVisitorImpl.getResult();
+        return String.format("/* Arcs */%n%s", arcVisitorImpl.getResult());
     }
 
     private String generateAssert() {
-        return "";
+        return generateFunction(spnpCode.getAssertFunction());
     }
 
     private String generateAcInit() {
-        return "";
+        return generateFunction(spnpCode.getAcInitFunction());
     }
 
     private String generateAcReach() {
-        return "";
+        return generateFunction(spnpCode.getAcReachFunction());
     }
 
     private String generateAcFinal() {
-        return "";
+        return generateFunction(spnpCode.getAcFinalFunction());
+    }
+
+    private <T> String generateFunction(Function<T> function) {
+        FunctionDefinitionVisitorImpl functionDefinitionVisitorImpl = new FunctionDefinitionVisitorImpl();
+        function.accept(functionDefinitionVisitorImpl);
+        return functionDefinitionVisitorImpl.getResult();
     }
 
     private String SPNPParametersCreation() {
         var parameterVariables = spnpCode.getParameterVariables();
-        if (parameterVariables.isEmpty())
-            return "";
-
-        StringBuilder definitions = new StringBuilder("/* SPNP parameters creation */" + System.lineSeparator());
+        StringBuilder definitions = new StringBuilder();
         parameterVariables.forEach(variable -> definitions.append(String.format("parm(\"%s\");%n", variable.getName())));
-
-        definitions.append(System.lineSeparator());
-        return definitions.toString();
+        return String.format("/* SPNP parameters creation */%n%s", definitions.toString());
     }
 
     private String SPNPParametersBindings() {
         var parameterVariables = spnpCode.getParameterVariables();
-        if (parameterVariables.isEmpty())
-            return "";
-
-        StringBuilder definitions = new StringBuilder("/* SPNP parameters bindings */" + System.lineSeparator());
-        parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n",
-                variable.getName(), variable.getName())));
-
-        definitions.append(System.lineSeparator());
-        return definitions.toString();
+        StringBuilder definitions = new StringBuilder();
+        parameterVariables.forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n", variable.getName(), variable.getName())));
+        return String.format("/* SPNP parameters bindings */%n%s", definitions.toString());
     }
 
-    private String tabify(String text) {
-        String[] lines = text.split(System.lineSeparator());
-        StringBuilder textWithTabs = new StringBuilder();
-        for (String line : lines) {
-            textWithTabs.append("\t").append(line).append(System.lineSeparator());
-        }
-        return textWithTabs.toString();
-    }
-
-    private String newlines(int count) {
-        return System.lineSeparator().repeat(count);
-    }
 }

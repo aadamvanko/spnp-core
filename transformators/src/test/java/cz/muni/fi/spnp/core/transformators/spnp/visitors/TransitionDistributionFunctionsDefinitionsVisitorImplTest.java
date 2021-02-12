@@ -61,8 +61,8 @@ public class TransitionDistributionFunctionsDefinitionsVisitorImplTest {
     public void testVisit_SingleValueTransitionDistributionBase() {
         String expected = String.format(
                 "double TimedGuard1() {%n"
-                + "return 1.2;%n"
-                + "}%n");
+                        + "\treturn 1.2;%n"
+                        + "}%n");
         
         var distribution = new ConstantTransitionDistribution(guard1);
         instance.visit(distribution);
@@ -76,12 +76,12 @@ public class TransitionDistributionFunctionsDefinitionsVisitorImplTest {
     public void testVisit_TwoValuesTransitionDistributionBase() {
         String expected = String.format(
                 "double TimedGuard1() {%n"
-                + "return 1.2;%n"
-                + "}%n%n"
-                        
-                + "double TimedGuard2() {%n"
-                + "return 3.4;%n"
-                + "}%n");
+                        + "\treturn 1.2;%n"
+                        + "}%n%n"
+
+                        + "double TimedGuard2() {%n"
+                        + "\treturn 3.4;%n"
+                        + "}%n");
         
         var distribution = new BetaTransitionDistribution(guard1, guard2);
         instance.visit(distribution);
@@ -96,16 +96,16 @@ public class TransitionDistributionFunctionsDefinitionsVisitorImplTest {
     public void testVisit_ThreeValuesTransitionDistributionBase() {
         String expected = String.format(
                 "double TimedGuard1() {%n"
-                + "return 1.2;%n"
-                + "}%n%n"
-                        
-                + "double TimedGuard2() {%n"
-                + "return 3.4;%n"
-                + "}%n%n"
-                        
-                + "double TimedGuard3() {%n"
-                + "return 5.6;%n"
-                + "}%n");
+                        + "\treturn 1.2;%n"
+                        + "}%n%n"
+
+                        + "double TimedGuard2() {%n"
+                        + "\treturn 3.4;%n"
+                        + "}%n%n"
+
+                        + "double TimedGuard3() {%n"
+                        + "\treturn 5.6;%n"
+                        + "}%n");
         
         var distribution = new BinomialTransitionDistribution(guard1, guard2, guard3);
         instance.visit(distribution);
@@ -118,21 +118,21 @@ public class TransitionDistributionFunctionsDefinitionsVisitorImplTest {
     @Test
     public void testVisit_FourValuesTransitionDistributionBase() {
         String expected = String.format(
-        "int TimedGuardInteger() {%n"
-        + "return 7;%n"
-        + "}%n%n"
+                "int TimedGuardInteger() {%n"
+                        + "\treturn 7;%n"
+                        + "}%n%n"
 
-        + "double TimedGuard1() {%n"
-        + "return 1.2;%n"
-        + "}%n%n"
+                        + "double TimedGuard1() {%n"
+                        + "\treturn 1.2;%n"
+                        + "}%n%n"
 
-        + "double TimedGuard2() {%n"
-        + "return 3.4;%n"
-        + "}%n%n"
+                        + "double TimedGuard2() {%n"
+                        + "\treturn 3.4;%n"
+                        + "}%n%n"
 
-        + "double TimedGuard3() {%n"
-        + "return 5.6;%n"
-        + "}%n");
+                        + "double TimedGuard3() {%n"
+                        + "\treturn 5.6;%n"
+                        + "}%n");
 
         var distribution = new HypoExponentialTransitionDistribution(guardInt, guard1, guard2, guard3);
         instance.visit(distribution);
