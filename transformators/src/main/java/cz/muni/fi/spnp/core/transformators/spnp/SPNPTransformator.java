@@ -6,7 +6,6 @@ import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.Transformator;
-import cz.muni.fi.spnp.core.transformators.spnp.code.Include;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
@@ -114,6 +113,7 @@ public class SPNPTransformator implements Transformator {
     @Override
     public String transform(PetriNet petriNet) {
         String source = generateIncludes() + Utils.newlines(1) +
+                generateDefines() + Utils.newlines(1) +
                 generateGlobalVariables() + Utils.newlines(1) +
                 // generateGlobalFunctions() + newlines(1) +
                 generateOptions() + Utils.newlines(2) +
@@ -127,9 +127,14 @@ public class SPNPTransformator implements Transformator {
 
     private String generateIncludes() {
         IncludeVisitorImpl includeVisitorImpl = new IncludeVisitorImpl();
-        List<Include> sortedIncludes = spnpCode.getIncludes().stream().sorted().collect(Collectors.toList());
-        sortedIncludes.forEach(include -> include.accept(includeVisitorImpl));
+        spnpCode.getIncludes().forEach(include -> include.accept(includeVisitorImpl));
         return String.format("/* Includes */%n%s", includeVisitorImpl.getResult());
+    }
+
+    private String generateDefines() {
+        DefineVisitorImpl defineVisitorImpl = new DefineVisitorImpl();
+        spnpCode.getDefines().forEach(define -> define.accept(defineVisitorImpl));
+        return String.format("/* Defines */%n%s", defineVisitorImpl.getResult());
     }
 
     private String generateGlobalVariables() {

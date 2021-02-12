@@ -5,14 +5,16 @@ import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.transformators.spnp.variables.Variable;
 import cz.muni.fi.spnp.core.transformators.spnp.variables.VariableType;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SPNPCode {
 
-    private final Set<Include> includes;
-    private final Set<Define> defines;
+    private final List<Include> includes;
+    private final List<Define> defines;
     private final Set<Variable> variables;
 
     private Function<Integer> assertFunction;
@@ -21,8 +23,8 @@ public class SPNPCode {
     private Function<Void> acFinalFunction;
 
     public SPNPCode() {
-        includes = new HashSet<>();
-        defines = new HashSet<>();
+        includes = new ArrayList<>();
+        defines = new ArrayList<>();
         variables = new HashSet<>();
 
         createDefaultRequiredFunctions();
@@ -46,7 +48,7 @@ public class SPNPCode {
         this.includes.remove(include);
     }
 
-    public Set<Include> getIncludes() {
+    public List<Include> getIncludes() {
         return includes;
     }
 
@@ -66,6 +68,10 @@ public class SPNPCode {
             throw new IllegalArgumentException("Define is not present in this Petri net.");
 
         this.defines.remove(define);
+    }
+
+    public List<Define> getDefines() {
+        return defines;
     }
 
     public void addVariable(Variable variable) {
