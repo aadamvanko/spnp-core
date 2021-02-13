@@ -4,9 +4,16 @@ import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
+import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
+import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
+import cz.muni.fi.spnp.core.models.transitions.distributions.*;
+import cz.muni.fi.spnp.core.models.transitions.probabilities.FunctionalTransitionProbability;
+import cz.muni.fi.spnp.core.models.transitions.probabilities.TransitionProbability;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class PetriNet {
@@ -14,13 +21,13 @@ public class PetriNet {
     private final Set<Arc> arcs;
     private final Set<Place> places;
     private final Set<Transition> transitions;
-    private final Set<Function> functions;
+    private final Map<String, Function<?>> functions;
 
     public PetriNet() {
         arcs = new HashSet<>();
         places = new HashSet<>();
         transitions = new HashSet<>();
-        functions = new HashSet<>();
+        functions = new HashMap<>();
     }
 
     public Set<Place> getPlaces() {
@@ -35,11 +42,17 @@ public class PetriNet {
         return arcs;
     }
 
+    public Map<String, Function<?>> getFunctions() {
+        return functions;
+    }
+
     public void addArc(Arc arc) {
         if (arc == null)
             throw new IllegalArgumentException("Arc is null.");
         if (this.arcs.contains(arc))
             throw new IllegalArgumentException("Arc is already present in this Petri net.");
+
+        extractFunctionsFromArc(arc);
 
         this.arcs.add(arc);
     }
@@ -77,6 +90,8 @@ public class PetriNet {
         if (this.transitions.contains(transition))
             throw new IllegalArgumentException("Transition is already present in this Petri net.");
 
+        extractFunctionsFromTransition(transition);
+
         this.transitions.add(transition);
     }
 
@@ -89,24 +104,90 @@ public class PetriNet {
         this.transitions.remove(transition);
     }
 
-    public void addFunction(Function function) {
+    public void addFunction(Function<?> function) {
         if (function == null)
             throw new IllegalArgumentException("Function is null.");
-        if (this.functions.contains(function))
+        if (this.functions.containsKey(function.getName()))
             throw new IllegalArgumentException("Function is already present in this Petri net.");
 
-        this.functions.add(function);
+        this.functions.put(function.getName(), function);
     }
 
-    public void removeFunction(Function function) {
+    public Function<?> getFunction(String name) {
+        return functions.get(name);
+    }
+
+    public void removeFunction(Function<?> function) {
         if (function == null)
             throw new IllegalArgumentException("Function is null.");
-        if (!this.functions.contains(function))
+        if (!this.functions.containsKey(function.getName()))
             throw new IllegalArgumentException("Function is not present in this Petri net.");
 
-        this.functions.remove(function);
+        this.functions.remove(function.getName());
     }
 
+    private void extractFunctionsFromArc(Arc arc) {
+        addFunctionIfMissing(arc.getCalculateMultiplicityFunction());
+    }
+
+    private void extractFunctionsFromTransition(Transition transition) {
+        addFunctionIfMissing(transition.getGuardFunction());
+        if (transition instanceof ImmediateTransition) {
+            var immediateTransition = (ImmediateTransition) transition;
+            extractFunctionsFromTransitionProbability(immediateTransition.getTransitionProbability());
+        } else if (transition instanceof TimedTransition) {
+            var timedTransition = (TimedTransition) transition;
+            extractFunctionsFromTransitionDistribution(timedTransition.getTransitionDistribution());
+        }
+    }
+
+    private void extractFunctionsFromTransitionProbability(TransitionProbability transitionProbability) {
+        if (transitionProbability instanceof FunctionalTransitionProbability) {
+            var functionalTransitionProbability = (FunctionalTransitionProbability) transitionProbability;
+            addFunctionIfMissing(functionalTransitionProbability.getFunction());
+        }
+    }
+
+    private void extractFunctionsFromTransitionDistribution(TransitionDistribution transitionDistribution) {
+        if (transitionDistribution instanceof SingleValueTransitionDistributionBase) {
+            var singleValueTransitionDistributionBase = (SingleValueTransitionDistributionBase<?>) transitionDistribution;
+            addFunctionIfMissing(singleValueTransitionDistributionBase.getFunction());
+        } else if (transitionDistribution instanceof TwoValuesTransitionDistributionBase) {
+            var twoValuesTransitionDistributionBase = (TwoValuesTransitionDistributionBase<?, ?>) transitionDistribution;
+            addFunctionIfMissing(twoValuesTransitionDistributionBase.getFirstFunction());
+            addFunctionIfMissing(twoValuesTransitionDistributionBase.getSecondFunction());
+        } else if (transitionDistribution instanceof ThreeValuesTransitionDistributionBase) {
+            var threeValuesTransitionDistributionBase = (ThreeValuesTransitionDistributionBase<?, ?, ?>) transitionDistribution;
+            addFunctionIfMissing(threeValuesTransitionDistributionBase.getFirstFunction());
+            addFunctionIfMissing(threeValuesTransitionDistributionBase.getSecondFunction());
+            addFunctionIfMissing(threeValuesTransitionDistributionBase.getThirdFunction());
+        } else if (transitionDistribution instanceof FourValuesTransitionDistributionBase) {
+            var fourValuesTransitionDistributionBase = (FourValuesTransitionDistributionBase<?, ?, ?, ?>) transitionDistribution;
+            addFunctionIfMissing(fourValuesTransitionDistributionBase.getFirstFunction());
+            addFunctionIfMissing(fourValuesTransitionDistributionBase.getSecondFunction());
+            addFunctionIfMissing(fourValuesTransitionDistributionBase.getThirdFunction());
+            addFunctionIfMissing(fourValuesTransitionDistributionBase.getFourthFunction());
+        }
+    }
+
+    private void addFunctionIfMissing(Function<?> function) {
+        if (function == null) {
+            return;
+        }
+
+        Function<?> oldFunction = functions.get(function.getName());
+        if (oldFunction == null) {
+            functions.put(function.getName(), function);
+            return;
+        }
+
+        boolean hasSameBody = oldFunction.getBody().equals(function.getBody());
+        boolean hasSameReturnType = oldFunction.getReturnType().equals(function.getReturnType());
+        if (!hasSameBody || !hasSameReturnType) {
+            String message = String.format("Function %s is not the same function as the already stored function.", function.getName());
+            throw new IllegalArgumentException(message);
+        }
+    }
 //
 //    public String getDefinition() {
 //        return String.format(
