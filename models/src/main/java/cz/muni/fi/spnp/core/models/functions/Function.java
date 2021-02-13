@@ -5,7 +5,7 @@ import cz.muni.fi.spnp.core.models.visitors.FunctionDefinitionVisitor;
 
 import java.util.Objects;
 
-public class Function<TReturnType> {
+public class Function<TReturnType> implements Comparable<Function<?>> {
 
     private final String name;
     private final FunctionType functionType;
@@ -92,5 +92,10 @@ public class Function<TReturnType> {
 
     public void accept(FunctionDeclarationVisitor functionDeclarationVisitor) {
         functionDeclarationVisitor.visit(this);
+    }
+
+    @Override
+    public int compareTo(Function<?> other) {
+        return name.compareTo(other.name);
     }
 }
