@@ -18,19 +18,19 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionProbabilityVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitorTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.VariableVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.DefineVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.IncludeVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.FunctionDeclarationVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.FunctionDefinitionVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionFunctionsDeclarationsVisitorImplTest.class,
-        cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionFunctionsDefinitionsVisitorImplTest.class
+        PlaceVisitorImplTest.class,
+        TransitionProbabilityVisitorImplTest.class,
+        TransitionDistributionVisitorImplTest.class,
+        OptionVisitorTest.class,
+        TransitionVisitorImplTest.class,
+        ArcVisitorImplTest.class,
+        VariableVisitorImplTest.class,
+        DefineVisitorImplTest.class,
+        IncludeVisitorImplTest.class,
+        FunctionDeclarationVisitorImplTest.class,
+        FunctionDefinitionVisitorImplTest.class,
+        TransitionDistributionFunctionsDeclarationsVisitorImplTest.class,
+        TransitionDistributionFunctionsDefinitionsVisitorImplTest.class
 })
 public class VisitorsSuite {
 

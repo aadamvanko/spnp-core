@@ -2,9 +2,9 @@ package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.transitions.distributions.*;
-import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDeclarationsVisitor;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsVisitor;
 
-public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visitor implements TransitionDistributionFunctionsDeclarationsVisitor {
+public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visitor implements TransitionDistributionFunctionsVisitor {
     @Override
     public <T1> void visit(SingleValueTransitionDistributionBase<T1> singleValueTransitionDistributionBase) {
         checkPreconditions(singleValueTransitionDistributionBase);

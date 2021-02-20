@@ -3,8 +3,7 @@ package cz.muni.fi.spnp.core.models.transitions.distributions;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDeclarationsVisitor;
-import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDefinitionsVisitor;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsVisitor;
 
 public abstract class SingleValueTransitionDistributionBase<TValue> extends TransitionDistributionBase {
 
@@ -59,12 +58,7 @@ public abstract class SingleValueTransitionDistributionBase<TValue> extends Tran
     }
 
     @Override
-    public void accept(TransitionDistributionFunctionsDefinitionsVisitor transitionDistributionFunctionsDefinitionsVisitor) {
-        transitionDistributionFunctionsDefinitionsVisitor.visit(this);
-    }
-
-    @Override
-    public void accept(TransitionDistributionFunctionsDeclarationsVisitor transitionDistributionFunctionsDeclarationsVisitor) {
-        transitionDistributionFunctionsDeclarationsVisitor.visit(this);
+    public void accept(TransitionDistributionFunctionsVisitor transitionDistributionFunctionsVisitor) {
+        transitionDistributionFunctionsVisitor.visit(this);
     }
 }

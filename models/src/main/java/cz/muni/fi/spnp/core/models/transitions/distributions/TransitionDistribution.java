@@ -1,8 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions.distributions;
 
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
-import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDeclarationsVisitor;
-import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsDefinitionsVisitor;
+import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsVisitor;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 
 public interface TransitionDistribution {
@@ -22,7 +21,5 @@ public interface TransitionDistribution {
 
     void accept(TransitionDistributionVisitor transitionDistributionVisitor);
 
-    void accept(TransitionDistributionFunctionsDefinitionsVisitor transitionDistributionFunctionsDefinitionsVisitor);
-
-    void accept(TransitionDistributionFunctionsDeclarationsVisitor transitionDistributionFunctionsDeclarationsVisitor);
+    void accept(TransitionDistributionFunctionsVisitor transitionDistributionFunctionsVisitor);
 }
