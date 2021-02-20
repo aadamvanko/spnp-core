@@ -45,13 +45,13 @@ public class DefineVisitorImplTest {
     @Test
     public void testVisit() {
         String expected = "#define SampleDefine123 123";
-        var defineInt = new Define("SampleDefine123", 123);
+        var defineInt = new Define("SampleDefine123", "123");
         instance.visit(defineInt);
         Assert.assertEquals("Define scenario integer", expected.strip(), instance.getResult().strip());
         
         reinitVisitor();
         expected = "#define SampleDefineStr \"Defined String 123\"";
-        var defineStr = new Define("SampleDefineStr", "Defined String 123");
+        var defineStr = new Define("SampleDefineStr", "\"Defined String 123\"");
         instance.visit(defineStr);
         Assert.assertEquals("Define scenario string", expected.strip(), instance.getResult().strip());
     }

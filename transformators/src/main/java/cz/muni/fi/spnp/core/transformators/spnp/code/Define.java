@@ -7,44 +7,22 @@ import java.util.Objects;
 public class Define {
 
     private final String name;
-    private Number numberValue;
-    private String stringValue;
+    private final String expression;
 
-    public Define(String name, Number numberValue) {
-        this(name);
-
-        if (numberValue == null)
-            throw new IllegalArgumentException("Number value is not defined");
-
-        this.numberValue = numberValue;
-    }
-
-    public Define(String name, String stringValue) {
-        this(name);
-
-        if (stringValue == null)
-            throw new IllegalArgumentException("String value is not defined");
-
-        this.stringValue = stringValue;
-    }
-
-    private Define(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("Name is not defined");
+    public Define(String name, String expression) {
+        if (expression == null)
+            throw new IllegalArgumentException("Expression is not defined");
 
         this.name = name;
+        this.expression = expression;
     }
 
     public String getName() {
         return name;
     }
 
-    public Number getNumberValue() {
-        return numberValue;
-    }
-
-    public String getStringValue() {
-        return stringValue;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
