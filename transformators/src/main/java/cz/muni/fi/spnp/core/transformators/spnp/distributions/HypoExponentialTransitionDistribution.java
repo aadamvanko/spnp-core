@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class HypoExponentialTransitionDistribution extends FourValuesTransitionDistributionBase<Integer, Double, Double, Double> {
 
@@ -30,10 +32,10 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
      * @param secondRateValueFunction   reference to a function which calculates second rate value of hypo-exponential distribution
      * @param thirdRateValueFunction    reference to a function which calculates third rate value of hypo-exponential distribution
      */
-    public HypoExponentialTransitionDistribution(Function<Integer> numberOfStagesFunction,
-                                                 Function<Double> firstRateValueFunction,
-                                                 Function<Double> secondRateValueFunction,
-                                                 Function<Double> thirdRateValueFunction) {
+    public HypoExponentialTransitionDistribution(FunctionSPNP<Integer> numberOfStagesFunction,
+                                                 FunctionSPNP<Double> firstRateValueFunction,
+                                                 FunctionSPNP<Double> secondRateValueFunction,
+                                                 FunctionSPNP<Double> thirdRateValueFunction) {
         super(numberOfStagesFunction, firstRateValueFunction, secondRateValueFunction, thirdRateValueFunction);
     }
 
@@ -101,44 +103,44 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
         this.setFourthValue(thirdRateValue);
     }
 
-    public Function<Integer> getNumberOfStagesFunction() {
+    public FunctionSPNP<Integer> getNumberOfStagesFunction() {
         return this.getFirstFunction();
     }
 
-    public void setNumberOfStagesFunction(Function<Integer> numberOfStagesFunction) {
+    public void setNumberOfStagesFunction(FunctionSPNP<Integer> numberOfStagesFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Number of stages function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(numberOfStagesFunction);
     }
 
-    public Function<Double> getFirstRateValueFunction() {
+    public FunctionSPNP<Double> getFirstRateValueFunction() {
         return this.getSecondFunction();
     }
 
-    public void setFirstRateValueFunction(Function<Double> firstRateValueFunction) {
+    public void setFirstRateValueFunction(FunctionSPNP<Double> firstRateValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("First rate value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(firstRateValueFunction);
     }
 
-    public Function<Double> getSecondRateValueFunction() {
+    public FunctionSPNP<Double> getSecondRateValueFunction() {
         return this.getThirdFunction();
     }
 
-    public void setSecondRateValueFunction(Function<Double> secondRateValueFunction) {
+    public void setSecondRateValueFunction(FunctionSPNP<Double> secondRateValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Second rate value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setThirdFunction(secondRateValueFunction);
     }
 
-    public Function<Double> getThirdRateValueFunction() {
+    public FunctionSPNP<Double> getThirdRateValueFunction() {
         return this.getFourthFunction();
     }
 
-    public void setThirdRateValueFunction(Function<Double> thirdRateValueFunction) {
+    public void setThirdRateValueFunction(FunctionSPNP<Double> thirdRateValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Third rate value function can be set ONLY on Functional Transition Distribution type.");
 
@@ -147,6 +149,9 @@ public class HypoExponentialTransitionDistribution extends FourValuesTransitionD
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

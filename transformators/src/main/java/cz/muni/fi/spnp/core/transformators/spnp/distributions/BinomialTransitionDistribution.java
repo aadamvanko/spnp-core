@@ -1,49 +1,51 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
-public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
+public class BinomialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
 
     /**
-     * Creates new {@link NegativeBinomialTransitionDistribution} object with {@link TransitionDistributionType#Constant} distribution type.
+     * Creates new {@link BinomialTransitionDistribution} object with {@link TransitionDistributionType#Constant} distribution type.
      *
-     * @param numberValue       number value of negative binomial distribution
-     * @param probabilityValue  probability value of negative binomial distribution
-     * @param tValue            T value of negative binomial distribution
+     * @param numberValue       number value of binomial distribution
+     * @param probabilityValue  probability value of binomial distribution
+     * @param tValue            T value of binomial distribution
      */
-    public NegativeBinomialTransitionDistribution(Double numberValue,
-                                                  Double probabilityValue,
-                                                  Double tValue) {
+    public BinomialTransitionDistribution(Double numberValue,
+                                          Double probabilityValue,
+                                          Double tValue) {
         super(numberValue, probabilityValue, tValue);
     }
 
     /**
-     * Creates new {@link NegativeBinomialTransitionDistribution} object with {@link TransitionDistributionType#Functional} distribution type.
+     * Creates new {@link BinomialTransitionDistribution} object with {@link TransitionDistributionType#Functional} distribution type.
      *
-     * @param numberValueFunction       reference to a function which calculates number value of negative binomial distribution
-     * @param probabilityValueFunction  reference to a function which calculates probability value of negative binomial distribution
-     * @param tValueFunction            reference to a function which calculates T value of negative binomial distribution
+     * @param numberValueFunction       reference to a function which calculates number value of binomial distribution
+     * @param probabilityValueFunction  reference to a function which calculates probability value of binomial distribution
+     * @param tValueFunction            reference to a function which calculates T value of binomial distribution
      */
-    public NegativeBinomialTransitionDistribution(Function<Double> numberValueFunction,
-                                                  Function<Double> probabilityValueFunction,
-                                                  Function<Double> tValueFunction) {
+    public BinomialTransitionDistribution(FunctionSPNP<Double> numberValueFunction,
+                                          FunctionSPNP<Double> probabilityValueFunction,
+                                          FunctionSPNP<Double> tValueFunction) {
         super(numberValueFunction, probabilityValueFunction, tValueFunction);
     }
 
     /**
      * Creates new {@link BinomialTransitionDistribution} object with {@link TransitionDistributionType#PlaceDependent} distribution type.
      *
-     * @param numberValue       number value of negative binomial distribution
-     * @param probabilityValue  probability value of negative binomial distribution
-     * @param tValue            T value of negative binomial distribution
+     * @param numberValue       number value of binomial distribution
+     * @param probabilityValue  probability value of binomial distribution
+     * @param tValue            T value of binomial distribution
      * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
      */
-    public NegativeBinomialTransitionDistribution(Double numberValue,
-                                                  Double probabilityValue,
-                                                  Double tValue,
-                                                  StandardPlace dependentPlace) {
+    public BinomialTransitionDistribution(Double numberValue,
+                                          Double probabilityValue,
+                                          Double tValue,
+                                          StandardPlace dependentPlace) {
         super(numberValue, probabilityValue, tValue, dependentPlace);
     }
 
@@ -80,33 +82,33 @@ public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitio
         this.setThirdValue(tValue);
     }
 
-    public Function<Double> getNumberValueFunction() {
+    public FunctionSPNP<Double> getNumberValueFunction() {
         return this.getFirstFunction();
     }
 
-    public void setNumberValueFunction(Function<Double> numberValueFunction) {
+    public void setNumberValueFunction(FunctionSPNP<Double> numberValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Number value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(numberValueFunction);
     }
 
-    public Function<Double> getProbabilityValueFunction() {
+    public FunctionSPNP<Double> getProbabilityValueFunction() {
         return this.getSecondFunction();
     }
 
-    public void setProbabilityValueFunction(Function<Double> probabilityValueFunction) {
+    public void setProbabilityValueFunction(FunctionSPNP<Double> probabilityValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Probability value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(probabilityValueFunction);
     }
 
-    public Function<Double> getTValueFunction() {
+    public FunctionSPNP<Double> getTValueFunction() {
         return this.getThirdFunction();
     }
 
-    public void setTValueFunction(Function<Double> tValueFunction) {
+    public void setTValueFunction(FunctionSPNP<Double> tValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("T value function can be set ONLY on Functional Transition Distribution type.");
 
@@ -115,6 +117,9 @@ public class NegativeBinomialTransitionDistribution extends ThreeValuesTransitio
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

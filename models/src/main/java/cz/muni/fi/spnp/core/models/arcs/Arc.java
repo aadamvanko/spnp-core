@@ -13,7 +13,7 @@ public abstract class Arc implements Comparable<Arc> {
     private int multiplicity;
     private Place place;
     private Transition transition;
-    private Function<Integer> calculateMultiplicityFunction;
+    private Function calculateMultiplicityFunction;
 
     protected Arc(int id,
                   Place place,
@@ -30,7 +30,7 @@ public abstract class Arc implements Comparable<Arc> {
     protected Arc(int id,
                   Place place,
                   Transition transition,
-                  Function<Integer> calculateMultiplicityFunction) {
+                  Function calculateMultiplicityFunction) {
         this(id, place, transition);
 
         if (calculateMultiplicityFunction == null)
@@ -88,11 +88,11 @@ public abstract class Arc implements Comparable<Arc> {
         this.transition = transition;
     }
 
-    public Function<Integer> getCalculateMultiplicityFunction() {
+    public Function getCalculateMultiplicityFunction() {
         return calculateMultiplicityFunction;
     }
 
-    public void setCalculateMultiplicityFunction(Function<Integer> calculateMultiplicityFunction) {
+    public void setCalculateMultiplicityFunction(Function calculateMultiplicityFunction) {
         if (calculateMultiplicityFunction != null && calculateMultiplicityFunction.getFunctionType() != FunctionType.ArcCardinality)
             throw new IllegalArgumentException("Multiplicity function has incompatible type.");
 

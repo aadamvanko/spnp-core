@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class UniformTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +24,7 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
      * @param lowerBoundFunction    reference to a function which calculates lower bound value of uniform distribution
      * @param upperBoundFunction    reference to a function which calculates upper bound value of uniform distribution
      */
-    public UniformTransitionDistribution(Function<Double> lowerBoundFunction, Function<Double> upperBoundFunction) {
+    public UniformTransitionDistribution(FunctionSPNP<Double> lowerBoundFunction, FunctionSPNP<Double> upperBoundFunction) {
         super(lowerBoundFunction, upperBoundFunction);
     }
 
@@ -59,22 +61,22 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
         this.setSecondValue(upperBound);
     }
 
-    public Function<Double> getLowerBoundFunction() {
+    public FunctionSPNP<Double> getLowerBoundFunction() {
         return this.getFirstFunction();
     }
 
-    public void setLowerBoundFunction(Function<Double> lowerBoundFunction) {
+    public void setLowerBoundFunction(FunctionSPNP<Double> lowerBoundFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Lower bound function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(lowerBoundFunction);
     }
 
-    public Function<Double> getUpperBoundFunction() {
+    public FunctionSPNP<Double> getUpperBoundFunction() {
         return this.getSecondFunction();
     }
 
-    public void setUpperBoundFunction(Function<Double> upperBoundFunction) {
+    public void setUpperBoundFunction(FunctionSPNP<Double> upperBoundFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Upper bound function can be set ONLY on Functional Transition Distribution type.");
 
@@ -83,6 +85,9 @@ public class UniformTransitionDistribution extends TwoValuesTransitionDistributi
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

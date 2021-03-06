@@ -1,8 +1,9 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class BetaTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +23,7 @@ public class BetaTransitionDistribution extends TwoValuesTransitionDistributionB
      * @param firstValueFunction     reference to a function which calculates first value of beta distribution
      * @param secondValueFunction    reference to a function which calculates second value of beta distribution
      */
-    public BetaTransitionDistribution(Function<Double> firstValueFunction, Function<Double> secondValueFunction) {
+    public BetaTransitionDistribution(FunctionSPNP<Double> firstValueFunction, FunctionSPNP<Double> secondValueFunction) {
         super(firstValueFunction, secondValueFunction);
     }
 
@@ -39,6 +40,9 @@ public class BetaTransitionDistribution extends TwoValuesTransitionDistributionB
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

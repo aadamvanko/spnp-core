@@ -1,9 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.utils.Constants;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class ConstantTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
 
@@ -21,7 +22,7 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
      *
      * @param function  reference to a function which calculates value for distribution
      */
-    public ConstantTransitionDistribution(Function<Double> function) {
+    public ConstantTransitionDistribution(FunctionSPNP<Double> function) {
         super(function);
     }
 
@@ -46,12 +47,12 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
     }
 
     @Override
-    public Function<Double> getFunction() {
+    public FunctionSPNP<Double> getFunction() {
         return super.getFunction();
     }
 
     @Override
-    public void setFunction(Function<Double> function) {
+    public void setFunction(FunctionSPNP<Double> function) {
         super.setFunction(function);
     }
 
@@ -97,6 +98,9 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

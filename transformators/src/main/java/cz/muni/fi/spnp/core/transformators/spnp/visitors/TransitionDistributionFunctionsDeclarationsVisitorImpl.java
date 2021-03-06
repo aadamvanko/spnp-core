@@ -1,11 +1,14 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.TwoValuesTransitionDistributionBase;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.FourValuesTransitionDistributionBase;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.ThreeValuesTransitionDistributionBase;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.SingleValueTransitionDistributionBase;
 import cz.muni.fi.spnp.core.models.transitions.distributions.*;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 
 public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visitor implements TransitionDistributionFunctionsVisitor {
-    @Override
     public <T1> void visit(SingleValueTransitionDistributionBase<T1> singleValueTransitionDistributionBase) {
         checkPreconditions(singleValueTransitionDistributionBase);
 
@@ -13,7 +16,6 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
         stringBuilder.append(definition);
     }
 
-    @Override
     public <T1, T2> void visit(TwoValuesTransitionDistributionBase<T1, T2> twoValuesTransitionDistributionBase) {
         checkPreconditions(twoValuesTransitionDistributionBase);
 
@@ -22,7 +24,6 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
         stringBuilder.append(definition);
     }
 
-    @Override
     public <T1, T2, T3> void visit(ThreeValuesTransitionDistributionBase<T1, T2, T3> threeValuesTransitionDistributionBase) {
         checkPreconditions(threeValuesTransitionDistributionBase);
 
@@ -32,7 +33,6 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
         stringBuilder.append(definition);
     }
 
-    @Override
     public <T1, T2, T3, T4> void visit(FourValuesTransitionDistributionBase<T1, T2, T3, T4> fourValuesTransitionDistributionBase) {
         checkPreconditions(fourValuesTransitionDistributionBase);
 
@@ -48,9 +48,14 @@ public class TransitionDistributionFunctionsDeclarationsVisitorImpl extends Visi
             throw new IllegalStateException("Functions declarations are available ONLY on Functional Transition Distribution type.");
     }
 
-    private <T> String getFunctionDeclaration(Function<T> function) {
+    private <T> String getFunctionDeclaration(FunctionSPNP<T> function) {
         FunctionDeclarationVisitorImpl functionDeclarationVisitor = new FunctionDeclarationVisitorImpl();
         function.accept(functionDeclarationVisitor);
         return functionDeclarationVisitor.getResult();
+    }
+
+    @Override
+    public void visit(TransitionDistributionBase transitionDistributionBase) {
+        throw new UnsupportedOperationException("Not supported. This situation should not occur.");
     }
 }

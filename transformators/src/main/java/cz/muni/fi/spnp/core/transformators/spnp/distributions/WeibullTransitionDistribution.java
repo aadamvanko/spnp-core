@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class WeibullTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +24,7 @@ public class WeibullTransitionDistribution extends TwoValuesTransitionDistributi
      * @param alphaValueFunction    reference to a function which calculates alpha value of Weibull distribution
      * @param lambdaValueFunction   reference to a function which calculates lambda value of Weibull distribution
      */
-    public WeibullTransitionDistribution(Function<Double> alphaValueFunction, Function<Double> lambdaValueFunction) {
+    public WeibullTransitionDistribution(FunctionSPNP<Double> alphaValueFunction, FunctionSPNP<Double> lambdaValueFunction) {
         super(alphaValueFunction, lambdaValueFunction);
     }
 
@@ -59,30 +61,33 @@ public class WeibullTransitionDistribution extends TwoValuesTransitionDistributi
         this.setSecondValue(lambdaValue);
     }
 
-    public Function<Double> getAlphaValueFunction() {
+    public FunctionSPNP<Double> getAlphaValueFunction() {
         return this.getFirstFunction();
     }
 
-    public void setAlphaValueFunction(Function<Double> alphaValueFunction) {
+    public void setAlphaValueFunction(FunctionSPNP<Double> alphaValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Alpha value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(alphaValueFunction);
     }
 
-    public Function<Double> getLambdaValueFunction() {
+    public FunctionSPNP<Double> getLambdaValueFunction() {
         return this.getSecondFunction();
     }
 
-    public void setLambdaValueFunction(Function<Double> lambdaValueFunction) {
+    public void setLambdaValueFunction(FunctionSPNP<Double> lambdaValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Lambda value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(lambdaValueFunction);
     }
-
+    
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

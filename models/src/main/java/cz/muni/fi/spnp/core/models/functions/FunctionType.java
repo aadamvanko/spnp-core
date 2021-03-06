@@ -8,5 +8,5 @@ public enum FunctionType {
     Probability,
     Distribution,
     Halting,
-    SPNP
+    Other
 }

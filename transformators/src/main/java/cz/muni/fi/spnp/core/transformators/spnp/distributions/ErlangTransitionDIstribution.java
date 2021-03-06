@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class ErlangTransitionDIstribution extends TwoValuesTransitionDistributionBase<Double, Integer> {
 
@@ -22,7 +24,7 @@ public class ErlangTransitionDIstribution extends TwoValuesTransitionDistributio
      * @param rateFunction              reference to a function which calculates rate value of Erlang distribution
      * @param numberOfPhasesFunction    reference to a function which calculates number of phases of Erlang distribution
      */
-    public ErlangTransitionDIstribution(Function<Double> rateFunction, Function<Integer> numberOfPhasesFunction) {
+    public ErlangTransitionDIstribution(FunctionSPNP<Double> rateFunction, FunctionSPNP<Integer> numberOfPhasesFunction) {
         super(rateFunction, numberOfPhasesFunction);
     }
 
@@ -59,22 +61,22 @@ public class ErlangTransitionDIstribution extends TwoValuesTransitionDistributio
         this.setSecondValue(numberOfPhases);
     }
 
-    public Function<Double> getRateFunction() {
+    public FunctionSPNP<Double> getRateFunction() {
         return this.getFirstFunction();
     }
 
-    public void setRateFunction(Function<Double> rateFunction) {
+    public void setRateFunction(FunctionSPNP<Double> rateFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Rate function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(rateFunction);
     }
 
-    public Function<Integer> getNumberOfPhasesFunction() {
+    public FunctionSPNP<Integer> getNumberOfPhasesFunction() {
         return this.getSecondFunction();
     }
 
-    public void setNumberOfPhasesFunction(Function<Integer> numberOfPhasesFunction) {
+    public void setNumberOfPhasesFunction(FunctionSPNP<Integer> numberOfPhasesFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Rate function can be set ONLY on Functional Transition Distribution type.");
 
@@ -83,6 +85,9 @@ public class ErlangTransitionDIstribution extends TwoValuesTransitionDistributio
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

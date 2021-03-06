@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class HyperExponentialTransitionDistribution extends ThreeValuesTransitionDistributionBase<Double, Double, Double> {
 
@@ -26,9 +28,9 @@ public class HyperExponentialTransitionDistribution extends ThreeValuesTransitio
      * @param secondLambdaRateFunction  reference to a function which calculates second lambda rate value of hyper-exponential distribution
      * @param probabilityValueFunction  reference to a function which calculates probability value of hyper-exponential distribution
      */
-    public HyperExponentialTransitionDistribution(Function<Double> firstLambdaRateFunction,
-                                                  Function<Double> secondLambdaRateFunction,
-                                                  Function<Double> probabilityValueFunction) {
+    public HyperExponentialTransitionDistribution(FunctionSPNP<Double> firstLambdaRateFunction,
+                                                  FunctionSPNP<Double> secondLambdaRateFunction,
+                                                  FunctionSPNP<Double> probabilityValueFunction) {
         super(firstLambdaRateFunction, secondLambdaRateFunction, probabilityValueFunction);
     }
 
@@ -80,33 +82,33 @@ public class HyperExponentialTransitionDistribution extends ThreeValuesTransitio
         this.setThirdValue(probabilityValue);
     }
 
-    public Function<Double> getFirstLambdaRateFunction() {
+    public FunctionSPNP<Double> getFirstLambdaRateFunction() {
         return this.getFirstFunction();
     }
 
-    public void setFirstLambdaRateFunction(Function<Double> firstLambdaRateFunction) {
+    public void setFirstLambdaRateFunction(FunctionSPNP<Double> firstLambdaRateFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("First lambda rate function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(firstLambdaRateFunction);
     }
 
-    public Function<Double> getSecondLambdaRateFunction() {
+    public FunctionSPNP<Double> getSecondLambdaRateFunction() {
         return this.getSecondFunction();
     }
 
-    public void setSecondLambdaRateFunction(Function<Double> secondLambdaRateFunction) {
+    public void setSecondLambdaRateFunction(FunctionSPNP<Double> secondLambdaRateFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Second lambda rate function can be set ONLY on Functional Transition Distribution type.");
 
         this.setSecondFunction(secondLambdaRateFunction);
     }
 
-    public Function<Double> getProbabilityValueFunction() {
+    public FunctionSPNP<Double> getProbabilityValueFunction() {
         return this.getThirdFunction();
     }
 
-    public void setProbabilityValueFunction(Function<Double> probabilityValueFunction) {
+    public void setProbabilityValueFunction(FunctionSPNP<Double> probabilityValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Probability value function can be set ONLY on Functional Transition Distribution type.");
 
@@ -115,6 +117,9 @@ public class HyperExponentialTransitionDistribution extends ThreeValuesTransitio
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

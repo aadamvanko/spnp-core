@@ -1,9 +1,11 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.utils.Constants;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class ExponentialTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
 
@@ -21,7 +23,7 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
      *
      * @param rateFunction  reference to a function which calculates rate for distribution
      */
-    public ExponentialTransitionDistribution(Function<Double> rateFunction) {
+    public ExponentialTransitionDistribution(FunctionSPNP<Double> rateFunction) {
         super(rateFunction);
     }
 
@@ -46,11 +48,11 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
         this.setValue(rate);
     }
 
-    public Function<Double> getRateFunction() {
+    public FunctionSPNP<Double> getRateFunction() {
         return this.getFunction();
     }
 
-    public void setRateFunction(Function<Double> rateFunction) {
+    public void setRateFunction(FunctionSPNP<Double> rateFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Rate function can be set ONLY on Functional Transition Distribution type.");
 
@@ -99,6 +101,9 @@ public class ExponentialTransitionDistribution extends SingleValueTransitionDist
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

@@ -6,11 +6,11 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.models.arcs.*;
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import org.junit.*;
 
 /**
@@ -23,14 +23,14 @@ public class ArcVisitorImplTest {
     private final StandardPlace sampleStandardPlace;
     private final FluidPlace sampleFluidPlace;
     private final ImmediateTransition sampleTransition;
-    private final Function<Integer> sampleMultFunc;
+    private final FunctionSPNP<Integer> sampleMultFunc;
     
     
     public ArcVisitorImplTest() {
         sampleStandardPlace = new StandardPlace(0, "StandardPlace123");
         sampleFluidPlace = new FluidPlace(0, "FluidPlace123");
         sampleTransition = new ImmediateTransition(1, "Transition456");
-        sampleMultFunc = new Function<>("CardinalityFunction789", FunctionType.ArcCardinality, "return 9;", Integer.class);
+        sampleMultFunc = new FunctionSPNP<>("CardinalityFunction789", FunctionType.ArcCardinality, "return 9;", Integer.class);
     }
     
     @BeforeClass

@@ -3,6 +3,7 @@ package cz.muni.fi.spnp.core.transformators.spnp;
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.transformators.Transformator;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.*;
@@ -241,7 +242,7 @@ public class SPNPTransformator implements Transformator {
         return generateFunction(spnpCode.getAcFinalFunction());
     }
 
-    private String generateFunction(Function<?> function) {
+    private String generateFunction(FunctionSPNP<?> function) {
         var functionDefinitionVisitorImpl = new FunctionDefinitionVisitorImpl();
         function.accept(functionDefinitionVisitorImpl);
         return functionDefinitionVisitorImpl.getResult();

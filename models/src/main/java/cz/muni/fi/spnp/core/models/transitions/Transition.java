@@ -15,14 +15,14 @@ public abstract class Transition implements Comparable<Transition> {
     private final int id;
     private String name;
     private int priority;
-    private Function<Integer> guardFunction;
+    private Function guardFunction;
 
     protected Set<Arc> arcs;
 
     protected Transition(int id,
                          String name,
                          int priority,
-                         Function<Integer> guardFunction) {
+                         Function guardFunction) {
         if (name == null)
             throw new IllegalArgumentException("Name is not defined.");
         if (guardFunction != null && guardFunction.getFunctionType() != FunctionType.Guard)
@@ -62,11 +62,11 @@ public abstract class Transition implements Comparable<Transition> {
         this.priority = priority;
     }
 
-    public Function<Integer> getGuardFunction() {
+    public Function getGuardFunction() {
         return guardFunction;
     }
 
-    public void setGuardFunction(Function<Integer> guardFunction) {
+    public void setGuardFunction(Function guardFunction) {
         if (guardFunction != null && guardFunction.getFunctionType() != FunctionType.Guard)
             throw new IllegalArgumentException("Guard function has incompatible type.");
 
@@ -110,6 +110,7 @@ public abstract class Transition implements Comparable<Transition> {
 
     public abstract void accept(TransitionVisitor transitionVisitor);
 
+    @Override
     public int compareTo(Transition other) {
         return name.compareTo(other.getName());
     }

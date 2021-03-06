@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class CauchyTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +24,7 @@ public class CauchyTransitionDistribution extends TwoValuesTransitionDistributio
      * @param alphaValueFunction reference to a function which calculates alpha value of Cauchy distribution
      * @param betaValueFunction  reference to a function which calculates beta value of Cauchy distribution
      */
-    public CauchyTransitionDistribution(Function<Double> alphaValueFunction, Function<Double> betaValueFunction) {
+    public CauchyTransitionDistribution(FunctionSPNP<Double> alphaValueFunction, FunctionSPNP<Double> betaValueFunction) {
         super(alphaValueFunction, betaValueFunction);
     }
 
@@ -59,22 +61,22 @@ public class CauchyTransitionDistribution extends TwoValuesTransitionDistributio
         this.setSecondValue(betaValue);
     }
 
-    public Function<Double> getAlphaValueFunction() {
+    public FunctionSPNP<Double> getAlphaValueFunction() {
         return this.getFirstFunction();
     }
 
-    public void setAlphaValueFunction(Function<Double> alphaValueFunction) {
+    public void setAlphaValueFunction(FunctionSPNP<Double> alphaValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Alpha value function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(alphaValueFunction);
     }
 
-    public Function<Double> getBetaValueFunction() {
+    public FunctionSPNP<Double> getBetaValueFunction() {
         return this.getSecondFunction();
     }
 
-    public void setBetaValueFunction(Function<Double> betaValueFunction) {
+    public void setBetaValueFunction(FunctionSPNP<Double> betaValueFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Beta value function can be set ONLY on Functional Transition Distribution type.");
 
@@ -83,6 +85,9 @@ public class CauchyTransitionDistribution extends TwoValuesTransitionDistributio
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

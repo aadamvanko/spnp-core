@@ -5,12 +5,13 @@
  */
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.ConstantTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.ExponentialTransitionDistribution;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
-import cz.muni.fi.spnp.core.models.transitions.distributions.*;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import org.junit.*;
 
 /**
@@ -64,7 +65,7 @@ public class TransitionVisitorImplTest {
                 "guard(\"ImmediateTransition123\", ImmediateGuard);%n" +
                 "probval(\"ImmediateTransition123\", 1000.000001);%n");
 
-        Function<Integer> guard = new Function<>("ImmediateGuard", FunctionType.Guard, "return 4;", Integer.class);
+        FunctionSPNP<Integer> guard = new FunctionSPNP<>("ImmediateGuard", FunctionType.Guard, "return 4;", Integer.class);
         var probability = new ConstantTransitionProbability(1000.000001);
         immediateTransition = new ImmediateTransition(0, "ImmediateTransition123", 987, guard, probability);
         instance.visit(immediateTransition);
@@ -90,7 +91,7 @@ public class TransitionVisitorImplTest {
                 "priority(\"TimedTransition789\", 999);%n" +
                 "guard(\"TimedTransition789\", TimedGuard);%n");
 
-        Function<Integer> guard = new Function<>("TimedGuard", FunctionType.Guard, "return 7;", Integer.class);
+        FunctionSPNP<Integer> guard = new FunctionSPNP<>("TimedGuard", FunctionType.Guard, "return 7;", Integer.class);
         var constantDistribution = new ConstantTransitionDistribution(10000.00001);
         var timedTransitionSecond = new TimedTransition(14, "TimedTransition789", 999, guard, constantDistribution);
         instance.visit(timedTransitionSecond);

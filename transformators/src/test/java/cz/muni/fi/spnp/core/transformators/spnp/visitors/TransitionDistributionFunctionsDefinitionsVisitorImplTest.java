@@ -5,12 +5,12 @@
  */
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
-import cz.muni.fi.spnp.core.models.transitions.distributions.BetaTransitionDistribution;
-import cz.muni.fi.spnp.core.models.transitions.distributions.BinomialTransitionDistribution;
-import cz.muni.fi.spnp.core.models.transitions.distributions.ConstantTransitionDistribution;
-import cz.muni.fi.spnp.core.models.transitions.distributions.HypoExponentialTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.BetaTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.BinomialTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.ConstantTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.HypoExponentialTransitionDistribution;
 import org.junit.*;
 
 /**
@@ -19,18 +19,18 @@ import org.junit.*;
  */
 public class TransitionDistributionFunctionsDefinitionsVisitorImplTest {
     private TransitionDistributionFunctionsDefinitionsVisitorImpl instance;
-    private final Function<Double> guard1;
-    private final Function<Double> guard2;
-    private final Function<Double> guard3;
+    private final FunctionSPNP<Double> guard1;
+    private final FunctionSPNP<Double> guard2;
+    private final FunctionSPNP<Double> guard3;
     
-    private final Function<Integer> guardInt;
+    private final FunctionSPNP<Integer> guardInt;
 
     public TransitionDistributionFunctionsDefinitionsVisitorImplTest() {
-        guard1 = new Function<>("TimedGuard1", FunctionType.Distribution, "return 1.2;", double.class);
-        guard2 = new Function<>("TimedGuard2", FunctionType.Distribution, "return 3.4;", double.class);
-        guard3 = new Function<>("TimedGuard3", FunctionType.Distribution, "return 5.6;", double.class);
+        guard1 = new FunctionSPNP<>("TimedGuard1", FunctionType.Distribution, "return 1.2;", double.class);
+        guard2 = new FunctionSPNP<>("TimedGuard2", FunctionType.Distribution, "return 3.4;", double.class);
+        guard3 = new FunctionSPNP<>("TimedGuard3", FunctionType.Distribution, "return 5.6;", double.class);
         
-        guardInt = new Function<>("TimedGuardInteger", FunctionType.Distribution, "return 7;", int.class);
+        guardInt = new FunctionSPNP<>("TimedGuardInteger", FunctionType.Distribution, "return 7;", int.class);
     }
     
     @BeforeClass

@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class ParetoTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +24,7 @@ public class ParetoTransitionDistribution extends TwoValuesTransitionDistributio
      * @param scaleFunction reference to a function which calculates scale value of Pareto distribution
      * @param alphaFunction reference to a function which calculates alpha value of Pareto distribution
      */
-    public ParetoTransitionDistribution(Function<Double> scaleFunction, Function<Double> alphaFunction) {
+    public ParetoTransitionDistribution(FunctionSPNP<Double> scaleFunction, FunctionSPNP<Double> alphaFunction) {
         super(scaleFunction, alphaFunction);
     }
 
@@ -59,20 +61,20 @@ public class ParetoTransitionDistribution extends TwoValuesTransitionDistributio
         this.setSecondValue(alpha);
     }
 
-    public Function<Double> getScaleFunction() {
+    public FunctionSPNP<Double> getScaleFunction() {
         return this.getFirstFunction();
     }
 
-    public void setScaleFunction(Function<Double> scaleFunction) {
+    public void setScaleFunction(FunctionSPNP<Double> scaleFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Scale function can be set ONLY on Functional Transition Distribution type.");
     }
 
-    public Function<Double> getAlphaFunction() {
+    public FunctionSPNP<Double> getAlphaFunction() {
         return this.getSecondFunction();
     }
 
-    public void setAlphaFunction(Function<Double> alphaFunction) {
+    public void setAlphaFunction(FunctionSPNP<Double> alphaFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Alpha function can be set ONLY on Functional Transition Distribution type.");
 
@@ -81,6 +83,9 @@ public class ParetoTransitionDistribution extends TwoValuesTransitionDistributio
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

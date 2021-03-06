@@ -17,7 +17,7 @@ public class TimedTransition extends Transition {
     public TimedTransition(int id,
                            String name,
                            int priority,
-                           Function<Integer> guardFunction,
+                           Function guardFunction,
                            TransitionDistribution transitionDistribution) {
         super(id, name, priority, guardFunction);
 

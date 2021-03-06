@@ -33,7 +33,7 @@ public class StandardArc extends Arc {
                        ArcDirection direction,
                        Place place,
                        Transition transition,
-                       Function<Integer> calculateMultiplicityFunction) {
+                       Function calculateMultiplicityFunction) {
         super(id, place, transition, calculateMultiplicityFunction);
 
         this.direction = direction;

@@ -1,8 +1,10 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +24,7 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
      * @param expectationFunction   reference to a function which calculates expectation value of truncated normal distribution
      * @param varianceFunction      reference to a function which calculates variance value of truncated normal distribution
      */
-    public TruncatedNormalTransitionDistribution(Function<Double> expectationFunction, Function<Double> varianceFunction) {
+    public TruncatedNormalTransitionDistribution(FunctionSPNP<Double> expectationFunction, FunctionSPNP<Double> varianceFunction) {
         super(expectationFunction, varianceFunction);
     }
 
@@ -59,22 +61,22 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
         this.setSecondValue(variance);
     }
 
-    public Function<Double> getExpectationFunction() {
+    public FunctionSPNP<Double> getExpectationFunction() {
         return this.getFirstFunction();
     }
 
-    public void setExpectationFunction(Function<Double> expectationFunction) {
+    public void setExpectationFunction(FunctionSPNP<Double> expectationFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Expectation function can be set ONLY on Functional Transition Distribution type.");
 
         this.setFirstFunction(expectationFunction);
     }
 
-    public Function<Double> getVarianceFunction() {
+    public FunctionSPNP<Double> getVarianceFunction() {
         return this.getSecondFunction();
     }
 
-    public void setVarianceFunction(Function<Double> varianceFunction) {
+    public void setVarianceFunction(FunctionSPNP<Double> varianceFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Variance function can be set ONLY on Functional Transition Distribution type.");
 
@@ -83,6 +85,9 @@ public class TruncatedNormalTransitionDistribution extends TwoValuesTransitionDi
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

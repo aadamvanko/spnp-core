@@ -1,10 +1,10 @@
 package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.models.transitions.Transition;
-import cz.muni.fi.spnp.core.models.transitions.distributions.*;
-import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionBase;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.*;
 
-public class TransitionDistributionVisitorImpl extends Visitor implements TransitionDistributionVisitor {
+public class TransitionDistributionVisitorImpl extends Visitor implements TransitionDistributionVisitorSPNP {
 
     private final Transition transition;
 
@@ -580,5 +580,12 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
             default:
                 throw new IllegalStateException("Weibull transition distribution has unknown type.");
         }
+    }
+    
+    @Override
+    public void visit(TransitionDistributionBase transitionDistribution){
+        if(transitionDistribution instanceof ExponentialTransitionDistribution)
+            throw new UnsupportedOperationException("Not supported. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.");
+        throw new UnsupportedOperationException("Not supported. This situation should not occur.");
     }
 }

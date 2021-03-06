@@ -1,33 +1,37 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionBase;
+import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionFunctionsVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 
-public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecondValue, TThirdValue>
+public abstract class FourValuesTransitionDistributionBase<TFirstValue, TSecondValue, TThirdValue, TFourthValue>
         extends TransitionDistributionBase {
 
     protected TFirstValue firstValue;
     protected TSecondValue secondValue;
     protected TThirdValue thirdValue;
-    protected Function<TFirstValue> firstFunction;
-    protected Function<TSecondValue> secondFunction;
-    protected Function<TThirdValue> thirdFunction;
+    protected TFourthValue fourthValue;
 
-    public ThreeValuesTransitionDistributionBase(TFirstValue firstValue,
-                                                 TSecondValue secondValue,
-                                                 TThirdValue thirdValue) {
+    public FourValuesTransitionDistributionBase(TFirstValue firstValue,
+                                                TSecondValue secondValue,
+                                                TThirdValue thirdValue,
+                                                TFourthValue fourthValue) {
         super(TransitionDistributionType.Constant, null);
 
         this.firstValue = firstValue;
         this.secondValue = secondValue;
         this.thirdValue = thirdValue;
+        this.fourthValue = fourthValue;
     }
 
-    public ThreeValuesTransitionDistributionBase(Function<TFirstValue> firstFunction,
-                                                 Function<TSecondValue> secondFunction,
-                                                 Function<TThirdValue> thirdFunction) {
+    public FourValuesTransitionDistributionBase(FunctionSPNP<TFirstValue> firstFunction,
+                                                FunctionSPNP<TSecondValue> secondFunction,
+                                                FunctionSPNP<TThirdValue> thirdFunction,
+                                                FunctionSPNP<TFourthValue> fourthFunction) {
         super(TransitionDistributionType.Functional, null);
 
         if (firstFunction == null)
@@ -42,21 +46,34 @@ public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecond
             throw new IllegalArgumentException("Third function must be set.");
         if (thirdFunction.getFunctionType() != FunctionType.Distribution)
             throw new IllegalArgumentException("Function has incompatible type.");
+        if (fourthFunction == null)
+            throw new IllegalArgumentException("Fourth function must be set.");
+        if (fourthFunction.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
 
-        this.firstFunction = firstFunction;
-        this.secondFunction = secondFunction;
-        this.thirdFunction = thirdFunction;
+        this.functions[0] = firstFunction;
+        this.functions[1] = secondFunction;
+        this.functions[2] = thirdFunction;
+        this.functions[3] = fourthFunction;
     }
 
-    public ThreeValuesTransitionDistributionBase(TFirstValue firstValue,
-                                                 TSecondValue secondValue,
-                                                 TThirdValue thirdValue,
-                                                 StandardPlace dependentPlace) {
+    @Override
+    protected Function[] createFunctionsArray(){
+        Function[] newFunctions = {null, null, null, null};
+        return newFunctions;
+    }
+    
+    public FourValuesTransitionDistributionBase(TFirstValue firstValue,
+                                                TSecondValue secondValue,
+                                                TThirdValue thirdValue,
+                                                TFourthValue fourthValue,
+                                                StandardPlace dependentPlace) {
         super(TransitionDistributionType.PlaceDependent, dependentPlace);
 
         this.firstValue = firstValue;
         this.secondValue = secondValue;
         this.thirdValue = thirdValue;
+        this.fourthValue = fourthValue;
     }
 
     public TFirstValue getFirstValue() {
@@ -92,47 +109,72 @@ public abstract class ThreeValuesTransitionDistributionBase<TFirstValue, TSecond
         this.thirdValue = thirdValue;
     }
 
-    public Function<TFirstValue> getFirstFunction() {
-        return firstFunction;
+    public TFourthValue getFourthValue() {
+        return fourthValue;
     }
 
-    public void setFirstFunction(Function<TFirstValue> firstFunction) {
+    public void setFourthValue(TFourthValue fourthValue) {
+        if (getDistributionType() == TransitionDistributionType.Functional)
+            throw new IllegalStateException("Value cannot be set on Functional Transition Distribution type.");
+
+        this.fourthValue = fourthValue;
+    }
+
+    public FunctionSPNP<TFirstValue> getFirstFunction() {
+        return (FunctionSPNP<TFirstValue>) this.functions[0];
+    }
+
+    public void setFirstFunction(FunctionSPNP<TFirstValue> firstFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
         if (firstFunction != null && firstFunction.getFunctionType() != FunctionType.Distribution)
             throw new IllegalArgumentException("Function has incompatible type.");
 
-        this.firstFunction = firstFunction;
+        this.functions[0] = firstFunction;
     }
 
-    public Function<TSecondValue> getSecondFunction() {
-        return secondFunction;
+    public FunctionSPNP<TSecondValue> getSecondFunction() {
+        return (FunctionSPNP<TSecondValue>) this.functions[1];
     }
 
-    public void setSecondFunction(Function<TSecondValue> secondFunction) {
+    public void setSecondFunction(FunctionSPNP<TSecondValue> secondFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
         if (secondFunction != null && secondFunction.getFunctionType() != FunctionType.Distribution)
             throw new IllegalArgumentException("Function has incompatible type.");
 
-        this.secondFunction = secondFunction;
+        this.functions[1] = secondFunction;
     }
 
-    public Function<TThirdValue> getThirdFunction() {
-        return thirdFunction;
+    public FunctionSPNP<TThirdValue> getThirdFunction() {
+        return (FunctionSPNP<TThirdValue>) this.functions[2];
     }
 
-    public void setThirdFunction(Function<TThirdValue> thirdFunction) {
+    public void setThirdFunction(FunctionSPNP<TThirdValue> thirdFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
         if (thirdFunction != null && thirdFunction.getFunctionType() != FunctionType.Distribution)
             throw new IllegalArgumentException("Function has incompatible type.");
 
-        this.thirdFunction = thirdFunction;
+        this.functions[2] = thirdFunction;
+    }
+
+    public FunctionSPNP<TFourthValue> getFourthFunction() {
+        return (FunctionSPNP<TFourthValue>) this.functions[3];
+    }
+
+    public void setFourthFunction(FunctionSPNP<TFourthValue> fourthFunction) {
+        if (getDistributionType() != TransitionDistributionType.Functional)
+            throw new IllegalStateException("Function can be set ONLY on Functional Transition Distribution type.");
+        if (fourthFunction != null && fourthFunction.getFunctionType() != FunctionType.Distribution)
+            throw new IllegalArgumentException("Function has incompatible type.");
+
+        this.functions[3] = fourthFunction;
     }
 
     @Override
     public void accept(TransitionDistributionFunctionsVisitor transitionDistributionFunctionsVisitor) {
         transitionDistributionFunctionsVisitor.visit(this);
     }
+    
 }

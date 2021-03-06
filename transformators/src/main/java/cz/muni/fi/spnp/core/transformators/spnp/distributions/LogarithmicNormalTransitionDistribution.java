@@ -1,8 +1,9 @@
-package cz.muni.fi.spnp.core.models.transitions.distributions;
+package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
 public class LogarithmicNormalTransitionDistribution extends TwoValuesTransitionDistributionBase<Double, Double> {
 
@@ -22,7 +23,7 @@ public class LogarithmicNormalTransitionDistribution extends TwoValuesTransition
      * @param firstFunction     reference to a function which calculates first value of logarithmic normal distribution
      * @param secondFunction    reference to a function which calculates second value of logarithmic normal distribution
      */
-    public LogarithmicNormalTransitionDistribution(Function<Double> firstFunction, Function<Double> secondFunction) {
+    public LogarithmicNormalTransitionDistribution(FunctionSPNP<Double> firstFunction, FunctionSPNP<Double> secondFunction) {
         super(firstFunction, secondFunction);
     }
 
@@ -39,6 +40,9 @@ public class LogarithmicNormalTransitionDistribution extends TwoValuesTransition
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        transitionDistributionVisitor.visit(this);
+        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        else
+            transitionDistributionVisitor.visit(this);
     }
 }

@@ -6,9 +6,9 @@ import cz.muni.fi.spnp.core.models.visitors.TransitionProbabilityVisitor;
 
 public class FunctionalTransitionProbability implements TransitionProbability {
 
-    private Function<Double> function;
+    private Function function;
 
-    public FunctionalTransitionProbability(Function<Double> function) {
+    public FunctionalTransitionProbability(Function function) {
         if (function == null)
             throw new IllegalArgumentException("Function must be defined.");
         if (function.getFunctionType() != FunctionType.Probability)
@@ -17,11 +17,11 @@ public class FunctionalTransitionProbability implements TransitionProbability {
         this.function = function;
     }
 
-    public Function<Double> getFunction() {
+    public Function getFunction() {
         return function;
     }
 
-    public void setFunction(Function<Double> function) {
+    public void setFunction(Function function) {
         if (function == null)
             throw new IllegalArgumentException("Function is not defined.");
         if (function.getFunctionType() != FunctionType.Probability)

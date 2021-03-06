@@ -23,7 +23,7 @@ public class InhibitorArc extends Arc {
     public InhibitorArc(int id,
                         Place place,
                         Transition transition,
-                        Function<Integer> calculateMultiplicityFunction) {
+                        Function calculateMultiplicityFunction) {
         super(id, place, transition, calculateMultiplicityFunction);
     }
 

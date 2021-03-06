@@ -21,7 +21,7 @@ public class PetriNet {
     private final Set<Arc> arcs;
     private final Set<Place> places;
     private final Set<Transition> transitions;
-    private final Map<String, Function<?>> functions;
+    private final Map<String, Function> functions;
 
     public PetriNet() {
         arcs = new HashSet<>();
@@ -42,7 +42,7 @@ public class PetriNet {
         return arcs;
     }
 
-    public Map<String, Function<?>> getFunctions() {
+    public Map<String, Function> getFunctions() {
         return functions;
     }
 
@@ -104,7 +104,7 @@ public class PetriNet {
         this.transitions.remove(transition);
     }
 
-    public void addFunction(Function<?> function) {
+    public void addFunction(Function function) {
         if (function == null)
             throw new IllegalArgumentException("Function is null.");
         if (this.functions.containsKey(function.getName()))
@@ -113,11 +113,11 @@ public class PetriNet {
         this.functions.put(function.getName(), function);
     }
 
-    public Function<?> getFunction(String name) {
+    public Function getFunction(String name) {
         return functions.get(name);
     }
 
-    public void removeFunction(Function<?> function) {
+    public void removeFunction(Function function) {
         if (function == null)
             throw new IllegalArgumentException("Function is null.");
         if (!this.functions.containsKey(function.getName()))
@@ -149,41 +149,29 @@ public class PetriNet {
     }
 
     private void extractFunctionsFromTransitionDistribution(TransitionDistribution transitionDistribution) {
-        if (transitionDistribution instanceof SingleValueTransitionDistributionBase) {
-            var singleValueTransitionDistributionBase = (SingleValueTransitionDistributionBase<?>) transitionDistribution;
-            addFunctionIfMissing(singleValueTransitionDistributionBase.getFunction());
-        } else if (transitionDistribution instanceof TwoValuesTransitionDistributionBase) {
-            var twoValuesTransitionDistributionBase = (TwoValuesTransitionDistributionBase<?, ?>) transitionDistribution;
-            addFunctionIfMissing(twoValuesTransitionDistributionBase.getFirstFunction());
-            addFunctionIfMissing(twoValuesTransitionDistributionBase.getSecondFunction());
-        } else if (transitionDistribution instanceof ThreeValuesTransitionDistributionBase) {
-            var threeValuesTransitionDistributionBase = (ThreeValuesTransitionDistributionBase<?, ?, ?>) transitionDistribution;
-            addFunctionIfMissing(threeValuesTransitionDistributionBase.getFirstFunction());
-            addFunctionIfMissing(threeValuesTransitionDistributionBase.getSecondFunction());
-            addFunctionIfMissing(threeValuesTransitionDistributionBase.getThirdFunction());
-        } else if (transitionDistribution instanceof FourValuesTransitionDistributionBase) {
-            var fourValuesTransitionDistributionBase = (FourValuesTransitionDistributionBase<?, ?, ?, ?>) transitionDistribution;
-            addFunctionIfMissing(fourValuesTransitionDistributionBase.getFirstFunction());
-            addFunctionIfMissing(fourValuesTransitionDistributionBase.getSecondFunction());
-            addFunctionIfMissing(fourValuesTransitionDistributionBase.getThirdFunction());
-            addFunctionIfMissing(fourValuesTransitionDistributionBase.getFourthFunction());
-        }
+        var transitionDistributionBase = (TransitionDistributionBase) transitionDistribution;
+        var distributionFunctions = transitionDistributionBase.getFunctions();
+
+        for (Function distributionFunction : distributionFunctions) {
+            addFunctionIfMissing(distributionFunction);
+        } 
     }
 
-    private void addFunctionIfMissing(Function<?> function) {
+    private void addFunctionIfMissing(Function function) {
         if (function == null) {
             return;
         }
 
-        Function<?> oldFunction = functions.get(function.getName());
+        Function oldFunction = functions.get(function.getName());
         if (oldFunction == null) {
             functions.put(function.getName(), function);
             return;
         }
 
         boolean hasSameBody = oldFunction.getBody().equals(function.getBody());
-        boolean hasSameReturnType = oldFunction.getReturnType().equals(function.getReturnType());
-        if (!hasSameBody || !hasSameReturnType) {
+// A (general) function does not have a return type
+//        boolean hasSameReturnType = oldFunction.getReturnType().equals(function.getReturnType());
+        if (!hasSameBody /* || !hasSameReturnType */) {
             String message = String.format("Function %s is not the same function as the already stored function.", function.getName());
             throw new IllegalArgumentException(message);
         }
@@ -445,8 +433,8 @@ public class PetriNet {
                 return "/*  Distribution functions  */";
             case Halting:
                 return "/*  Halting functions  */";
-            case SPNP:
-                return "/*  SPNP functions  */";
+            case Other:
+                return "/*  Other functions  */";
             default:
                 throw new IllegalArgumentException("Function type is unknown or undefined.");
         }

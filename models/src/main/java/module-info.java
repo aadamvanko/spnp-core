@@ -9,4 +9,5 @@ module spnp.core.models {
     exports cz.muni.fi.spnp.core.models.transitions.probabilities;
     exports cz.muni.fi.spnp.core.models;
     exports cz.muni.fi.spnp.core.models.visitors;
+    exports cz.muni.fi.spnp.core.models.utils;
 }

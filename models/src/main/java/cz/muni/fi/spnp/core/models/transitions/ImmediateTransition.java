@@ -17,7 +17,7 @@ public class ImmediateTransition extends Transition {
     public ImmediateTransition(int id,
                                String name,
                                int priority,
-                               Function<Integer> guardFunction,
+                               Function guardFunction,
                                TransitionProbability transitionProbability) {
         super(id, name, priority, guardFunction);
 

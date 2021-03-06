@@ -17,10 +17,10 @@ public class SPNPCode {
     private final List<Define> defines;
     private final Set<Variable> variables;
 
-    private Function<Integer> assertFunction;
-    private Function<Void> acInitFunction;
-    private Function<Void> acReachFunction;
-    private Function<Void> acFinalFunction;
+    private FunctionSPNP<Integer> assertFunction;
+    private FunctionSPNP<Void> acInitFunction;
+    private FunctionSPNP<Void> acReachFunction;
+    private FunctionSPNP<Void> acFinalFunction;
 
     public SPNPCode() {
         includes = new ArrayList<>();
@@ -92,15 +92,13 @@ public class SPNPCode {
         this.variables.remove(variable);
     }
 
-    public Function<Void> getAcInitFunction() {
+    public FunctionSPNP<Void> getAcInitFunction() {
         return acInitFunction;
     }
 
-    public void setAcInitFunction(Function<Void> acInitFunction) {
+    public void setAcInitFunction(FunctionSPNP<Void> acInitFunction) {
         if (acInitFunction == null)
             throw new IllegalArgumentException("ac_init() function is not set.");
-        if (acInitFunction.getFunctionType() != FunctionType.SPNP)
-            throw new IllegalArgumentException("ac_init() function has invalid type.");
         if (acInitFunction.getReturnType() != Void.class)
             throw new IllegalArgumentException("ac_init() function has invalid return type.");
         if (!acInitFunction.getName().equals("ac_init"))
@@ -109,15 +107,13 @@ public class SPNPCode {
         this.acInitFunction = acInitFunction;
     }
 
-    public Function<Void> getAcReachFunction() {
+    public FunctionSPNP<Void> getAcReachFunction() {
         return acReachFunction;
     }
 
-    public void setAcReachFunction(Function<Void> acReachFunction) {
+    public void setAcReachFunction(FunctionSPNP<Void> acReachFunction) {
         if (acReachFunction == null)
             throw new IllegalArgumentException("ac_reach() function is not set.");
-        if (acReachFunction.getFunctionType() != FunctionType.SPNP)
-            throw new IllegalArgumentException("ac_reach() function has invalid type.");
         if (acReachFunction.getReturnType() != Void.class)
             throw new IllegalArgumentException("ac_reach() function has invalid return type.");
         if (!acReachFunction.getName().equals("ac_reach"))
@@ -126,15 +122,13 @@ public class SPNPCode {
         this.acReachFunction = acReachFunction;
     }
 
-    public Function<Void> getAcFinalFunction() {
+    public FunctionSPNP<Void> getAcFinalFunction() {
         return acFinalFunction;
     }
 
-    public void setAcFinalFunction(Function<Void> acFinalFunction) {
+    public void setAcFinalFunction(FunctionSPNP<Void> acFinalFunction) {
         if (acFinalFunction == null)
             throw new IllegalArgumentException("ac_final() function is not set.");
-        if (acFinalFunction.getFunctionType() != FunctionType.SPNP)
-            throw new IllegalArgumentException("ac_final() function has invalid type.");
         if (acFinalFunction.getReturnType() != Void.class)
             throw new IllegalArgumentException("ac_final() function has invalid return type.");
         if (!acFinalFunction.getName().equals("ac_final"))
@@ -143,15 +137,13 @@ public class SPNPCode {
         this.acFinalFunction = acFinalFunction;
     }
 
-    public Function<Integer> getAssertFunction() {
+    public FunctionSPNP<Integer> getAssertFunction() {
         return assertFunction;
     }
 
-    public void setAssertFunction(Function<Integer> assertFunction) {
+    public void setAssertFunction(FunctionSPNP<Integer> assertFunction) {
         if (assertFunction == null)
             throw new IllegalArgumentException("Assert function is not set.");
-        if (assertFunction.getFunctionType() != FunctionType.SPNP)
-            throw new IllegalArgumentException("Assert function has invalid type.");
         if (assertFunction.getReturnType() != Integer.class)
             throw new IllegalArgumentException("Assert function has invalid return type.");
         if (!assertFunction.getName().equals("assert"))
@@ -161,14 +153,14 @@ public class SPNPCode {
     }
 
     private void createDefaultRequiredFunctions() {
-        assertFunction = new Function<>("assert", FunctionType.SPNP, "", Integer.class);
-        acInitFunction = new Function<>("ac_init", FunctionType.SPNP,
+        assertFunction = new FunctionSPNP<>("assert", FunctionType.Other, "", Integer.class);
+        acInitFunction = new FunctionSPNP<>("ac_init", FunctionType.Other,
                 "/* Information on the net structure */" + System.lineSeparator() + "pr_net_info();",
                 Void.class);
-        acReachFunction = new Function<>("ac_reach", FunctionType.SPNP,
+        acReachFunction = new FunctionSPNP<>("ac_reach", FunctionType.Other,
                 "/* Information on the reachability graph */" + System.lineSeparator() + "pr_rg_info();",
                 Void.class);
-        acFinalFunction = new Function<>("ac_final", FunctionType.SPNP, "", Void.class);
+        acFinalFunction = new FunctionSPNP<>("ac_final", FunctionType.Other, "", Void.class);
     }
 
     public Set<Variable> getVariables() {
