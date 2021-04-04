@@ -3,10 +3,12 @@ package cz.muni.fi.spnp.core.transformators.spnp;
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.arcs.ArcDirection;
 import cz.muni.fi.spnp.core.models.arcs.StandardArc;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
+import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.extended.TransformatorTest;
 import cz.muni.fi.spnp.core.transformators.spnp.options.*;
@@ -23,6 +25,7 @@ public class TestScenarioExtended extends TransformatorTest {
     public TestScenarioExtended(){
         super();
 
+        // Note: transitions and acrs are only compared with (simple string comparison)
         expected = String.format("void options() {%n" +
                 "	iopt(IOP_SSMETHOD, 666666666);%n" +
                 "	iopt(FOP_SSPRES, VAL_REPL);%n" +
@@ -63,6 +66,11 @@ public class TestScenarioExtended extends TransformatorTest {
                 "	init(\"StdPlace5\", 99999999);%n" +
                 "	;%n" +
                 "	%n" +
+                "       imm(\"ImmediateTransition1\");%n" +
+                "       priority(\"ImmediateTransition1\", 1);%n" +
+                "       probval(\"ImmediateTransition1\", 0.75);%n" +
+                "       %n" +
+                "       iarc(\"ImmediateTransition1\", \"StdPlace1\");%n" +
                 "}");
     }
     
@@ -141,8 +149,14 @@ public class TestScenarioExtended extends TransformatorTest {
         net.addPlace(fluidPlace5);
 
         var constantTransitionProbability = new ConstantTransitionProbability(0.75);
-        var immediateTransition1 = new ImmediateTransition(1, "ImmediateTransition1", 1, null, constantTransitionProbability);
+        FunctionSPNP<Integer> guard = new FunctionSPNP<>("ImmediateGuard", FunctionType.Guard, "return 4;", Integer.class);
+        var immediateTransition1 = new ImmediateTransition(1, "ImmediateTransition1", 1, guard, constantTransitionProbability);
         net.addTransition(immediateTransition1);
+
+        FunctionSPNP<Integer> guard2 = new FunctionSPNP<>("ImmediateGuard2", FunctionType.Guard,
+                                                            String.format("int a = 4;%nint b = 6;%nreturn a + b;"), Integer.class);
+        var immediateTransition2 = new ImmediateTransition(2, "ImmediateTransition2", 1, guard2, constantTransitionProbability);
+        net.addTransition(immediateTransition2);
 
         net.addArc(new StandardArc(1, ArcDirection.Input, stdPlace1, immediateTransition1));
 

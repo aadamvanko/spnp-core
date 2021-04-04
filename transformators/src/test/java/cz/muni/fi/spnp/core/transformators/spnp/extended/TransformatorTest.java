@@ -97,7 +97,7 @@ public abstract class TransformatorTest {
                     optionsClosed = true;
                     break;
                 }
-                else if(!line.isBlank()){
+                else if(!line.isBlank() && !line.strip().startsWith("//") && !line.strip().startsWith("/*")){
                     System.out.println("The following line was not recognized as valid inside options() :" + line);
                     success = false;
                 }
@@ -310,7 +310,7 @@ public abstract class TransformatorTest {
                     netClosed = true;
                     break;
                 }
-                else if(!line.isBlank()){
+                else if(!line.isBlank() && !line.strip().startsWith("//") && !line.strip().startsWith("/*")){
                     System.out.println("The following line was not recognized as valid inside net() :" + line);
                     success = false;
                 }
