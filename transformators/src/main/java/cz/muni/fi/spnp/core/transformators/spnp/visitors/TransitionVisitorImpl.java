@@ -32,12 +32,12 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
     @Override
     public void visit(TimedTransition timedTransition) {
         String definition = getTransitionDistributionDefinition(timedTransition)
-                + System.lineSeparator()
-                + String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority());
+                + String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority())
+                + System.lineSeparator();
 
         if (timedTransition.getGuardFunction() != null) {
-            definition += System.lineSeparator()
-                    + String.format("guard(\"%s\", %s);", timedTransition.getName(), timedTransition.getGuardFunction().getName());
+            definition += String.format("guard(\"%s\", %s);", timedTransition.getName(), timedTransition.getGuardFunction().getName())
+                        + System.lineSeparator();
         }
 
         stringBuilder.append(definition);
