@@ -7,6 +7,10 @@ import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 public class FunctionDeclarationVisitorImpl extends Visitor implements FunctionDeclarationVisitor {
     @Override
     public void visit(Function function) {
+        if(function instanceof FunctionSPNP) {
+            visit((FunctionSPNP) function);
+            return;
+        }
         stringBuilder.append(String.format("%s%n",
                 function.getName()));
     }
