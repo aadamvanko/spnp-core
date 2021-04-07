@@ -2,6 +2,7 @@ package cz.muni.fi.spnp.core.transformators.spnp;
 
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.functions.Function;
+import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.transformators.Transformator;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
@@ -200,7 +201,8 @@ public class SPNPTransformator implements Transformator {
                 tabify(placesDefinition(petriNet)) + newlines(1) +
                 tabify(transitionsDefinition(petriNet)) + newlines(1) +
                 tabify(arcsDefinition(petriNet)) + newlines(1) +
-                tabify(SPNPParametersBindings()) +
+                tabify(SPNPParametersBindings()) + newlines(1) +
+                tabify(haltingConditions(petriNet)) +
                 "}";
         return netDefinition;
     }
@@ -260,6 +262,16 @@ public class SPNPTransformator implements Transformator {
         spnpCode.getParameterVariables()
                 .forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n", variable.getName(), variable.getName())));
         return String.format("/* SPNP parameters bindings */%n%s", definitions.toString());
+    }
+
+    private String haltingConditions(PetriNet petriNet) {
+        StringBuilder conditions = new StringBuilder();
+        petriNet.getFunctions().values().forEach(function -> {
+            if(function.getFunctionType() == FunctionType.Halting){
+                conditions.append(String.format("halting_condition(%s);%n", function.getName()));
+            }
+        });
+        return String.format("/* Halting conditions */%n%s", conditions.toString());
     }
 
 }
