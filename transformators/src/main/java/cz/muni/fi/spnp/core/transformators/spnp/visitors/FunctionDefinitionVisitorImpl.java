@@ -17,7 +17,8 @@ public class FunctionDefinitionVisitorImpl extends Visitor implements FunctionDe
     }
     
     public <TReturnType> void visit(FunctionSPNP<TReturnType> function) {
-        stringBuilder.append(String.format("%s %s() {%n%s}%n",
+        stringBuilder.append(String.format("%s%s %s() {%n%s}%n",
+                function.getCommentary().getMultiLineCommentary(),
                 function.getReturnTypeString(),
                 function.getName(),
                 Utils.tabify(function.getBody())));

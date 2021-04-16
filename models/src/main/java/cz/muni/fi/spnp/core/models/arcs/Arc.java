@@ -1,13 +1,14 @@
 package cz.muni.fi.spnp.core.models.arcs;
 
 import com.google.common.base.Objects;
+import cz.muni.fi.spnp.core.models.ElementBase;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.models.visitors.ArcVisitor;
 
-public abstract class Arc implements Comparable<Arc> {
+public abstract class Arc extends ElementBase implements Comparable<Arc> {
 
     private final int id;
     private int multiplicity;

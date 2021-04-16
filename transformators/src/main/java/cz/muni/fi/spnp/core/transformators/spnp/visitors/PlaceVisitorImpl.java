@@ -10,6 +10,7 @@ public class PlaceVisitorImpl extends Visitor implements PlaceVisitor {
     public void visit(FluidPlace fluidPlace) {
         StringBuilder definition = new StringBuilder();
 
+        definition.append(fluidPlace.getCommentary().getLineCommentary());
         definition.append(String.format("fplace(\"%s\");", fluidPlace.getName()));
         definition.append(System.lineSeparator());
 
@@ -28,13 +29,14 @@ public class PlaceVisitorImpl extends Visitor implements PlaceVisitor {
             }
         }
 
-        stringBuilder.append(definition.toString());
+        stringBuilder.append(definition);
     }
 
     @Override
     public void visit(StandardPlace standardPlace) {
         StringBuilder definition = new StringBuilder();
 
+        definition.append(standardPlace.getCommentary().getLineCommentary());
         definition.append(String.format("place(\"%s\");", standardPlace.getName()));
         definition.append(System.lineSeparator());
 
@@ -43,6 +45,6 @@ public class PlaceVisitorImpl extends Visitor implements PlaceVisitor {
             definition.append(System.lineSeparator());
         }
 
-        stringBuilder.append(definition.toString());
+        stringBuilder.append(definition);
     }
 }

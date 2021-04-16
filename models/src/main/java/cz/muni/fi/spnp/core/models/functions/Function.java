@@ -1,5 +1,6 @@
 package cz.muni.fi.spnp.core.models.functions;
 
+import cz.muni.fi.spnp.core.models.Commentary;
 import cz.muni.fi.spnp.core.models.visitors.FunctionDeclarationVisitor;
 import cz.muni.fi.spnp.core.models.visitors.FunctionDefinitionVisitor;
 
@@ -10,6 +11,7 @@ public class Function implements Comparable<Function> {
     private final String name;
     private final FunctionType functionType;
     private final String body;
+    private Commentary commentary;
 
     /**
      * Creates function definition with specified body and return value.
@@ -29,6 +31,7 @@ public class Function implements Comparable<Function> {
         this.name = name;
         this.functionType = type;
         this.body = body;
+        this.commentary = new Commentary("");
     }
 
     public String getName() {
@@ -71,5 +74,17 @@ public class Function implements Comparable<Function> {
     @Override
     public int compareTo(Function other) {
         return name.compareTo(other.name);
+    }
+
+    public Commentary getCommentary() {
+        return commentary;
+    }
+
+    public void setCommentary(String text) {
+        this.commentary = new Commentary(text);
+    }
+
+    public void setCommentary(Commentary commentary) {
+        this.commentary = commentary;
     }
 }

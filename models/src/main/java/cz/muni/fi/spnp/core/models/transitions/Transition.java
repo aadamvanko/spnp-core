@@ -1,6 +1,7 @@
 package cz.muni.fi.spnp.core.models.transitions;
 
 import com.google.common.base.Objects;
+import cz.muni.fi.spnp.core.models.ElementBase;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
@@ -10,7 +11,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Transition implements Comparable<Transition> {
+public abstract class Transition extends ElementBase implements Comparable<Transition> {
 
     private final int id;
     private String name;

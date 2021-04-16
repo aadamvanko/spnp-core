@@ -15,21 +15,24 @@ public class ArcVisitorImpl extends Visitor implements ArcVisitor {
         }
 
         if (inhibitorArc.getCalculateMultiplicityFunction() != null) {
-            stringBuilder.append(prefix).append(String.format("vharc(\"%s\", \"%s\", %s);%s",
+            stringBuilder.append(inhibitorArc.getCommentary().getLineCommentary())
+                    .append(prefix).append(String.format("vharc(\"%s\", \"%s\", %s);%s",
                     inhibitorArc.getTransition().getName(),
                     inhibitorArc.getPlace().getName(),
                     inhibitorArc.getCalculateMultiplicityFunction().getName(),
                     System.lineSeparator()));
 
         } else if (inhibitorArc.getMultiplicity() > 1) {
-            stringBuilder.append(prefix).append(String.format("mharc(\"%s\", \"%s\", %d);%s",
+            stringBuilder.append(inhibitorArc.getCommentary().getLineCommentary())
+                    .append(prefix).append(String.format("mharc(\"%s\", \"%s\", %d);%s",
                     inhibitorArc.getTransition().getName(),
                     inhibitorArc.getPlace().getName(),
                     inhibitorArc.getMultiplicity(),
                     System.lineSeparator()));
 
         } else {
-            stringBuilder.append(prefix).append(String.format("harc(\"%s\", \"%s\");%s",
+            stringBuilder.append(inhibitorArc.getCommentary().getLineCommentary())
+                    .append(prefix).append(String.format("harc(\"%s\", \"%s\");%s",
                     inhibitorArc.getTransition().getName(),
                     inhibitorArc.getPlace().getName(),
                     System.lineSeparator()));
@@ -48,19 +51,22 @@ public class ArcVisitorImpl extends Visitor implements ArcVisitor {
                 }
 
                 if (standardArc.getCalculateMultiplicityFunction() != null) {
-                    stringBuilder.append(prefix).append(String.format("viarc(\"%s\", \"%s\", %s);%s",
+                    stringBuilder.append(standardArc.getCommentary().getLineCommentary())
+                            .append(prefix).append(String.format("viarc(\"%s\", \"%s\", %s);%s",
                             standardArc.getTransition().getName(),
                             standardArc.getPlace().getName(),
                             standardArc.getCalculateMultiplicityFunction().getName(),
                             System.lineSeparator()));
                 } else if (standardArc.getMultiplicity() > 1) {
-                    stringBuilder.append(prefix).append(String.format("miarc(\"%s\", \"%s\", %d);%s",
+                    stringBuilder.append(standardArc.getCommentary().getLineCommentary())
+                            .append(prefix).append(String.format("miarc(\"%s\", \"%s\", %d);%s",
                             standardArc.getTransition().getName(),
                             standardArc.getPlace().getName(),
                             standardArc.getMultiplicity(),
                             System.lineSeparator()));
                 } else {
-                    stringBuilder.append(prefix).append(String.format("iarc(\"%s\", \"%s\");%s",
+                    stringBuilder.append(standardArc.getCommentary().getLineCommentary())
+                            .append(prefix).append(String.format("iarc(\"%s\", \"%s\");%s",
                             standardArc.getTransition().getName(),
                             standardArc.getPlace().getName(),
                             System.lineSeparator()));
@@ -76,19 +82,22 @@ public class ArcVisitorImpl extends Visitor implements ArcVisitor {
                 }
 
                 if (standardArc.getCalculateMultiplicityFunction() != null) {
-                    stringBuilder.append(prefix).append(String.format("voarc(\"%s\", \"%s\", %s);%s",
+                    stringBuilder.append(standardArc.getCommentary().getLineCommentary())
+                            .append(prefix).append(String.format("voarc(\"%s\", \"%s\", %s);%s",
                             standardArc.getTransition().getName(),
                             standardArc.getPlace().getName(),
                             standardArc.getCalculateMultiplicityFunction().getName(),
                             System.lineSeparator()));
                 } else if (standardArc.getMultiplicity() > 1) {
-                    stringBuilder.append(prefix).append(String.format("moarc(\"%s\", \"%s\", %d);%s",
+                    stringBuilder.append(standardArc.getCommentary().getLineCommentary())
+                            .append(prefix).append(String.format("moarc(\"%s\", \"%s\", %d);%s",
                             standardArc.getTransition().getName(),
                             standardArc.getPlace().getName(),
                             standardArc.getMultiplicity(),
                             System.lineSeparator()));
                 } else {
-                    stringBuilder.append(prefix).append(String.format("oarc(\"%s\", \"%s\");%s",
+                    stringBuilder.append(standardArc.getCommentary().getLineCommentary())
+                            .append(prefix).append(String.format("oarc(\"%s\", \"%s\");%s",
                             standardArc.getTransition().getName(),
                             standardArc.getPlace().getName(),
                             System.lineSeparator()));

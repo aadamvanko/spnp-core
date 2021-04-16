@@ -10,6 +10,7 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
     public void visit(ImmediateTransition immediateTransition) {
         StringBuilder definition = new StringBuilder();
 
+        definition.append(immediateTransition.getCommentary().getLineCommentary());
         definition.append(String.format("imm(\"%s\");", immediateTransition.getName()));
         definition.append(System.lineSeparator());
 
@@ -31,13 +32,14 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
 
     @Override
     public void visit(TimedTransition timedTransition) {
-        String definition = getTransitionDistributionDefinition(timedTransition)
+        String definition = timedTransition.getCommentary().getLineCommentary()
+                + getTransitionDistributionDefinition(timedTransition)
                 + String.format("priority(\"%s\", %d);", timedTransition.getName(), timedTransition.getPriority())
                 + System.lineSeparator();
 
         if (timedTransition.getGuardFunction() != null) {
             definition += String.format("guard(\"%s\", %s);", timedTransition.getName(), timedTransition.getGuardFunction().getName())
-                        + System.lineSeparator();
+                    + System.lineSeparator();
         }
 
         stringBuilder.append(definition);

@@ -46,7 +46,9 @@ public class PlaceVisitorImplTest {
     @Test
     public void testVisit_FluidPlace() {
         FluidPlace fluidPlace = new FluidPlace(0, "FluidPlace123");
-        String expected = "fplace(\"FluidPlace123\");";
+        fluidPlace.setCommentary("fluid place comment");
+        String expected = String.format("// fluid place comment%n" +
+                "fplace(\"FluidPlace123\");");
         instance.visit(fluidPlace);
         Assert.assertEquals("FluidPlace scenario simple", expected.strip(), instance.getResult().strip());
     }
@@ -77,16 +79,19 @@ public class PlaceVisitorImplTest {
     @Test
     public void testVisit_StandardPlace() {
         StandardPlace standardPlace = new StandardPlace(9, "StdPlace789");
-        String expected = "place(\"StdPlace789\");";
+        standardPlace.setCommentary("standard place comment");
+        String expected = String.format("// standard place comment%n" +
+                "place(\"StdPlace789\");");
         instance.visit(standardPlace);
         Assert.assertEquals("StandardPlace scenario simple", expected.strip(), instance.getResult().strip());
-        
+
         reinitVisitor();
-        expected = String.format("place(\"StdPlace789\");%n" +
-                    "init(\"StdPlace789\", 99999999);%n");
+        expected = String.format("// standard place comment%n" +
+                "place(\"StdPlace789\");%n" +
+                "init(\"StdPlace789\", 99999999);%n");
 
         standardPlace.setNumberOfTokens(99999999);
-        
+
         instance.visit(standardPlace);
         Assert.assertEquals("StandardPlace scenario extended", expected.strip(), instance.getResult().strip());
     }

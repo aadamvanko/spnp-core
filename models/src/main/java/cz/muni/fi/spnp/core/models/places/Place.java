@@ -1,6 +1,7 @@
 package cz.muni.fi.spnp.core.models.places;
 
 import com.google.common.base.Objects;
+import cz.muni.fi.spnp.core.models.ElementBase;
 import cz.muni.fi.spnp.core.models.arcs.Arc;
 import cz.muni.fi.spnp.core.models.visitors.PlaceVisitor;
 
@@ -8,7 +9,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Place implements Comparable<Place> {
+public abstract class Place extends ElementBase implements Comparable<Place> {
 
     private final int id;
     private final String name;
