@@ -9,8 +9,6 @@ public class ConstantTypeOption extends Option {
     public ConstantTypeOption(OptionKey key, ConstantValue value) {
         super(key);
 
-        if (!key.toString().startsWith("FOP"))
-            throw new IllegalArgumentException("Invalid Option key for constant type Option.");
         if (value == null)
             throw new IllegalArgumentException("Value is not defined.");
 
