@@ -4,8 +4,8 @@ import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 
 public abstract class TransitionDistributionBase implements TransitionDistribution {
+
     protected final Function[] functions;
-    
     private final TransitionDistributionType distributionType;
     private final StandardPlace dependentPlace;
 
