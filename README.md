@@ -1,9 +1,12 @@
 # Petri Net model in Java
 
-This library is designed to allow easy creation of the Petri nets in the object-oriented way. It provides general model
-of Petri nets and also the extended SPNP model. General model can be found in **cz.muni.fi.spnp.core** and SPNP model
-can be found in **cz.muni.fi.spnp.core.transformators**, which includes all the classes needed for successful conversion
-of the model to the SPNP C code.
+This library is designed to allow easy creation of the Petri nets in the object-oriented way. It provides the general
+model of the Petri nets and also the extended model representation for a package/tool **SPNP** (Stochastic Petri Net
+Package). General model can be found in **cz.muni.fi.spnp.core** and SPNP model representation can be found in **
+cz.muni.fi.spnp.core.transformators.spnp**.
+
+In addition to these two models, this library contains also the transformator for the SPNP model representation, which
+generates C code for the given model.
 
 ### Problems/Bugs
 
@@ -12,17 +15,20 @@ found a bug (thank you).
 
 ### Plans for the future
 
-Issues contain also missing features from SPNP which are currently not implemented. We are also working on an GUI editor
-for Petri nets, which will be also made publicly available.
+Issues contain also the missing features from the SPNP which are currently not implemented. We are also working on an
+GUI editor, which will be also made publicly available.
 
 ### Usage
 
-Core part of the library contains general model for Petri nets and is quite compact. The model for SPNP is built on top
-of it and contains interface Transformator that is used for generating SPNP code, so in case you need different output
-format, you can define your own implementation of the Transformator.
+Core part of the library contains a general model for the Petri nets and is quite compact. This general model can be
+further extended for more feature rich nets like the one needed for the SPNP model representation. In order to convert
+the model into a textual representation implement interface **Transformator** which contains just a single method **
+transform**. You can take a look at the **SPNPTransformator** which implements this interface for the SPNP model
+representation and returns string containing the C code.
 
 This example demonstrates how to use classes to create the model for the first example (example adapted from M.K.
-Molloy’s IEEE TC paper) found in SPNP Manual 6.0 and transform it to SPNP code.
+Molloy’s IEEE TC paper) found in SPNP Manual 6.0 and transform it to the C code (which is used to describe the model in
+the SPNP).
 
 ```
 import cz.muni.fi.spnp.core.models.PetriNet;
