@@ -1,7 +1,6 @@
 package cz.muni.fi.spnp.core.transformators.spnp;
 
 import cz.muni.fi.spnp.core.models.PetriNet;
-import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.transformators.Transformator;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
@@ -13,89 +12,6 @@ import java.util.stream.Collectors;
 
 import static cz.muni.fi.spnp.core.transformators.spnp.utility.Utils.newlines;
 import static cz.muni.fi.spnp.core.transformators.spnp.utility.Utils.tabify;
-
-/*
-/∗ This example adapted from M.K. Molloy’s IEEE TC paper ∗/
-#include "user.h"
-
-void options() {
-  iopt(IOP SSMETHOD, VAL GASEI);
-  iopt(IOP PR FULL MARK, VAL YES);
-  iopt(IOP PR MARK ORDER, VAL CANONIC);
-  iopt(IOP PR MC ORDER, VAL TOFROM);
-  iopt(IOP PR MC, VAL YES);
-  iopt(IOP PR PROB, VAL YES);
-  iopt(IOP MC, VAL CTMC);
-  iopt(IOP PR RSET, VAL YES);
-  iopt(IOP PR RGRAPH, VAL YES);
-  iopt(IOP ITERATIONS, 20000);
-  fopt(FOP ABS RET M0, 0.0);
-  fopt(FOP PRECISION, 0.00000001);
-}
-void net() {
-  place("p0");
-  init("p0", 1);
-  place("p1");
-  place("p2");
-  place("p3");
-  place("p4");
-  rateval("t0", 1.0);
-  rateval("t1", 3.0);
-  rateval("t2", 7.0);
-  rateval("t3", 9.0);
-  rateval("t4", 5.0);
-  iarc("t0", "p0");
-  oarc("t0", "p1");
-  oarc("t0", "p2");
-  iarc("t1", "p1");
-  oarc("t1", "p3");
-  iarc("t2", "p2");
-  oarc("t2", "p4");
-  iarc("t3", "p3");
-  oarc("t3", "p1");
-  iarc("t4", "p3");
-  iarc("t4", "p4");
-  oarc("t4", "p0");
-}
-int assert() {
-  if (mark("p3") > 5) return (RES ERROR);
-  else return (RES NOERR);
-}
-void ac_init() {
-  fprintf(stderr, "\nExample from Molloy's Thesis\n\n");
-  pr net info(); /∗ information on the net structure ∗/
-}
-void ac_reach() {
-  fprintf(stderr, "\nThe reachability graph has been generated\n\n");
-  pr rg info(); /∗ information on the reachability graph ∗/
-}
-/∗ general marking dependent reward functions ∗/
-double ef0() {
-  return ((double) mark("p0"));
-}
-double ef1() {
-  return ((double) mark("p1"));
-}
-double ef2() {
-  return (rate("t2"));
-}
-double ef3() {
-  return (rate("t3"));
-}
-double eff() {
-  return (rate("t1")∗1.8 + (double) mark("p3")∗0.7);
-}
-void ac_final() {
-  solve(INFINITY);
-  pr mc info(); /∗ information about the Markov chain ∗/
-  pr expected("mark(p0)", ef0);
-  pr expected("mark(p1)", ef1);
-  pr expected("rate(t2)", ef2);
-  pr expected("rate(t3)", ef3);
-  pr expected("rate(t1) * 1.8 + mark(p3) * 0.7", eff);
-  pr std average(); /∗ default measures ∗/
-}
- */
 
 public class SPNPTransformator implements Transformator {
 
@@ -254,14 +170,14 @@ public class SPNPTransformator implements Transformator {
         StringBuilder definitions = new StringBuilder();
         spnpCode.getParameterVariables()
                 .forEach(variable -> definitions.append(String.format("parm(\"%s\");%n", variable.getName())));
-        return String.format("/* SPNP parameters creation */%n%s", definitions.toString());
+        return String.format("/* SPNP parameters creation */%n%s", definitions);
     }
 
     private String SPNPParametersBindings() {
         StringBuilder definitions = new StringBuilder();
         spnpCode.getParameterVariables()
                 .forEach(variable -> definitions.append(String.format("bind(\"%s\", %s);%n", variable.getName(), variable.getName())));
-        return String.format("/* SPNP parameters bindings */%n%s", definitions.toString());
+        return String.format("/* SPNP parameters bindings */%n%s", definitions);
     }
 
     private String haltingConditions(PetriNet petriNet) {
@@ -271,7 +187,7 @@ public class SPNPTransformator implements Transformator {
                 conditions.append(String.format("halting_condition(%s);%n", function.getName()));
             }
         });
-        return String.format("/* Halting conditions */%n%s", conditions.toString());
+        return String.format("/* Halting conditions */%n%s", conditions);
     }
 
 }
