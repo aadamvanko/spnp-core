@@ -2,8 +2,7 @@
 
 This library is designed to allow easy creation of the Petri nets in the object-oriented way. It provides the general
 model of the Petri nets and also the extended model representation for a package/tool **SPNP** (Stochastic Petri Net
-Package). General model can be found in **cz.muni.fi.spnp.core** and SPNP model representation can be found in **
-cz.muni.fi.spnp.core.transformators.spnp**.
+Package). General model can be found in **cz.muni.fi.spnp.core** and SPNP model representation can be found in **cz.muni.fi.spnp.core.transformators.spnp**.
 
 In addition to these two models, this library contains also the transformator for the SPNP model representation, which
 generates C code for the given model.
