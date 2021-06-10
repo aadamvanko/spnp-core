@@ -18,7 +18,7 @@ Core part of the library contains a general model for the Petri nets and is quit
 
 This example demonstrates how to use classes to create the model for the first example (example adapted from M.K. Molloy’s IEEE TC paper) found in SPNP Manual 6.0 and transform it to the C code (which is used to describe the model in the SPNP).
 
-```
+```java
 import cz.muni.fi.spnp.core.models.PetriNet;
 import cz.muni.fi.spnp.core.models.arcs.ArcDirection;
 import cz.muni.fi.spnp.core.models.arcs.StandardArc;
