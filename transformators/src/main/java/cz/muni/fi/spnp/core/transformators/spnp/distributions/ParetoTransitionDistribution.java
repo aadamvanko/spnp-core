@@ -68,6 +68,8 @@ public class ParetoTransitionDistribution extends TwoValuesTransitionDistributio
     public void setScaleFunction(FunctionSPNP<Double> scaleFunction) {
         if (getDistributionType() != TransitionDistributionType.Functional)
             throw new IllegalStateException("Scale function can be set ONLY on Functional Transition Distribution type.");
+
+        this.setFirstFunction(scaleFunction);
     }
 
     public FunctionSPNP<Double> getAlphaFunction() {
