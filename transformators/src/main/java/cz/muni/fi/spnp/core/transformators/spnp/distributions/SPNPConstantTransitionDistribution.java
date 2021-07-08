@@ -2,48 +2,49 @@ package cz.muni.fi.spnp.core.transformators.spnp.distributions;
 
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.distributions.TransitionDistributionType;
-import cz.muni.fi.spnp.core.models.utils.Constants;
 import cz.muni.fi.spnp.core.models.visitors.TransitionDistributionVisitor;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionDistributionVisitorSPNP;
 
-public class ConstantTransitionDistribution extends SingleValueTransitionDistributionBase<Double> {
+import java.util.Objects;
+
+public class SPNPConstantTransitionDistribution extends SPNPSingleValueTransitionDistributionBase {
 
     /**
-     * Creates new {@link ConstantTransitionDistribution} object with {@link TransitionDistributionType#Constant} distribution type.
+     * Creates new {@link SPNPConstantTransitionDistribution} object with {@link TransitionDistributionType#Constant} distribution type.
      *
      * @param value constant value to be used in distribution
      */
-    public ConstantTransitionDistribution(double value) {
+    public SPNPConstantTransitionDistribution(String value) {
         super(value);
     }
 
     /**
-     * Creates new {@link ConstantTransitionDistribution} object with {@link TransitionDistributionType#Functional} distribution type.
+     * Creates new {@link SPNPConstantTransitionDistribution} object with {@link TransitionDistributionType#Functional} distribution type.
      *
-     * @param function  reference to a function which calculates value for distribution
+     * @param function reference to a function which calculates value for distribution
      */
-    public ConstantTransitionDistribution(FunctionSPNP<Double> function) {
+    public SPNPConstantTransitionDistribution(FunctionSPNP<Double> function) {
         super(function);
     }
 
     /**
-     * Creates new {@link ConstantTransitionDistribution} object with {@link TransitionDistributionType#PlaceDependent} distribution type.
+     * Creates new {@link SPNPConstantTransitionDistribution} object with {@link TransitionDistributionType#PlaceDependent} distribution type.
      *
-     * @param value             constant value to be used in distribution
-     * @param dependentPlace    reference to a {@link StandardPlace} object which is used for distribution
+     * @param value          constant value to be used in distribution
+     * @param dependentPlace reference to a {@link StandardPlace} object which is used for distribution
      */
-    public ConstantTransitionDistribution(double value, StandardPlace dependentPlace) {
+    public SPNPConstantTransitionDistribution(String value, StandardPlace dependentPlace) {
         super(value, dependentPlace);
     }
 
     @Override
-    public Double getValue() {
+    public String getValue() {
         return super.getValue();
     }
 
     @Override
-    public void setValue(Double value) {
+    public void setValue(String value) {
         super.setValue(value);
     }
 
@@ -64,18 +65,18 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
         if (o == null || this.getClass() != o.getClass())
             return false;
 
-        var that = (ConstantTransitionDistribution) o;
+        var that = (SPNPConstantTransitionDistribution) o;
 
         if (this.getDistributionType() != that.getDistributionType())
             return false;
 
         switch (this.getDistributionType()) {
             case Constant:
-                return Math.abs(this.getValue() - that.getValue()) < Constants.DOUBLE_EPSILON;
+                return this.getValue().equals(that.getValue());
             case Functional:
                 return this.getFunction().equals(that.getFunction());
             case PlaceDependent:
-                return Math.abs(this.getValue() - that.getValue()) < Constants.DOUBLE_EPSILON
+                return this.getValue().equals(that.getValue())
                         && this.getDependentPlace().equals(that.getDependentPlace());
             default:
                 return false;
@@ -86,12 +87,11 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
     public int hashCode() {
         switch (this.getDistributionType()) {
             case Constant:
-                return Double.hashCode(this.getValue());
+                return getValue().hashCode();
             case Functional:
                 return this.getFunction().hashCode();
             case PlaceDependent:
-                return 11 * Double.hashCode(this.getValue()) +
-                        17 * this.getDependentPlace().hashCode();
+                return Objects.hash(getValue(), getDependentPlace());
             default:
                 return super.hashCode();
         }
@@ -99,8 +99,8 @@ public class ConstantTransitionDistribution extends SingleValueTransitionDistrib
 
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
-        if(transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
-            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
+        if (transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
+            transitionDistributionVisitor.visit(this);
         else
             transitionDistributionVisitor.visit(this);
     }
