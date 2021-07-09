@@ -19,14 +19,14 @@ public class SPNPFluidPlace extends FluidPlace {
 
     public SPNPFluidPlace(int id,
                           String name,
-                          String initialValue,
-                          String boundValue,
-                          Set<String> breakValues) {
+                          String initialValueExpression,
+                          String boundValueExpression,
+                          Set<String> breakValuesExpressions) {
         super(id, name);
 
-        this.initialValueExpression = initialValue;
-        this.boundValueExpression = boundValue;
-        this.breakValuesExpressions = Objects.requireNonNullElseGet(breakValues, HashSet::new);
+        this.initialValueExpression = initialValueExpression;
+        this.boundValueExpression = boundValueExpression;
+        this.breakValuesExpressions = Objects.requireNonNullElseGet(breakValuesExpressions, HashSet::new);
     }
 
     public String getInitialValueExpression() {
