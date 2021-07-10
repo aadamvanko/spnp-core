@@ -1,6 +1,8 @@
 package cz.muni.fi.spnp.core.transformators.spnp.elements;
 
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
+import cz.muni.fi.spnp.core.models.visitors.PlaceVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorSPNP;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,7 +43,7 @@ public class SPNPFluidPlace extends FluidPlace {
         return boundValueExpression;
     }
 
-    public void setBoundValue(String boundValueExpression) {
+    public void setBoundValueExpression(String boundValueExpression) {
         this.boundValueExpression = boundValueExpression;
     }
 
@@ -49,12 +51,20 @@ public class SPNPFluidPlace extends FluidPlace {
         return Collections.unmodifiableSet(breakValuesExpressions);
     }
 
-    public void addBreakValue(String breakValue) {
+    public void addBreakValueExpression(String breakValue) {
         this.breakValuesExpressions.add(breakValue);
     }
 
-    public void removeBreakValue(String breakValue) {
+    public void removeBreakValueExpression(String breakValue) {
         this.breakValuesExpressions.remove(breakValue);
     }
 
+    @Override
+    public void accept(PlaceVisitor placeVisitor) {
+        if (placeVisitor instanceof PlaceVisitorSPNP) {
+            ((PlaceVisitorSPNP) placeVisitor).visit(this);
+        } else {
+            super.accept(placeVisitor);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 module spnp.core.transformators {
     requires spnp.core.models;
+    requires org.apache.commons.lang3;
 
     exports cz.muni.fi.spnp.core.transformators.spnp;
     exports cz.muni.fi.spnp.core.transformators.spnp.code;
