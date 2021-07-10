@@ -5,6 +5,8 @@ import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.functions.Function;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.transitions.Transition;
+import cz.muni.fi.spnp.core.models.visitors.ArcVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.ArcVisitorSPNP;
 
 public class SPNPStandardArc extends StandardArc {
 
@@ -25,7 +27,7 @@ public class SPNPStandardArc extends StandardArc {
     public SPNPStandardArc(int id, ArcDirection direction, Place place, Transition transition, Function calculateMultiplicityFunction) {
         super(id, direction, place, transition, calculateMultiplicityFunction);
 
-        this.multiplicityExpression = "unused";
+        this.multiplicityExpression = "";
     }
 
 
@@ -33,4 +35,12 @@ public class SPNPStandardArc extends StandardArc {
         return multiplicityExpression;
     }
 
+    @Override
+    public void accept(ArcVisitor arcVisitor) {
+        if (arcVisitor instanceof ArcVisitorSPNP) {
+            ((ArcVisitorSPNP) arcVisitor).visit(this);
+        } else {
+            super.accept(arcVisitor);
+        }
+    }
 }

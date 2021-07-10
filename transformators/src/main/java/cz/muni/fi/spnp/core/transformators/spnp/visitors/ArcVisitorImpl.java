@@ -3,9 +3,10 @@ package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 import cz.muni.fi.spnp.core.models.arcs.InhibitorArc;
 import cz.muni.fi.spnp.core.models.arcs.StandardArc;
 import cz.muni.fi.spnp.core.models.places.FluidPlace;
-import cz.muni.fi.spnp.core.models.visitors.ArcVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPInhibitorArc;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPStandardArc;
 
-public class ArcVisitorImpl extends Visitor implements ArcVisitor {
+public class ArcVisitorImpl extends Visitor implements ArcVisitorSPNP {
     @Override
     public void visit(InhibitorArc inhibitorArc) {
         String prefix = "";
@@ -37,6 +38,27 @@ public class ArcVisitorImpl extends Visitor implements ArcVisitor {
                     inhibitorArc.getPlace().getName(),
                     System.lineSeparator()));
         }
+    }
+
+    @Override
+    public void visit(SPNPInhibitorArc spnpInhibitorArc) {
+        if (spnpInhibitorArc.getMultiplicityExpression().isBlank() || spnpInhibitorArc.getMultiplicityExpression().equals("1")) {
+            visit((InhibitorArc) spnpInhibitorArc);
+            return;
+        }
+
+        String prefix = "";
+
+        if (spnpInhibitorArc.getPlace() instanceof FluidPlace) {
+            prefix += "d";
+        }
+
+        stringBuilder.append(spnpInhibitorArc.getCommentary().getLineCommentary())
+                .append(prefix).append(String.format("mharc(\"%s\", \"%s\", %s);%s",
+                spnpInhibitorArc.getTransition().getName(),
+                spnpInhibitorArc.getPlace().getName(),
+                spnpInhibitorArc.getMultiplicityExpression(),
+                System.lineSeparator()));
     }
 
     @Override
@@ -102,6 +124,44 @@ public class ArcVisitorImpl extends Visitor implements ArcVisitor {
                             standardArc.getPlace().getName(),
                             System.lineSeparator()));
                 }
+                break;
+
+            default:
+                throw new IllegalStateException("Unknown Arc direction.");
+        }
+    }
+
+    @Override
+    public void visit(SPNPStandardArc spnpStandardArc) {
+        if (spnpStandardArc.getMultiplicityExpression().isBlank() || spnpStandardArc.getMultiplicityExpression().equals("1")) {
+            visit((StandardArc) spnpStandardArc);
+            return;
+        }
+
+        String prefix = "";
+        if (spnpStandardArc.isFluid()) {
+            prefix = "f";
+        } else if (spnpStandardArc.getPlace() instanceof FluidPlace) {
+            prefix = "d";
+        }
+
+        switch (spnpStandardArc.getDirection()) {
+            case Input:
+                stringBuilder.append(spnpStandardArc.getCommentary().getLineCommentary())
+                        .append(prefix).append(String.format("miarc(\"%s\", \"%s\", %s);%s",
+                        spnpStandardArc.getTransition().getName(),
+                        spnpStandardArc.getPlace().getName(),
+                        spnpStandardArc.getMultiplicityExpression(),
+                        System.lineSeparator()));
+                break;
+
+            case Output:
+                stringBuilder.append(spnpStandardArc.getCommentary().getLineCommentary())
+                        .append(prefix).append(String.format("moarc(\"%s\", \"%s\", %s);%s",
+                        spnpStandardArc.getTransition().getName(),
+                        spnpStandardArc.getPlace().getName(),
+                        spnpStandardArc.getMultiplicityExpression(),
+                        System.lineSeparator()));
                 break;
 
             default:
