@@ -1257,7 +1257,7 @@ public class TransitionDistributionVisitorImpl extends Visitor implements Transi
     @Override
     public void visit(TransitionDistributionBase transitionDistribution) {
         if (transitionDistribution instanceof ExponentialTransitionDistribution)
-            throw new UnsupportedOperationException("Not supported.");
-        throw new UnsupportedOperationException("Not supported. This situation should not occur.");
+            throw new UnsupportedOperationException("ExponentialTransitionDistribution is NOT supported yet." + transitionDistribution);
+        throw new UnsupportedOperationException("Not supported. This situation should not occur. " + transitionDistribution);
     }
 }
