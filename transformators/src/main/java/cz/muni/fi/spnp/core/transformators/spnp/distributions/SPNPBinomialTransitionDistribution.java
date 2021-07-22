@@ -118,7 +118,7 @@ public class SPNPBinomialTransitionDistribution extends SPNPThreeValuesTransitio
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
         if (transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
-            transitionDistributionVisitor.visit(this);
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
         else
             transitionDistributionVisitor.visit(this);
     }

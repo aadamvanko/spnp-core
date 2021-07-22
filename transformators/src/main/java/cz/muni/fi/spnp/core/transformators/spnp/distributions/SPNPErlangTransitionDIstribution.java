@@ -86,7 +86,7 @@ public class SPNPErlangTransitionDIstribution extends SPNPTwoValuesTransitionDis
     @Override
     public void accept(TransitionDistributionVisitor transitionDistributionVisitor) {
         if (transitionDistributionVisitor instanceof TransitionDistributionVisitorSPNP)
-            transitionDistributionVisitor.visit(this);
+            ((TransitionDistributionVisitorSPNP) transitionDistributionVisitor).visit(this);
         else
             transitionDistributionVisitor.visit(this);
     }
