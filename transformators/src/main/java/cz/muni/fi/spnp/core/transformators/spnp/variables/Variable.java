@@ -4,7 +4,7 @@ import cz.muni.fi.spnp.core.transformators.spnp.visitors.VariableVisitor;
 
 import java.util.Objects;
 
-public abstract class Variable {
+public abstract class Variable implements Comparable<Variable> {
 
     private final String name;
     private final VariableType type;
@@ -45,4 +45,9 @@ public abstract class Variable {
     }
 
     public abstract void accept(VariableVisitor variableVisitor);
+
+    @Override
+    public int compareTo(Variable o) {
+        return name.compareTo(o.name);
+    }
 }
