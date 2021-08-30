@@ -2,9 +2,9 @@ package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
-import cz.muni.fi.spnp.core.models.visitors.TransitionVisitor;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPTimedTransition;
 
-public class TransitionVisitorImpl extends Visitor implements TransitionVisitor {
+public class TransitionVisitorImpl extends Visitor implements TransitionVisitorSPNP {
 
     @Override
     public void visit(ImmediateTransition immediateTransition) {
@@ -39,6 +39,24 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitor 
 
         if (timedTransition.getGuardFunction() != null) {
             definition += String.format("guard(\"%s\", %s);", timedTransition.getName(), timedTransition.getGuardFunction().getName())
+                    + System.lineSeparator();
+        }
+
+        stringBuilder.append(definition);
+    }
+
+    @Override
+    public void visit(SPNPTimedTransition spnpTimedTransition) {
+        String definition = spnpTimedTransition.getCommentary().getLineCommentary()
+                + getTransitionDistributionDefinition(spnpTimedTransition)
+                + String.format("priority(\"%s\", %d);", spnpTimedTransition.getName(), spnpTimedTransition.getPriority())
+                + System.lineSeparator();
+
+        definition += String.format("policy(\"%s\", \"%s\");%n", spnpTimedTransition.getName(), spnpTimedTransition.getPolicy().getAbbreviation());
+        definition += String.format("affected(\"%s\", \"%s\");%n", spnpTimedTransition.getName(), spnpTimedTransition.getAffected().getAbbreviation());
+
+        if (spnpTimedTransition.getGuardFunction() != null) {
+            definition += String.format("guard(\"%s\", %s);", spnpTimedTransition.getName(), spnpTimedTransition.getGuardFunction().getName())
                     + System.lineSeparator();
         }
 

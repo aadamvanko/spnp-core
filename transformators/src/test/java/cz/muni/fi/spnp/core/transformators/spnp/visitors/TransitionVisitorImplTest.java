@@ -12,6 +12,8 @@ import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionP
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.distributions.ConstantTransitionDistribution;
 import cz.muni.fi.spnp.core.transformators.spnp.distributions.ExponentialTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.PolicyAffectedType;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPTimedTransition;
 import org.junit.*;
 
 /**
@@ -106,4 +108,40 @@ public class TransitionVisitorImplTest {
 
         Assert.assertEquals("TimedTransition scenario extended", expected.strip(), instance.getResult().strip());
     }
+
+    /**
+     * Test of visit method, of class TransitionVisitorImpl.
+     */
+    @Test
+    public void testVisit_SPNPTimedTransition() {
+        String expected = String.format("// spnp timed transition comment%n" +
+                "rateval(\"SPNPTimedTransition789\", 1.0);%n" +
+                "priority(\"SPNPTimedTransition789\", 0);%n" +
+                "policy(\"SPNPTimedTransition789\", \"PRD\");%n" +
+                "affected(\"SPNPTimedTransition789\", \"PRD\");%n");
+
+        var timedTransitionFirst = new SPNPTimedTransition(1, "SPNPTimedTransition789", new ExponentialTransitionDistribution(1.0));
+        timedTransitionFirst.setCommentary("spnp timed transition comment");
+        instance.visit(timedTransitionFirst);
+        Assert.assertEquals("SPNPTimedTransition scenario simple", expected.strip(), instance.getResult().strip());
+
+
+        reinitVisitor();
+        expected = String.format("// spnp timed transition comment%n" +
+                "detval(\"SPNPTimedTransition789\", 10000.00001);%n" +
+                "priority(\"SPNPTimedTransition789\", 999);%n" +
+                "policy(\"SPNPTimedTransition789\", \"PRI\");%n" +
+                "affected(\"SPNPTimedTransition789\", \"PRS\");%n" +
+                "guard(\"SPNPTimedTransition789\", TimedGuard);%n");
+
+        FunctionSPNP<Integer> guard = new FunctionSPNP<>("TimedGuard", FunctionType.Guard, "return 7;", Integer.class);
+        var constantDistribution = new ConstantTransitionDistribution(10000.00001);
+        var timedTransitionSecond = new SPNPTimedTransition(14, "SPNPTimedTransition789", 999, guard, constantDistribution,
+                PolicyAffectedType.PreemptiveRepeatIdentical, PolicyAffectedType.PreemptiveResume);
+        timedTransitionSecond.setCommentary("spnp timed transition comment");
+        instance.visit(timedTransitionSecond);
+
+        Assert.assertEquals("SPNPTimedTransition scenario extended", expected.strip(), instance.getResult().strip());
+    }
+
 }
