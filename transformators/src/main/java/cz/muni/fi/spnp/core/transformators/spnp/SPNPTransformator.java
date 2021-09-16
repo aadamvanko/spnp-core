@@ -84,14 +84,18 @@ public class SPNPTransformator implements Transformator {
 
     private String globalFunctionsDeclarations(PetriNet petriNet) {
         var functionDeclarationVisitorImpl = new FunctionDeclarationVisitorImpl();
-        var sortedFunctions = petriNet.getFunctions().values().stream().sorted().collect(Collectors.toList());
+        var sortedFunctions = petriNet.getFunctions().values().stream()
+                .filter(function -> !spnpCode.getSPNPFunctions().contains(function))
+                .sorted().collect(Collectors.toList());
         sortedFunctions.forEach(function -> function.accept(functionDeclarationVisitorImpl));
         return functionDeclarationVisitorImpl.getResult();
     }
 
     private String globalFunctionsDefinitions(PetriNet petriNet) {
         var functionDefinitionVisitorImpl = new FunctionDefinitionVisitorImpl();
-        var sortedFunctions = petriNet.getFunctions().values().stream().sorted().collect(Collectors.toList());
+        var sortedFunctions = petriNet.getFunctions().values().stream()
+                .filter(function -> !spnpCode.getSPNPFunctions().contains(function))
+                .sorted().collect(Collectors.toList());
         sortedFunctions.forEach(function -> function.accept(functionDefinitionVisitorImpl));
         return functionDefinitionVisitorImpl.getResult();
     }

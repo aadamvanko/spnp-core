@@ -174,4 +174,9 @@ public class SPNPCode {
     public Set<Variable> getParameterVariables() {
         return variables.stream().filter(v -> v.getType() == VariableType.Parameter).collect(Collectors.toSet());
     }
+
+    public Set<Function> getSPNPFunctions() {
+        return Set.of(acInitFunction, acFinalFunction, acReachFunction, assertFunction);
+    }
+
 }
