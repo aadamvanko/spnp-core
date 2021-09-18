@@ -53,7 +53,7 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitorS
                 + System.lineSeparator();
 
         definition += String.format("policy(\"%s\", %s);%n", spnpTimedTransition.getName(), spnpTimedTransition.getPolicy().getAbbreviation());
-        definition += String.format("affected(\"%s\", \"%s\");%n", spnpTimedTransition.getName(), spnpTimedTransition.getAffected().getAbbreviation());
+//        definition += String.format("affected(\"%s\", \"%s\");%n", spnpTimedTransition.getName(), spnpTimedTransition.getAffected().getAbbreviation());
 
         if (spnpTimedTransition.getGuardFunction() != null) {
             definition += String.format("guard(\"%s\", %s);", spnpTimedTransition.getName(), spnpTimedTransition.getGuardFunction().getName())

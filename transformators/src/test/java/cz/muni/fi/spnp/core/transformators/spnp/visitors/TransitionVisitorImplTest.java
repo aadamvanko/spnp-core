@@ -117,8 +117,8 @@ public class TransitionVisitorImplTest {
         String expected = String.format("// spnp timed transition comment%n" +
                 "rateval(\"SPNPTimedTransition789\", 1.0);%n" +
                 "priority(\"SPNPTimedTransition789\", 0);%n" +
-                "policy(\"SPNPTimedTransition789\", PRD);%n" +
-                "affected(\"SPNPTimedTransition789\", \"PRD\");%n");
+                "policy(\"SPNPTimedTransition789\", PRD);%n");
+//                "affected(\"SPNPTimedTransition789\", \"PRD\");%n");
 
         var timedTransitionFirst = new SPNPTimedTransition(1, "SPNPTimedTransition789", new ExponentialTransitionDistribution(1.0));
         timedTransitionFirst.setCommentary("spnp timed transition comment");
@@ -131,13 +131,13 @@ public class TransitionVisitorImplTest {
                 "detval(\"SPNPTimedTransition789\", 10000.00001);%n" +
                 "priority(\"SPNPTimedTransition789\", 999);%n" +
                 "policy(\"SPNPTimedTransition789\", PRI);%n" +
-                "affected(\"SPNPTimedTransition789\", \"PRS\");%n" +
+//                "affected(\"SPNPTimedTransition789\", \"PRS\");%n" +
                 "guard(\"SPNPTimedTransition789\", TimedGuard);%n");
 
         FunctionSPNP<Integer> guard = new FunctionSPNP<>("TimedGuard", FunctionType.Guard, "return 7;", Integer.class);
         var constantDistribution = new ConstantTransitionDistribution(10000.00001);
         var timedTransitionSecond = new SPNPTimedTransition(14, "SPNPTimedTransition789", 999, guard, constantDistribution,
-                PolicyAffectedType.PreemptiveRepeatIdentical, PolicyAffectedType.PreemptiveResume);
+                PolicyAffectedType.PreemptiveRepeatIdentical/*, PolicyAffectedType.PreemptiveResume*/);
         timedTransitionSecond.setCommentary("spnp timed transition comment");
         instance.visit(timedTransitionSecond);
 
