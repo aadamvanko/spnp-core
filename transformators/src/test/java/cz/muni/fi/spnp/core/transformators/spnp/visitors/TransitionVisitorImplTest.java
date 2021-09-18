@@ -117,7 +117,7 @@ public class TransitionVisitorImplTest {
         String expected = String.format("// spnp timed transition comment%n" +
                 "rateval(\"SPNPTimedTransition789\", 1.0);%n" +
                 "priority(\"SPNPTimedTransition789\", 0);%n" +
-                "policy(\"SPNPTimedTransition789\", \"PRD\");%n" +
+                "policy(\"SPNPTimedTransition789\", PRD);%n" +
                 "affected(\"SPNPTimedTransition789\", \"PRD\");%n");
 
         var timedTransitionFirst = new SPNPTimedTransition(1, "SPNPTimedTransition789", new ExponentialTransitionDistribution(1.0));
@@ -130,7 +130,7 @@ public class TransitionVisitorImplTest {
         expected = String.format("// spnp timed transition comment%n" +
                 "detval(\"SPNPTimedTransition789\", 10000.00001);%n" +
                 "priority(\"SPNPTimedTransition789\", 999);%n" +
-                "policy(\"SPNPTimedTransition789\", \"PRI\");%n" +
+                "policy(\"SPNPTimedTransition789\", PRI);%n" +
                 "affected(\"SPNPTimedTransition789\", \"PRS\");%n" +
                 "guard(\"SPNPTimedTransition789\", TimedGuard);%n");
 
