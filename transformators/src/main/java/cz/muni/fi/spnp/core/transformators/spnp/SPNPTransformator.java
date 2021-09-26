@@ -135,7 +135,7 @@ public class SPNPTransformator implements Transformator {
     }
 
     private String transitionsDefinition(PetriNet petriNet) {
-        var transitionVisitorImpl = new TransitionVisitorImpl();
+        var transitionVisitorImpl = new TransitionVisitorImpl(petriNet.getTransitions());
         var sortedTransitions = petriNet.getTransitions().stream().sorted().collect(Collectors.toList());
         sortedTransitions.forEach(transition -> transition.accept(transitionVisitorImpl));
         return String.format("/* Transitions */%n%s", transitionVisitorImpl.getResult());

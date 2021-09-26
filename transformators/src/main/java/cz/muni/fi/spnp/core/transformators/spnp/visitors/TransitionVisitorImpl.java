@@ -2,9 +2,18 @@ package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPTimedTransition;
 
+import java.util.Collection;
+
 public class TransitionVisitorImpl extends Visitor implements TransitionVisitorSPNP {
+
+    private final Collection<Transition> transitions;
+
+    public TransitionVisitorImpl(Collection<Transition> transitions) {
+        this.transitions = transitions;
+    }
 
     @Override
     public void visit(ImmediateTransition immediateTransition) {
@@ -53,7 +62,7 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitorS
                 + System.lineSeparator();
 
         definition += String.format("policy(\"%s\", %s);%n", spnpTimedTransition.getName(), spnpTimedTransition.getPolicy().getAbbreviation());
-//        definition += String.format("affected(\"%s\", \"%s\");%n", spnpTimedTransition.getName(), spnpTimedTransition.getAffected().getAbbreviation());
+        definition += generateAffected(spnpTimedTransition);
 
         if (spnpTimedTransition.getGuardFunction() != null) {
             definition += String.format("guard(\"%s\", %s);", spnpTimedTransition.getName(), spnpTimedTransition.getGuardFunction().getName())
@@ -61,6 +70,18 @@ public class TransitionVisitorImpl extends Visitor implements TransitionVisitorS
         }
 
         stringBuilder.append(definition);
+    }
+
+    private String generateAffected(SPNPTimedTransition spnpTimedTransition) {
+        var affectedLines = new StringBuilder();
+        transitions.forEach(transition -> {
+            if (transition == spnpTimedTransition) {
+                return;
+            }
+            affectedLines.append(String.format("affected(\"%s\", \"%s\", %s);%n",
+                    spnpTimedTransition.getName(), transition.getName(), spnpTimedTransition.getAffected().getAbbreviation()));
+        });
+        return affectedLines.toString();
     }
 
     private String getTransitionProbabilityDefinition(ImmediateTransition immediateTransition) {

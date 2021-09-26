@@ -8,6 +8,7 @@ package cz.muni.fi.spnp.core.transformators.spnp.visitors;
 import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.transitions.ImmediateTransition;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
+import cz.muni.fi.spnp.core.models.transitions.Transition;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionProbability;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.distributions.ConstantTransitionDistribution;
@@ -16,35 +17,38 @@ import cz.muni.fi.spnp.core.transformators.spnp.elements.PolicyAffectedType;
 import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPTimedTransition;
 import org.junit.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
  * @author 10ondr
  */
 public class TransitionVisitorImplTest {
     private TransitionVisitorImpl instance;
-    
+
     public TransitionVisitorImplTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
-        reinitVisitor();
+        reinitVisitor(new ArrayList<>());
     }
-    
+
     @After
     public void tearDown() {
     }
-    
-    private void reinitVisitor(){
-        instance = new TransitionVisitorImpl();
+
+    private void reinitVisitor(List<Transition> allTransitions) {
+        allTransitions.add(new ImmediateTransition(1, "immediateTransitionOther"));
+        instance = new TransitionVisitorImpl(allTransitions);
     }
 
     /**
@@ -63,7 +67,7 @@ public class TransitionVisitorImplTest {
 
         Assert.assertEquals("ImmediateTransition scenario simple", expected.strip(), instance.getResult().strip());
 
-        reinitVisitor();
+        reinitVisitor(new ArrayList<>());
         expected = String.format("// immediate transition comment%n" +
                 "imm(\"ImmediateTransition123\");%n" +
                 "priority(\"ImmediateTransition123\", 987);%n" +
@@ -78,7 +82,7 @@ public class TransitionVisitorImplTest {
 
         Assert.assertEquals("ImmediateTransition scenario extended", expected.strip(), instance.getResult().strip());
     }
-    
+
     /**
      * Test of visit method, of class TransitionVisitorImpl.
      */
@@ -94,7 +98,7 @@ public class TransitionVisitorImplTest {
         Assert.assertEquals("TimedTransition scenario simple", expected.strip(), instance.getResult().strip());
 
 
-        reinitVisitor();
+        reinitVisitor(new ArrayList<>());
         expected = String.format("// timed transition comment%n" +
                 "detval(\"TimedTransition789\", 10000.00001);%n" +
                 "priority(\"TimedTransition789\", 999);%n" +
@@ -117,8 +121,8 @@ public class TransitionVisitorImplTest {
         String expected = String.format("// spnp timed transition comment%n" +
                 "rateval(\"SPNPTimedTransition789\", 1.0);%n" +
                 "priority(\"SPNPTimedTransition789\", 0);%n" +
-                "policy(\"SPNPTimedTransition789\", PRD);%n");
-//                "affected(\"SPNPTimedTransition789\", \"PRD\");%n");
+                "policy(\"SPNPTimedTransition789\", PRD);%n" +
+                "affected(\"SPNPTimedTransition789\", \"immediateTransitionOther\", PRD);%n");
 
         var timedTransitionFirst = new SPNPTimedTransition(1, "SPNPTimedTransition789", new ExponentialTransitionDistribution(1.0));
         timedTransitionFirst.setCommentary("spnp timed transition comment");
@@ -126,19 +130,19 @@ public class TransitionVisitorImplTest {
         Assert.assertEquals("SPNPTimedTransition scenario simple", expected.strip(), instance.getResult().strip());
 
 
-        reinitVisitor();
         expected = String.format("// spnp timed transition comment%n" +
                 "detval(\"SPNPTimedTransition789\", 10000.00001);%n" +
                 "priority(\"SPNPTimedTransition789\", 999);%n" +
                 "policy(\"SPNPTimedTransition789\", PRI);%n" +
-//                "affected(\"SPNPTimedTransition789\", \"PRS\");%n" +
+                "affected(\"SPNPTimedTransition789\", \"immediateTransitionOther\", PRS);%n" +
                 "guard(\"SPNPTimedTransition789\", TimedGuard);%n");
 
         FunctionSPNP<Integer> guard = new FunctionSPNP<>("TimedGuard", FunctionType.Guard, "return 7;", Integer.class);
         var constantDistribution = new ConstantTransitionDistribution(10000.00001);
         var timedTransitionSecond = new SPNPTimedTransition(14, "SPNPTimedTransition789", 999, guard, constantDistribution,
-                PolicyAffectedType.PreemptiveRepeatIdentical/*, PolicyAffectedType.PreemptiveResume*/);
+                PolicyAffectedType.PreemptiveRepeatIdentical, PolicyAffectedType.PreemptiveResume);
         timedTransitionSecond.setCommentary("spnp timed transition comment");
+        reinitVisitor(new ArrayList<>(List.of(timedTransitionSecond)));
         instance.visit(timedTransitionSecond);
 
         Assert.assertEquals("SPNPTimedTransition scenario extended", expected.strip(), instance.getResult().strip());
