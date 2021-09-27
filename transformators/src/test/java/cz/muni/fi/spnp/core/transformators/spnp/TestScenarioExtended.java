@@ -16,6 +16,7 @@ import cz.muni.fi.spnp.core.transformators.spnp.parameters.DoubleInputParameter;
 import cz.muni.fi.spnp.core.transformators.spnp.parameters.InputParameter;
 import cz.muni.fi.spnp.core.transformators.spnp.parameters.IntegerInputParameter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 
@@ -90,16 +91,16 @@ public class TestScenarioExtended extends TransformatorTest {
         parametersSet.add(new IntegerInputParameter("param2", "prompt2"));
         parametersSet.add(new DoubleInputParameter("param3", "prompt3"));
         parametersSet.add(new DoubleInputParameter("param4", "prompt4"));
-        
-        var optionsSet = new HashSet<Option>();
-        optionsSet.add(new IntegerTypeOption(OptionKey.IOP_OK_VANLOOP, 5));
-        optionsSet.add(new IntegerTypeOption(OptionKey.IOP_ELIMINATION, 125));
-        optionsSet.add(new DoubleTypeOption(OptionKey.FOP_SIM_ERROR, 55.46));
-        optionsSet.add(new IntegerTypeOption(OptionKey.IOP_SSMETHOD, 666666666));
-        optionsSet.add(new ConstantTypeOption(OptionKey.FOP_ABS_RET_M0, ConstantValue.VAL_SPLIT));
-        optionsSet.add(new ConstantTypeOption(OptionKey.FOP_SSPRES, ConstantValue.VAL_REPL));
-        
-        return new SPNPOptions(parametersSet, optionsSet);
+
+        var optionsList = new ArrayList<Option>();
+        optionsList.add(new IntegerTypeOption(OptionKey.IOP_OK_VANLOOP, 5));
+        optionsList.add(new IntegerTypeOption(OptionKey.IOP_ELIMINATION, 125));
+        optionsList.add(new DoubleTypeOption(OptionKey.FOP_SIM_ERROR, 55.46));
+        optionsList.add(new IntegerTypeOption(OptionKey.IOP_SSMETHOD, 666666666));
+        optionsList.add(new ConstantTypeOption(OptionKey.FOP_ABS_RET_M0, ConstantValue.VAL_SPLIT));
+        optionsList.add(new ConstantTypeOption(OptionKey.FOP_SSPRES, ConstantValue.VAL_REPL));
+
+        return new SPNPOptions(parametersSet, optionsList);
     }
     
     @Override

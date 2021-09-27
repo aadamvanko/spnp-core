@@ -4,7 +4,7 @@ import cz.muni.fi.spnp.core.transformators.spnp.visitors.OptionVisitor;
 
 import java.util.Objects;
 
-public abstract class Option implements Comparable<Option> {
+public abstract class Option {
 
     private final OptionKey key;
 
@@ -38,7 +38,4 @@ public abstract class Option implements Comparable<Option> {
 
     public abstract void accept(OptionVisitor optionVisitor);
 
-    public int compareTo(Option other) {
-        return key.compareTo(other.getKey());
-    }
 }

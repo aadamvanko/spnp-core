@@ -26,16 +26,17 @@ import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.models.places.Place;
 import cz.muni.fi.spnp.core.models.places.StandardPlace;
 import cz.muni.fi.spnp.core.models.transitions.TimedTransition;
-import cz.muni.fi.spnp.core.transformators.spnp.code.Define;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.code.Include;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
 import cz.muni.fi.spnp.core.transformators.spnp.distributions.ExponentialTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.distributions.SPNPConstantTransitionDistribution;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.SPNPStandardPlace;
 import cz.muni.fi.spnp.core.transformators.spnp.options.*;
 import cz.muni.fi.spnp.core.transformators.spnp.parameters.InputParameter;
-import cz.muni.fi.spnp.core.transformators.spnp.variables.DoubleVariable;
-import cz.muni.fi.spnp.core.transformators.spnp.variables.IntegerVariable;
-import cz.muni.fi.spnp.core.transformators.spnp.variables.VariableType;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorImpl;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.PlaceVisitorSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.visitors.TransitionVisitorImpl;
 
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class Main {
 
         Set<InputParameter> inputParameters = Set.of();
 
-        Set<Option> options = Set.of(
+        List<Option> options = List.of(
                 new ConstantTypeOption(OptionKey.IOP_SSMETHOD, ConstantValue.VAL_GASEI),
                 new ConstantTypeOption(OptionKey.IOP_PR_FULL_MARK, ConstantValue.VAL_YES),
                 new ConstantTypeOption(OptionKey.IOP_PR_MARK_ORDER, ConstantValue.VAL_CANONIC),

@@ -5,9 +5,11 @@ import cz.muni.fi.spnp.core.models.functions.FunctionType;
 import cz.muni.fi.spnp.core.transformators.Transformator;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
 import cz.muni.fi.spnp.core.transformators.spnp.code.SPNPCode;
+import cz.muni.fi.spnp.core.transformators.spnp.options.Option;
 import cz.muni.fi.spnp.core.transformators.spnp.options.SPNPOptions;
 import cz.muni.fi.spnp.core.transformators.spnp.visitors.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static cz.muni.fi.spnp.core.transformators.spnp.utility.Utils.newlines;
@@ -101,11 +103,19 @@ public class SPNPTransformator implements Transformator {
     }
 
     private String generateOptions() {
+        var optionsDefinition = new StringBuilder();
+        optionsDefinition.append("/* Options */" + System.lineSeparator());
+        optionsDefinition.append("/* Options - simulation */" + System.lineSeparator() + visitOptions(spnpOptions.getSimulationOptions()));
+        optionsDefinition.append("/* Options - analysis */" + System.lineSeparator() + visitOptions(spnpOptions.getAnalysisOptions()));
+        optionsDefinition.append("/* Options - intermediate files */" + System.lineSeparator() + visitOptions(spnpOptions.getIntermediateOptions()));
+        optionsDefinition.append("/* Options - miscellaneous */" + System.lineSeparator() + visitOptions(spnpOptions.getMiscellaneousOptions()));
+        return String.format("void options() {%n%s%n%s}", tabify(optionsDefinition.toString()), tabify(inputParametersInitialization()));
+    }
+
+    private String visitOptions(List<Option> options) {
         var optionVisitor = new OptionVisitor();
-        var sortedOptions = spnpOptions.getOptions().stream().sorted().collect(Collectors.toList());
-        sortedOptions.forEach(option -> option.accept(optionVisitor));
-        String optionsDefinition = String.format("/* Options */%n%s", optionVisitor.getResult());
-        return String.format("void options() {%n%s%n%s}", tabify(optionsDefinition), tabify(inputParametersInitialization()));
+        options.forEach(option -> option.accept(optionVisitor));
+        return optionVisitor.getResult();
     }
 
     private String inputParametersInitialization() {
