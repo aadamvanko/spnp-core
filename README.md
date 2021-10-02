@@ -1,16 +1,25 @@
 # Petri Net model in Java
 
-This library is designed to allow easy creation of the Petri nets in the object-oriented way. It provides the general model of the Petri nets and also the extended model representation for a package/tool **SPNP** (Stochastic Petri Net Package). General model can be found in **cz.muni.fi.spnp.core** and SPNP model representation can be found in **cz.muni.fi.spnp.core.transformators.spnp**.
+This library is designed to allow easy creation of the Petri nets in the object-oriented way. It provides the general
+model of the Petri nets and also the extended model representation for a package/tool **SPNP** (Stochastic Petri Net
+Package). General model can be found in **cz.muni.fi.spnp.core** and SPNP model representation can be found in **
+cz.muni.fi.spnp.core.transformators.spnp**.
 
-In addition to these two models, this library contains also the transformator for the SPNP model representation, which generates C code for the given model.
+In addition to these two models, this library contains also the transformator for the SPNP model representation, which
+generates C code for the given model.
+
+**This repository is a continuation of the repository https://github.com/10ondr/spnp-model (private), which is forked
+from https://github.com/stanozm/spnp-model-old (private).**
 
 ### Problems/Bugs
 
-All of the known problems we are aware of can be found in the issues. Do not hesitate to create new issue if you have found a bug (thank you).
+All of the known problems we are aware of can be found in the issues. Do not hesitate to create new issue if you have
+found a bug (thank you).
 
 ### Plans for the future
 
-Issues contain also the missing features from the SPNP which are currently not implemented. We are also working on an GUI editor, which will be also made publicly available.
+Issues contain also the missing features from the SPNP which are currently not implemented. We are also working on an
+GUI editor, which will be also made publicly available.
 
 ### Usage
 
