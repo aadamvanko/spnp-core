@@ -11,4 +11,5 @@ public interface TransitionProbabilityVisitor {
     void visit(FunctionalTransitionProbability functionalTransitionProbability);
 
     void visit(PlaceDependentTransitionProbability placeDependentTransitionProbability);
+
 }

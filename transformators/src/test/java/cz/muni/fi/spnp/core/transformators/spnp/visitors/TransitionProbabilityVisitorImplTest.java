@@ -12,6 +12,8 @@ import cz.muni.fi.spnp.core.models.transitions.probabilities.ConstantTransitionP
 import cz.muni.fi.spnp.core.models.transitions.probabilities.FunctionalTransitionProbability;
 import cz.muni.fi.spnp.core.models.transitions.probabilities.PlaceDependentTransitionProbability;
 import cz.muni.fi.spnp.core.transformators.spnp.code.FunctionSPNP;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.probabilities.SPNPConstantTransitionProbability;
+import cz.muni.fi.spnp.core.transformators.spnp.elements.probabilities.SPNPPlaceDependentTransitionProbability;
 import org.junit.*;
 
 /**
@@ -79,8 +81,33 @@ public class TransitionProbabilityVisitorImplTest {
         PlaceDependentTransitionProbability placeDependentTransitionProbability = new PlaceDependentTransitionProbability(12.34, stdPlace);
         String expected = "probdep(\"SampleTransition\", 12.34, \"StandardPlace\");";
         instance.visit(placeDependentTransitionProbability);
-        
+
         Assert.assertEquals("PlaceDependentTransitionProbability scenario", expected.strip(), instance.getResult().strip());
     }
-    
+
+    /**
+     * Test of visit method, of class TransitionProbabilityVisitorImpl.
+     */
+    @Test
+    public void testVisit_SPNPConstantTransitionProbability() {
+        var spnpConstantTransitionProbability = new SPNPConstantTransitionProbability("123.0");
+        String expected = "probval(\"SampleTransition\", 123.0);";
+        instance.visit(spnpConstantTransitionProbability);
+
+        Assert.assertEquals("SPNPConstantTransitionProbability scenario", expected.strip(), instance.getResult().strip());
+    }
+
+    /**
+     * Test of visit method, of class TransitionProbabilityVisitorImpl.
+     */
+    @Test
+    public void testVisit_SPNPPlaceDependentTransitionProbability() {
+        var stdPlace = new StandardPlace(0, "StandardPlace", 3);
+        var spnpPlaceDependentTransitionProbability = new SPNPPlaceDependentTransitionProbability("12.34", stdPlace);
+        String expected = "probdep(\"SampleTransition\", 12.34, \"StandardPlace\");";
+        instance.visit(spnpPlaceDependentTransitionProbability);
+
+        Assert.assertEquals("SPNPPlaceDependentTransitionProbability scenario", expected.strip(), instance.getResult().strip());
+    }
+
 }
