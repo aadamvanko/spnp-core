@@ -9,4 +9,5 @@ module spnp.core.transformators {
     exports cz.muni.fi.spnp.core.transformators.spnp.distributions;
     exports cz.muni.fi.spnp.core.transformators.spnp.variables;
     exports cz.muni.fi.spnp.core.transformators.spnp.elements;
+    exports cz.muni.fi.spnp.core.transformators.spnp.elements.probabilities;
 }
