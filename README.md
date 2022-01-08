@@ -18,8 +18,8 @@ found a bug (thank you).
 
 ### Plans for the future
 
-Issues contain also the missing features from the SPNP which are currently not implemented. We are also working on an
-GUI editor, which will be also made publicly available.
+Issues contain also the missing features from the SPNP which are currently not implemented. This library is used by the
+SPNP GUIv2 https://github.com/aadamvanko/spnp-gui.
 
 ### Usage
 
